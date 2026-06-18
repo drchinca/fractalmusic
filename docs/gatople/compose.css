@@ -48,39 +48,27 @@
   color: #555;
 }
 
-#progression-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-#progression-list li {
-  border: 1px solid #d6cfbe;
-  border-radius: 6px;
+#progression-select {
+  width: 100%;
   padding: 8px 10px;
-  cursor: pointer;
-  font-size: 14px;
+  border: 1px solid #1a1a1a;
+  border-radius: 6px;
   background: #fff;
-  transition: background-color 120ms ease, border-color 120ms ease;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-#progression-list li:hover { background: #f3eddc; }
-
-#progression-list li.is-active {
-  background: #1a1a1a;
-  border-color: #1a1a1a;
-  color: #fff;
+#progression-select:focus-visible {
+  outline: 2px solid rgba(192, 57, 43, 0.4);
+  outline-offset: 2px;
 }
 
-#progression-list li small {
-  display: block;
-  font-size: 11px;
-  font-weight: normal;
-  margin-top: 3px;
-  opacity: 0.7;
+.prog-summary {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: #444;
+  line-height: 1.45;
 }
 
 .provenance {
@@ -260,22 +248,31 @@
   pointer-events: none;
 }
 
-/* Active wheel segment glow */
+/* Active wheel segment — much louder so it pops over the bright fill colors. */
 .role-segment.is-current {
-  filter: drop-shadow(0 0 6px rgba(192, 57, 43, 0.6));
+  stroke: #c0392b;
+  stroke-width: 6;
+  filter: drop-shadow(0 0 10px rgba(192, 57, 43, 0.85));
+}
+
+/* In-scale highlighting on instruments. CSS `outline` doesn't work on SVG
+   elements (SVG ignores it), so we override the rect's own stroke instead.
+   That's why the previous `outline: 2px solid #c0392b` was invisible. */
+.piano-key.in-scale .piano-tint,
+.fret-cell.in-scale .fret-tint {
   stroke: #c0392b;
   stroke-width: 3;
 }
 
-/* In-scale highlighting on instruments */
-.in-scale .piano-tint, .in-scale .fret-tint {
-  outline: 2px solid #c0392b;
-  outline-offset: -1px;
-}
-
+/* Out-of-scale tiles dim out so the in-scale frame really pops. */
 .piano-key:not(.in-scale) .piano-tint,
 .fret-cell:not(.in-scale) .fret-tint {
-  opacity: 0.28;
+  opacity: 0.22;
+}
+
+/* Smooth the in-scale border swap as the wheel changes step. */
+.piano-tint, .fret-tint {
+  transition: stroke 200ms ease, stroke-width 200ms ease, opacity 200ms ease;
 }
 
 /* Cross-page nav */

@@ -328,13 +328,15 @@ async function main() {
   renderPiano(piano, chromatic);
   renderFretboard(fretboard, chromatic);
 
-  // Progression list.
-  const list = document.getElementById("progression-list");
+  // Progression picker — single select, summary below, provenance below that.
+  const select = /** @type {HTMLSelectElement} */ (
+    document.getElementById("progression-select")
+  );
   for (const prog of progressions) {
-    const li = document.createElement("li");
-    li.dataset.id = prog.id;
-    li.innerHTML = `<strong>${prog.name}</strong><small>${prog.summary}</small>`;
-    list.appendChild(li);
+    const opt = document.createElement("option");
+    opt.value = prog.id;
+    opt.textContent = prog.name;
+    select.appendChild(opt);
   }
 
   const engine = createAudioEngine();
@@ -350,11 +352,10 @@ async function main() {
   function activate(prog) {
     currentProg = prog;
     stepIndex = 0;
+    select.value = prog.id;
+    document.getElementById("prog-summary").textContent = prog.summary;
     document.getElementById("provenance").textContent =
       "Source: " + (prog.book_ref?.join(", ") ?? "—");
-    list.querySelectorAll("li").forEach((li) => {
-      li.classList.toggle("is-active", li.dataset.id === prog.id);
-    });
     document.getElementById("step-total").textContent = String(prog.steps.length);
     paintStep();
   }
@@ -413,11 +414,9 @@ async function main() {
     }
   }
 
-  // Click a progression to load it.
-  list.addEventListener("click", (e) => {
-    const li = e.target.closest("li");
-    if (!li) return;
-    const prog = progressions.find((p) => p.id === li.dataset.id);
+  // Pick a progression to load it.
+  select.addEventListener("change", () => {
+    const prog = progressions.find((p) => p.id === select.value);
     if (prog) activate(prog);
   });
 
