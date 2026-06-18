@@ -1,5 +1,6 @@
-import { useEffect, type JSX } from "react";
+import { type JSX } from "react";
 
+import payloadJson from "../../public/data.json";
 import { BindingsTable } from "./components/BindingsTable";
 import { Fretboard } from "./components/Fretboard";
 import { PaletteToggle } from "./components/PaletteToggle";
@@ -8,27 +9,17 @@ import { StepControls } from "./components/StepControls";
 import { Wheel } from "./components/Wheel";
 import { displayNote } from "./geometry";
 import { useGatople } from "./hooks/useGatople";
-import { usePayload } from "./hooks/usePayload";
-import type { Chromatic, Role } from "./types";
+import type { Chromatic, Payload, Role } from "./types";
+
+// Static import of the canonical Python-derived snapshot. Vite types the JSON
+// at compile time and bundles it (~6 KB → ~1 KB gzip) so there's no loading
+// state and no fetch round-trip. The Python drift test still guards the source.
+// Cast through `unknown` because Vite's JSON import infers literal arrays
+// (string[]), but the Payload type is precise (12-tuple, mode-name unions, etc.).
+// The Python build_gatople_data.py + drift test guarantee the actual shape.
+const payload = payloadJson as unknown as Payload;
 
 export function GatopleApp(): JSX.Element {
-  const { payload, error } = usePayload("data.json");
-
-  if (error !== null) {
-    return (
-      <main>
-        <p role="alert">Failed to load Gátople data: {error}</p>
-      </main>
-    );
-  }
-  if (payload === null) {
-    return (
-      <main>
-        <p>Loading…</p>
-      </main>
-    );
-  }
-
   return <GatopleStage chromatic={payload.chromatic} roles={payload.roles} />;
 }
 
@@ -40,24 +31,6 @@ interface GatopleStageProps {
 function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
   const { tonicOffset, palette, setTonic, step, setPalette } =
     useGatople(chromatic);
-
-  useEffect(() => {
-    function handleKey(event: KeyboardEvent): void {
-      const target = event.target as Element | null;
-      if (target?.matches("input, textarea, select")) return;
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        step(-1);
-      } else if (event.key === "ArrowRight") {
-        event.preventDefault();
-        step(1);
-      }
-    }
-    document.addEventListener("keydown", handleKey);
-    return () => {
-      document.removeEventListener("keydown", handleKey);
-    };
-  }, [step]);
 
   const tonicNote = chromatic[tonicOffset];
   const eolicoRole = roles.find((r) => r.position === 0);
@@ -86,6 +59,7 @@ function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
             chromatic={chromatic}
             tonicOffset={tonicOffset}
             onSetTonic={setTonic}
+            onStep={step}
           />
           <p className="tonic-readout">
             Tonic: <strong>{displayNote(tonicNote)}</strong>{" "}
