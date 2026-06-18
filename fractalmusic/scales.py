@@ -99,3 +99,60 @@ def mode_scale(note: str) -> FractalScale:
         family=mode.family,
         worlds=tuple(world(n) for n in mode.note_order),
     )
+
+
+# Triad qualities for the 7 diatonic positions of A natural minor — the book's
+# default rotation. Index 0 = root mode (Eólico), then up the cycle of fourths.
+# Confirmed against image 9 of the user's notebook: i ii° III iv v VI VII.
+_TRIAD_QUALITIES: Final[dict[str, str]] = {
+    "Eólico": "minor",
+    "Locrio": "diminished",
+    "Jónico": "major",
+    "Dórico": "minor",
+    "Frigio": "minor",
+    "Lidio": "major",
+    "Mixolidio": "major",
+}
+
+
+@dataclass(frozen=True)
+class Triad:
+    """A 1-3-5 triad picked from a heptatonic mode's scale."""
+
+    root: str
+    notes: tuple[str, str, str]
+    glyphs: tuple[str, str, str]
+    quality: str  # "major" / "minor" / "diminished"
+
+    @property
+    def symbol(self) -> str:
+        """Conventional chord symbol (e.g. 'Am', 'B°', 'C')."""
+        suffix = {"minor": "m", "diminished": "°", "major": ""}[self.quality]
+        return f"{self.root}{suffix}"
+
+
+def triad_for(note: str) -> Triad:
+    """The diatonic 1-3-5 triad rooted on a heptatonic note (image 9 invariant).
+
+    Picks scale positions 1, 3, 5 from the Greek mode rooted on ``note``, then
+    spells the triad in glyphs. Verified against the book's diatonic theory in
+    A natural minor (Am, B°, C, Dm, Em, F, G).
+
+    Raises :class:`ValueError` for pentatonic (black-key) roots — triads in this
+    sense are a heptatonic construct.
+    """
+    mode = mode_for(note)
+    if mode.family != "hepta":
+        raise ValueError(
+            f"triad_for: {note!r} is a pentatonic root; "
+            f"diatonic triads are heptatonic only"
+        )
+    scale = mode_scale(note)
+    triad_notes = (scale.notes[0], scale.notes[2], scale.notes[4])
+    triad_glyphs = (scale.glyphs[0], scale.glyphs[2], scale.glyphs[4])
+    return Triad(
+        root=note,
+        notes=triad_notes,
+        glyphs=triad_glyphs,
+        quality=_TRIAD_QUALITIES[mode.mode_name],
+    )

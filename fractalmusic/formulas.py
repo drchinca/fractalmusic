@@ -50,16 +50,28 @@ def fibonacci_chord(root: str = "A", *, voices: int = 3) -> tuple[NoteWorld, ...
 
 
 def chessboard_grains(square: int) -> int:
-    """Grains on a chessboard square under the book's geometric doubling (2**n).
+    """Grains on a chessboard square under the classic doubling (``2**(n-1)``).
 
-    Ch. 5: 1, 2, 4, 16, 256, 65536 ... — the king's ruinous wager. The book uses
-    the self-squaring sequence g(n) = g(n-1)**2 for the famous squares; here we
-    return the classic doubling 2**(square-1) for the standard tale, exposing the
-    potenciación principle (square 64 ≈ 9.2e18).
+    The standard wheat-and-chessboard tale: 1, 2, 4, 8, 16, ... — square 64 is
+    ``2**63`` ≈ 9.22e18. Use :func:`self_squaring_grains` for the self-squaring
+    variant the book recites in Ch. 5.
     """
     if not 1 <= square <= 64:
         raise ValueError("square must be in 1..64")
     return int(2 ** (square - 1))
+
+
+def self_squaring_grains(step: int) -> int:
+    """The self-squaring sequence the book recites in Ch. 5: ``2 ** (2 ** (n-1))``.
+
+    Yields 2, 4, 16, 256, 65 536, 4 294 967 296, 1.84e19, 3.4e38, ... — the
+    book's "potenciación" variant where each step squares the previous. Python
+    ints are unbounded, so any positive ``step`` is valid; ``step >= 9`` produces
+    numbers larger than int64 but Python handles them natively.
+    """
+    if step < 1:
+        raise ValueError("step must be >= 1")
+    return int(2 ** (2 ** (step - 1)))
 
 
 def interval_ratio(from_note: str, to_note: str) -> tuple[int, int]:

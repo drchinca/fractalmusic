@@ -8,6 +8,7 @@ from fractalmusic.formulas import (
     fibonacci,
     fibonacci_chord,
     interval_ratio,
+    self_squaring_grains,
 )
 
 
@@ -36,6 +37,33 @@ def test_chessboard_doubling():
 def test_chessboard_out_of_range():
     with pytest.raises(ValueError):
         chessboard_grains(65)
+
+
+@pytest.mark.parametrize(
+    "step,expected",
+    [
+        (1, 2),
+        (2, 4),
+        (3, 16),
+        (4, 256),
+        (5, 65_536),
+        (6, 4_294_967_296),
+        (7, 18_446_744_073_709_551_616),
+    ],
+)
+def test_self_squaring_grains_matches_book(step, expected):
+    # Ch. 5 of the book recites this exact sequence.
+    assert self_squaring_grains(step) == expected
+
+
+def test_self_squaring_grains_handles_python_bigint():
+    # Step 8 already exceeds int64; Python int handles it natively.
+    assert self_squaring_grains(8) == 2 ** (2**7)
+
+
+def test_self_squaring_grains_rejects_zero():
+    with pytest.raises(ValueError):
+        self_squaring_grains(0)
 
 
 def test_unison_ratio_is_one_to_one():

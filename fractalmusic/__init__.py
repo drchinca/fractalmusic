@@ -21,6 +21,7 @@ from fractalmusic.formulas import (
     fibonacci,
     fibonacci_chord,
     interval_ratio,
+    self_squaring_grains,
 )
 from fractalmusic.gatople import (
     POSITIONS,
@@ -34,9 +35,11 @@ from fractalmusic.gatople import (
 from fractalmusic.modes import ALL_MODES, Mode, mode_for
 from fractalmusic.scales import (
     FractalScale,
+    Triad,
     microstructures,
     mode_scale,
     penta,
+    triad_for,
 )
 from fractalmusic.wheel import (
     ROLES,
@@ -72,9 +75,11 @@ __all__ = [
     "rotate",
     # scales
     "FractalScale",
+    "Triad",
     "penta",
     "microstructures",
     "mode_scale",
+    "triad_for",
     # cartas
     "carta",
     "deck",
@@ -85,6 +90,7 @@ __all__ = [
     "fibonacci",
     "fibonacci_chord",
     "chessboard_grains",
+    "self_squaring_grains",
     "interval_ratio",
     "consonance",
     # wheel (the spinning Gátople)
