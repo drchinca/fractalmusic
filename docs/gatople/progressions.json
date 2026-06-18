@@ -38,6 +38,91 @@
       ]
     },
     {
+      "id": "dodecafuga",
+      "name": "12-station path (DodecaFuga)",
+      "summary": "The spine of El Lujo de la Disonancia: walk all 12 stations in the canonical fractal order (D:29315, reused at D:31166 in the DodecaFuga, D:33778, D:37177). One bar per station — every glyph in the system, no repetition, no skipped color.",
+      "book_ref": ["disonancia:29315", "disonancia:31166", "disonancia:37177"],
+      "tonic": "A",
+      "steps": [
+        {"role": "Eólico",     "glyph": "⋮",    "improvise_in": "A Eólico",     "bars": 1, "hint": "Start at the horizon."},
+        {"role": "Dórico",     "glyph": "+",    "improvise_in": "D Dórico",     "bars": 1, "hint": "Open."},
+        {"role": "Mixolidio",  "glyph": "↓",    "improvise_in": "G Mixolidio",  "bars": 1, "hint": "Compress."},
+        {"role": "Jónico",     "glyph": "□",    "improvise_in": "C Jónico",     "bars": 1, "hint": "Stand vertical."},
+        {"role": "Lidio",      "glyph": "↑",    "improvise_in": "F Lidio",      "bars": 1, "hint": "Lift — the jazz door."},
+        {"role": "Penta 5",    "glyph": "★V",   "improvise_in": "A# Penta 5",   "bars": 1, "hint": "Cross into the penta world."},
+        {"role": "Penta 2",    "glyph": "★II",  "improvise_in": "D# Penta 2",   "bars": 1, "hint": "Balance."},
+        {"role": "Penta 4",    "glyph": "★IV",  "improvise_in": "G# Penta 4",   "bars": 1, "hint": "Descend."},
+        {"role": "Penta 1",    "glyph": "★I",   "improvise_in": "C# Penta 1",   "bars": 1, "hint": "Seed."},
+        {"role": "Penta 3",    "glyph": "★III", "improvise_in": "F# Penta 3",   "bars": 1, "hint": "Casa de Gátople — the home position."},
+        {"role": "Locrio",     "glyph": "△",    "improvise_in": "B Locrio",     "bars": 1, "hint": "Return through the leading-tone."},
+        {"role": "Frigio",     "glyph": "♀",    "improvise_in": "E Frigio",     "bars": 1, "hint": "Close — the key turns."}
+      ]
+    },
+    {
+      "id": "auro-boros",
+      "name": "Auro-Boros (cycle of fourths)",
+      "summary": "The closed-loop traverse of book 1 (F:1034-1048): start at ⋮, step a perfect fourth (+5 semitones) every move, return to ⋮ with zero net alterations. Pattorres's Cero Pitágoras gesture (F:859-895) extended into a 12-station round trip.",
+      "book_ref": ["fractal_libro:859", "fractal_libro:895", "fractal_libro:1034"],
+      "tonic": "A",
+      "steps": [
+        {"role": "Eólico",    "glyph": "⋮",   "improvise_in": "A Eólico",    "bars": 1, "hint": "Start. +5 semitones each step."},
+        {"role": "Dórico",    "glyph": "+",   "improvise_in": "D Dórico",    "bars": 1, "hint": "A → D = a fourth up."},
+        {"role": "Mixolidio", "glyph": "↓",   "improvise_in": "G Mixolidio", "bars": 1, "hint": "D → G."},
+        {"role": "Jónico",    "glyph": "□",   "improvise_in": "C Jónico",    "bars": 1, "hint": "G → C."},
+        {"role": "Lidio",     "glyph": "↑",   "improvise_in": "F Lidio",     "bars": 1, "hint": "C → F."},
+        {"role": "Penta 5",   "glyph": "★V",  "improvise_in": "A# Penta 5",  "bars": 1, "hint": "F → A♯ (enharmonic Bb)."},
+        {"role": "Penta 2",   "glyph": "★II", "improvise_in": "D# Penta 2",  "bars": 1, "hint": "A♯ → D♯."},
+        {"role": "Penta 4",   "glyph": "★IV", "improvise_in": "G# Penta 4",  "bars": 1, "hint": "D♯ → G♯."},
+        {"role": "Penta 1",   "glyph": "★I",  "improvise_in": "C# Penta 1",  "bars": 1, "hint": "G♯ → C♯."},
+        {"role": "Penta 3",   "glyph": "★III","improvise_in": "F# Penta 3",  "bars": 1, "hint": "C♯ → F♯ — casa de Gátople."},
+        {"role": "Locrio",    "glyph": "△",   "improvise_in": "B Locrio",    "bars": 1, "hint": "F♯ → B."},
+        {"role": "Frigio",    "glyph": "♀",   "improvise_in": "E Frigio",    "bars": 1, "hint": "B → E."},
+        {"role": "Eólico",    "glyph": "⋮",   "improvise_in": "A Eólico",    "bars": 1, "hint": "E → A. The serpent eats its tail."}
+      ]
+    },
+    {
+      "id": "flamenco-opener",
+      "name": "Flamenco / Árabe-Español (+ → ↑)",
+      "summary": "The semitone leap from Frigio to Lidio that gives Spanish/Arab music its characteristic color (F:1424). Pattorres specifically names Frigio as the base of flamenco. Frigio dominates Eólico, then resolves home.",
+      "book_ref": ["fractal_libro:1424"],
+      "tonic": "A",
+      "steps": [
+        {"role": "Frigio",  "glyph": "♀", "improvise_in": "E Frigio",  "bars": 4, "hint": "Open with the flamenco color — semitone start to Lidio."},
+        {"role": "Lidio",   "glyph": "↑", "improvise_in": "F Lidio",   "bars": 2, "hint": "Lift +1 semitone — the exotic Árabe-Español sound."},
+        {"role": "Frigio",  "glyph": "♀", "improvise_in": "E Frigio",  "bars": 2, "hint": "Return — Frigio is dominant of Eólico."},
+        {"role": "Eólico",  "glyph": "⋮", "improvise_in": "A Eólico",  "bars": 4, "hint": "Resolve home."}
+      ]
+    },
+    {
+      "id": "lidio-as-dominant",
+      "name": "Lidio→Jónico (↑ → □)",
+      "summary": "Pattorres's non-standard reading of the major cadence (F:1439): Lidio works as the dominant lead-in to Jónico. Different from the Mixolidio→Jónico cadence — uses the +4 (raised fourth) tension instead of the b7. Worth comparing both in the same key.",
+      "book_ref": ["fractal_libro:1439"],
+      "tonic": "C",
+      "steps": [
+        {"role": "Jónico",  "glyph": "□", "improvise_in": "C Jónico",  "bars": 4, "hint": "Home — the major scale."},
+        {"role": "Lidio",   "glyph": "↑", "improvise_in": "F Lidio",   "bars": 2, "hint": "Lift — Lidio's #4 is the upper-leading tone."},
+        {"role": "Jónico",  "glyph": "□", "improvise_in": "C Jónico",  "bars": 4, "hint": "Compare with Mixolidio→Jónico in the major-cadence preset."}
+      ]
+    },
+    {
+      "id": "tritone-mirrors",
+      "name": "Espejo dodecafráctico (tritone walk)",
+      "summary": "The four tritone-axis pairs (D:21259): every glyph has a mirror 6 semitones away. Walk through the four pairs to hear the symmetry — each move is a maximum-distance jump on the wheel (180° opposite).",
+      "book_ref": ["disonancia:21259", "disonancia:30311"],
+      "tonic": "A",
+      "steps": [
+        {"role": "Mixolidio", "glyph": "↓",   "improvise_in": "G Mixolidio", "bars": 2, "hint": "G ↔ C# tritone pair."},
+        {"role": "Penta 1",   "glyph": "★I",  "improvise_in": "C# Penta 1",  "bars": 2, "hint": "C# is G's mirror — same axis, opposite pole."},
+        {"role": "Jónico",    "glyph": "□",   "improvise_in": "C Jónico",    "bars": 2, "hint": "C ↔ F# tritone pair."},
+        {"role": "Penta 3",   "glyph": "★III","improvise_in": "F# Penta 3",  "bars": 2, "hint": "F# is C's mirror — casa de Gátople."},
+        {"role": "Lidio",     "glyph": "↑",   "improvise_in": "F Lidio",     "bars": 2, "hint": "F ↔ A# tritone pair."},
+        {"role": "Penta 5",   "glyph": "★V",  "improvise_in": "A# Penta 5",  "bars": 2, "hint": "A# is F's mirror."},
+        {"role": "Locrio",    "glyph": "△",   "improvise_in": "B Locrio",    "bars": 2, "hint": "B ↔ E tritone pair."},
+        {"role": "Frigio",    "glyph": "♀",   "improvise_in": "E Frigio",    "bars": 2, "hint": "E is B's mirror — close the cycle."}
+      ]
+    },
+    {
       "id": "penta-andean",
       "name": "Improvisación pentatónica",
       "summary": "The pentatonic 'no-error' scale (book line 217). All five Penta modes — solo over each in turn. The book argues these are ontologically prior to the heptatonic cadences above.",
