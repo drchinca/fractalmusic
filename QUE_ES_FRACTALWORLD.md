@@ -73,18 +73,22 @@ Cada mundo lleva el glifo de su modo (cap. 8, "Música de Colores"):
 
 | Nota | Modo | Glifo | Calidad | Hora | Color |
 |------|------|:-----:|---------|:----:|-------|
-| A | Eólico | `⋮` | menor | 9 | verde |
-| A♯ | Penta 5 | `★ V` | menor | 2 | magenta |
-| B | Locrio | `△` | disminuido | 7 | verde-amarillo |
-| C | Jónico | `□` | mayor | 12 | amarillo |
-| C♯ | Penta 1 | `★ I` | menor | 5 | turquesa |
-| D | Dórico | `+` | menor | 10 | azul |
-| D♯ | Penta 2 | `★ II` | menor | 3 | azul profundo |
-| E | Frigio | `♀` | menor | 8 | violeta |
-| F | Lidio | `↑` | mayor | 1 | índigo |
-| F♯ | Penta 3 | `★ III` | mayor | 6 | púrpura |
-| G | Mixolidio | `↓` | mayor | 11 | naranja |
-| G♯ | Penta 4 | `★ IV` | menor | 4 | rojo |
+| A | Eólico | `⋮` Dos Puntos | menor | 9 | rojo |
+| A♯ | Penta 5 | `★ V` Estrella V | menor | 2 | azul profundo |
+| B | Locrio | `△` Triángulo | disminuido | 7 | verde |
+| C | Jónico | `■` Casita | mayor | 12 | rojo (techo) |
+| C♯ | Penta 1 | `★ I` Estrella I | menor | 5 | azul agua + naranja |
+| D | Dórico | `+` Más / Cruz | menor | 10 | verde |
+| D♯ | Penta 2 | `★ II` Estrella II | menor | 3 | azul + sol naranja |
+| E | Frigio | `♀` Llave (koppa) | menor | 8 | rojo |
+| F | Lidio | `↑` Flecha arriba | mayor | 1 | azul cielo |
+| F♯ | Penta 3 | `★ III` Estrella III | mayor | 6 | rojo (casa de Gátople) |
+| G | Mixolidio | `↓` Flecha abajo | mayor | 11 | verde |
+| G♯ | Penta 4 | `★ IV` Estrella IV | menor | 4 | azul + reflejos naranja |
+
+> Los nombres y colores de la tabla son los canónicos de las 12 cartas pintadas
+> a mano por Patricio Torres (digitalizadas 2026-06). Las notas listadas son
+> las del **default A-tonic**: rotan cuando giras el disco interior.
 
 > Las horas siguen el **círculo de cuartas** (Función Cuartal, cap. 4): cada hora
 > avanza una cuarta justa (+5 semitonos) desde A Eólico = 9. Es una biyección:
@@ -147,6 +151,21 @@ heptatónicas (el 5 viene antes que el 7). Son el "sistema óseo" de la música:
 - **Potenciación** — el crecimiento geométrico (cuento del tablero de ajedrez): un
   número se multiplica por sí mismo hasta el infinito (8 = ∞).
 - **VDMG** — "Virus del Mal Gusto", el antagonista pedagógico del libro.
+
+### Las 12 cartas, por nombre
+
+- **Dos Puntos** (`⋮`) — carta 1, A, Eólico. Los dos puntos de la división.
+- **Estrella V** (`★ V`) — carta 2, A♯/B♭, Penta 5.
+- **Triángulo** (`△`) — carta 3, B, Locrio. La primera figura geométrica natural.
+- **Casita** (`■`) — carta 4, C, Jónico. Casa con techo rojo y puerta amarilla.
+- **Estrella I** (`★ I`) — carta 5, C♯/D♭, Penta 1.
+- **Más** (`+`) — carta 6, D, Dórico. La cruz, primer Cero Pitágoras.
+- **Estrella II** (`★ II`) — carta 7, D♯/E♭, Penta 2.
+- **Llave** (`♀`) — carta 8, E, Frigio. La koppa (ϙ) que cierra el círculo.
+- **Flecha arriba** (`↑`) — carta 9, F, Lidio.
+- **Estrella III** (`★ III`) — carta 10, F♯/G♭, Penta 3. La casa de Gátople.
+- **Flecha abajo** (`↓`) — carta 11, G, Mixolidio. Compresión hacia el dominante.
+- **Estrella IV** (`★ IV`) — carta 12, G♯/A♭, Penta 4.
 
 ---
 

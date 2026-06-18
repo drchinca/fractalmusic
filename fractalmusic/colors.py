@@ -1,31 +1,41 @@
-"""The 12-segment chromatic color wheel of the Gátople.
+"""The 12-segment color wheel of the Gátople — canonical palette from the cartas.
 
-Colors follow the cues given in *El Sistema Fractal* Ch. 8 "Música de Colores"
-and the Gátople logo: the penta worlds carry blues/violets ("el color azul del
-penta"), Mixolidio pulls down with a green force, the lower house (Penta 3, "casa
-de Gátople") is the heaviest red/earth-fire. Where the book is not explicit, hue
-follows the chromatic A-order wheel (A = 0°, +30° per semitone).
+Hex values are eyeballed from the dominant fields of Patricio Torres's
+hand-painted 12-card deck (digitized 2026-06):
 
-These remain an interpretation of the hand-painted cartas; swap WHEEL_HEX with
-the exact card palette when the originals are digitized.
+    1  ⋮  Dos Puntos     A    red ("dos puntos" on red)
+    2  ★  Estrella V     A#   deep blue (water + window)
+    3  △  Triángulo      B    green (white triangle on green field)
+    4  ■  Casita         C    red roof + ivory wall + yellow door
+    5  ★  Estrella I     C#   water blue + sunset orange (pelicans + boat)
+    6  +  Más / Cruz     D    green (red flowers on green field)
+    7  ★  Estrella II    D#   blue + orange sun (horizon + fish)
+    8  ♀  Llave (koppa)  E    red (skeleton key on red)
+    9  ↑  Flecha arriba  F    blue (sky / snow mountain)
+    10 ★  Estrella III   F#   red (casa de Gátople — earth + fire)
+    11 ↓  Flecha abajo   G    green (green fields, ant on string, moon)
+    12 ★  Estrella IV    G#   blue + orange reflection (water table, drums)
+
+Where a card has two dominant colors, ``WHEEL_HEX`` keeps the field/background
+hue (the strongest reading from across the room).
 """
 
 from typing import Final
 
-# Per-note hex, A-indexed. Cues from the logo + Ch. 8 descriptions.
+# A-indexed canonical palette read directly from the 12 cartas.
 WHEEL_HEX: Final[tuple[str, ...]] = (
-    "#3FA34D",  # A  Eólico    — green (stable horizon / earth-mountain)
-    "#E03C8A",  # A# Penta 5   — magenta-pink
-    "#8FD14F",  # B  Locrio    — yellow-green (sensible of Jónico)
-    "#E6D72A",  # C  Jónico    — yellow (verticality, the major)
-    "#3FB68B",  # C# Penta 1   — teal
-    "#2E86C1",  # D  Dórico    — blue (cross / opening)
-    "#1F4FD8",  # D# Penta 2   — deep blue
-    "#7D5BA6",  # E  Frigio    — violet (closing key)
-    "#5B6CC4",  # F  Lidio     — indigo (hepta→penta hybrid)
-    "#9B59B6",  # F# Penta 3   — purple (casa de Gátople, earth+fire)
-    "#E67E22",  # G  Mixolidio — orange (descending / compression)
-    "#E74C3C",  # G# Penta 4   — red
+    "#D43A2C",  # A  Eólico    Dos Puntos — red
+    "#1B3A8C",  # A# Penta 5   Estrella V — deep blue
+    "#3FA34D",  # B  Locrio    Triángulo — green
+    "#F2E6D8",  # C  Jónico    Casita — ivory wall (the field; red roof is accent)
+    "#3FA0C9",  # C# Penta 1   Estrella I — water blue
+    "#3FA34D",  # D  Dórico    Más — green
+    "#2E70C1",  # D# Penta 2   Estrella II — blue
+    "#D43A2C",  # E  Frigio    Llave — red
+    "#3FA0C9",  # F  Lidio     Flecha arriba — blue
+    "#C0382C",  # F# Penta 3   Estrella III — red (casa de Gátople)
+    "#3FA34D",  # G  Mixolidio Flecha abajo — green
+    "#2E70C1",  # G# Penta 4   Estrella IV — blue
 )
 
 DEGREES_PER_SEMITONE: Final[int] = 30  # 360° / 12 worlds

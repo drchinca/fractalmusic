@@ -15,6 +15,67 @@ first — it explains the method, grounded in the book *El Sistema Fractal* (202
 Everything is **A-origin** (La menor / matriarchal), which is also pytheory's
 native tone order: index 0 = A, index 3 = C.
 
+## Function lives on the wheel — notes just visit
+
+The Gátople is a **two-disc spinner**. The outer disc carries the 12 *roles* —
+each role is a fixed `(glyph, color, clock-position, scale-pattern)`. The inner
+disc carries the 12 *notes*, and it **rotates freely** under the outer.
+
+So the meaning is in the **angle / role**, not in the note. A note like `D` has
+no fixed identity in the system — it's whichever role it's currently sitting
+under. Spin the wheel one click and the same `D` becomes a different mode with a
+different glyph and color. The pedagogy is geometric, not nominal:
+
+```python
+import fractalmusic as fm
+
+fm.Wheel("A").mode_for("D").mode_name   # 'Dórico'   (D under +)
+fm.Wheel("F").mode_for("D").mode_name   # 'Frigio'   (D under ♀)
+fm.Wheel("D").mode_for("D").mode_name   # 'Eólico'   (D under ⋮ — D is now the tonic)
+```
+
+`A`-tonic is the book's default ("La menor matriarchal") — but any of the 12
+notes can be the tonic. **Use the cards.** The role's glyph and color stay
+where they are; the note that fills it is whatever lands at that position when
+you spin to your tonic of choice.
+
+## Las 12 Cartas Fractales
+
+The canonical hand-painted deck by Patricio Torres, in order. Each carta carries
+a **glyph** and a **color** that belong to the role, plus a default-tonic note.
+The notes shown are the A-tonic readings — they will all rotate when you spin.
+
+<p align="center">
+<table>
+<tr>
+  <td align="center"><img src="docs/assets/cartas/01-dos-puntos.jpg" width="120"><br><b>1 · ⋮ Dos Puntos</b><br>A · Eólico · red</td>
+  <td align="center"><img src="docs/assets/cartas/02-estrella-v.jpg" width="120"><br><b>2 · ★ V Estrella V</b><br>A♯/B♭ · Penta 5 · blue</td>
+  <td align="center"><img src="docs/assets/cartas/03-triangulo.jpg" width="120"><br><b>3 · △ Triángulo</b><br>B · Locrio · green</td>
+  <td align="center"><img src="docs/assets/cartas/04-casita.jpg" width="120"><br><b>4 · ■ Casita</b><br>C · Jónico · ivory wall + red roof</td>
+</tr>
+<tr>
+  <td align="center"><img src="docs/assets/cartas/05-estrella-i.jpg" width="120"><br><b>5 · ★ I Estrella I</b><br>C♯/D♭ · Penta 1 · water blue</td>
+  <td align="center"><img src="docs/assets/cartas/06-mas.jpg" width="120"><br><b>6 · + Más / Cruz</b><br>D · Dórico · green</td>
+  <td align="center"><img src="docs/assets/cartas/07-estrella-ii.jpg" width="120"><br><b>7 · ★ II Estrella II</b><br>D♯/E♭ · Penta 2 · blue + sun</td>
+  <td align="center"><img src="docs/assets/cartas/08-llave.jpg" width="120"><br><b>8 · ♀ Llave (koppa)</b><br>E · Frigio · red</td>
+</tr>
+<tr>
+  <td align="center"><img src="docs/assets/cartas/09-flecha-arriba.jpg" width="120"><br><b>9 · ↑ Flecha arriba</b><br>F · Lidio · sky blue</td>
+  <td align="center"><img src="docs/assets/cartas/10-estrella-iii.jpg" width="120"><br><b>10 · ★ III Estrella III</b><br>F♯/G♭ · Penta 3 · red (casa de Gátople)</td>
+  <td align="center"><img src="docs/assets/cartas/11-flecha-abajo.jpg" width="120"><br><b>11 · ↓ Flecha abajo</b><br>G · Mixolidio · green</td>
+  <td align="center"><img src="docs/assets/cartas/12-estrella-iv.jpg" width="120"><br><b>12 · ★ IV Estrella IV</b><br>G♯/A♭ · Penta 4 · blue + orange</td>
+</tr>
+</table>
+</p>
+
+<p align="center">
+  <img src="docs/assets/cartas/00-portada.jpg" alt="Cover — Fractal Music World" width="280">
+  <img src="docs/assets/cartas/13-instructivo.png" alt="Instructivo de uso" width="320">
+</p>
+
+*All images © Patricio Torres / Fractal Music World. Reproduced here as the
+canonical reference for this study implementation.*
+
 ## Gallery
 
 > The **Gátople** mandala (cat-cyclops with the 12-world ring) is a two-disc
@@ -143,11 +204,17 @@ uv run pytest tests/uat           # 9  — Gherkin behavioral scenarios
 
 ## Status & provenance
 
-The canonical bindings (note→mode→glyph→clock-hour, penta-mode spellings, the
-A-origin) are taken from *El Sistema Fractal: Música Viva y en Reproducción*
-(Torres, 2024), chapters 3–9. The **color palette** in `colors.py` is an
-interpretation of the hand-painted cartas and the Gátople logo — swap `WHEEL_HEX`
-for the exact card colors when the originals are digitized.
+Three-tier provenance:
+
+1. **Structural bindings** (note→mode→glyph, the 5+7=12 architecture, A-origin,
+   penta-mode spellings) are read directly from *El Sistema Fractal: Música Viva
+   y en Reproducción* (Torres, 2024), chapters 3–9.
+2. **Clock hours** are derived: each note's hour follows the *Función Cuartal*
+   (Ch. 4) — anchored at A Eólico = 9 and stepping a perfect fourth (+5
+   semitones) per hour. The bijection over 1–12 reproduces every hour the book
+   names in prose.
+3. **Color palette** in `colors.py` is eyeballed from the digitized 12-card deck
+   (see `docs/assets/cartas/`) — no longer interpretive.
 
 *All rights to the Sistema Fractal and the Gátople belong to Patricio Torres
 Rivera / Fractal Music World. This repository is a study implementation.*

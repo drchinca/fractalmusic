@@ -47,6 +47,7 @@ from fractalmusic.wheel import (
     generate_twelve_outputs,
     is_valid_pattern,
     spin,
+    validate_pattern,
 )
 
 __all__ = [
@@ -94,5 +95,6 @@ __all__ = [
     "spin",
     "generate_scale",
     "generate_twelve_outputs",
-    "is_valid_pattern",
+    "validate_pattern",
+    "is_valid_pattern",  # alias retained for back-compat
 ]

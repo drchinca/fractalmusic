@@ -119,7 +119,14 @@ class WheelMode:
         return self.role.clock_hour
 
     def scale_notes(self) -> tuple[str, ...]:
-        """The mode's scale, spelled from its own note using the role's steps."""
+        """The mode's scale, spelled from its own note using the role's steps.
+
+        The first note keeps the spelling you passed in (sharp or flat); every
+        subsequent note is rendered with the canonical **sharp** spelling from
+        ``CHROMATIC_ORDER`` (no Bb / Eb / Ab / Db / Gb in the tail). For the
+        natural-letter rotation that the book prints in Ch. 4, use
+        :func:`fractalmusic.modes.mode_for(note).note_order` instead.
+        """
         idx = _note_index(self.note)
         notes: list[str] = [self.note]
         for step in self.role.scale_steps[:-1]:
@@ -177,12 +184,11 @@ def spin(tonic: str) -> Wheel:
     return Wheel(tonic=tonic)
 
 
-def is_valid_pattern(interval_pattern: list[int], starting_note: str) -> bool:
-    """Validate (interval_pattern, starting_note) for ``generate_scale``.
+def validate_pattern(interval_pattern: list[int], starting_note: str) -> None:
+    """Raise :class:`ValueError` if (pattern, note) cannot drive ``generate_scale``.
 
     A valid pattern is a list of ints in 1..4 with at least 5 entries (the
     pentatonic floor). The starting note must be a chromatic name we recognise.
-    Raises :class:`ValueError` on invalid input.
     """
     if not isinstance(interval_pattern, list) or len(interval_pattern) < 5:
         raise ValueError("interval_pattern must be a list of at least 5 ints")
@@ -194,6 +200,11 @@ def is_valid_pattern(interval_pattern: list[int], starting_note: str) -> bool:
         _note_index(starting_note)
     except ValueError as error:
         raise ValueError(f"unknown starting_note: {starting_note!r}") from error
+
+
+def is_valid_pattern(interval_pattern: list[int], starting_note: str) -> bool:
+    """Back-compat alias for :func:`validate_pattern`. Returns True or raises."""
+    validate_pattern(interval_pattern, starting_note)
     return True
 
 
@@ -203,7 +214,7 @@ def generate_scale(interval_pattern: list[int], starting_note: str) -> list[str]
     Walks the chromatic circle from ``starting_note``, summing ``interval_pattern``
     semitone-by-semitone and emitting the note that lands at each step.
     """
-    is_valid_pattern(interval_pattern, starting_note)
+    validate_pattern(interval_pattern, starting_note)
     current = _note_index(starting_note)
     out: list[str] = [CHROMATIC_ORDER[current]]
     for step in interval_pattern:
