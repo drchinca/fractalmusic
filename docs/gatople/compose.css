@@ -1,0 +1,287 @@
+/* Compose / improvise page — extends style.css. */
+
+.compose-page header {
+  max-width: 1100px;
+  text-align: left;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e6dfd0;
+  margin-bottom: 16px;
+}
+
+.compose-page header h1 {
+  font-size: 1.6rem;
+  color: #1a1a1a;
+}
+
+.compose-page .subtitle {
+  margin: 4px 0 0;
+  text-align: left;
+  color: #555;
+}
+
+.compose-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 920px) {
+  .compose-grid { grid-template-columns: 1fr; }
+}
+
+.progression-picker, .improvise-panel {
+  background: #fffaf1;
+  border: 1px solid rgba(23, 22, 21, 0.16);
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.progression-picker h2, .improvise-panel h2 {
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #555;
+}
+
+#progression-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#progression-list li {
+  border: 1px solid #d6cfbe;
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #fff;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+#progression-list li:hover { background: #f3eddc; }
+
+#progression-list li.is-active {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #fff;
+}
+
+#progression-list li small {
+  display: block;
+  font-size: 11px;
+  font-weight: normal;
+  margin-top: 3px;
+  opacity: 0.7;
+}
+
+.provenance {
+  margin-top: 14px;
+  font-size: 11px;
+  color: #888;
+  line-height: 1.4;
+  border-top: 1px solid #e6dfd0;
+  padding-top: 10px;
+}
+
+.compose-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.transport {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.transport button {
+  appearance: none;
+  border: 1px solid #1a1a1a;
+  background: #fff;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font: inherit;
+  cursor: pointer;
+  min-width: 44px;
+}
+
+#play-toggle {
+  background: #1a1a1a;
+  color: #fff;
+  min-width: 90px;
+  font-weight: 600;
+}
+
+#play-toggle[aria-pressed="true"] {
+  background: #c0392b;
+  border-color: #8f1f16;
+}
+
+.bpm-control, .drone-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #555;
+}
+
+.bpm-control span:first-child {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+#bpm {
+  width: 120px;
+  accent-color: #c0392b;
+}
+
+#bpm-readout {
+  min-width: 30px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+/* Improvise panel readouts */
+.improvise-panel .step-counter {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #888;
+  letter-spacing: 0.06em;
+}
+
+.improvise-panel .step-role {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.improvise-panel .role-glyph-inline {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.improvise-panel .step-scale {
+  font-size: 1rem;
+  margin: 0 0 8px;
+}
+
+.improvise-panel .step-scale strong {
+  color: #c0392b;
+}
+
+.improvise-panel .step-hint {
+  font-size: 13px;
+  color: #555;
+  font-style: italic;
+  margin: 0 0 10px;
+  border-left: 2px solid #c0392b;
+  padding-left: 10px;
+}
+
+.improvise-panel .step-notes {
+  margin: 0 0 8px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+
+.improvise-panel .step-notes .note-pill {
+  display: inline-block;
+  padding: 2px 7px;
+  margin: 2px 4px 2px 0;
+  border-radius: 4px;
+  background: #fff3d5;
+  border: 1px solid #d8c787;
+  font-weight: 600;
+}
+
+.improvise-panel .step-bars {
+  margin: 0 0 14px;
+  font-size: 12px;
+  color: #888;
+}
+
+.next-stop-title {
+  margin: 14px 0 4px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #888;
+  border-top: 1px dashed #d6cfbe;
+  padding-top: 10px;
+}
+
+.next-stop {
+  font-size: 1rem;
+  color: #555;
+  margin: 0;
+}
+
+.next-stop span:first-child {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-right: 6px;
+}
+
+/* The arrow drawn on the wheel pointing from current → next role. */
+.next-arrow {
+  fill: none;
+  stroke: #c0392b;
+  stroke-width: 4;
+  stroke-linecap: round;
+  filter: drop-shadow(0 1px 3px rgba(192, 57, 43, 0.4));
+  pointer-events: none;
+}
+
+.next-arrow-head {
+  fill: #c0392b;
+  stroke: none;
+  pointer-events: none;
+}
+
+/* Active wheel segment glow */
+.role-segment.is-current {
+  filter: drop-shadow(0 0 6px rgba(192, 57, 43, 0.6));
+  stroke: #c0392b;
+  stroke-width: 3;
+}
+
+/* In-scale highlighting on instruments */
+.in-scale .piano-tint, .in-scale .fret-tint {
+  outline: 2px solid #c0392b;
+  outline-offset: -1px;
+}
+
+.piano-key:not(.in-scale) .piano-tint,
+.fret-cell:not(.in-scale) .fret-tint {
+  opacity: 0.28;
+}
+
+/* Cross-page nav */
+.compose-page header a {
+  color: #c0392b;
+  text-decoration: none;
+  border-bottom: 1px solid #c0392b;
+}
+.compose-page header a:hover { color: #1a1a1a; border-color: #1a1a1a; }

@@ -398,3 +398,16 @@ kbd {
     opacity: 1;
   }
 }
+
+.page-tabs {
+  margin: 4px 0 12px;
+  font-size: 14px;
+  color: #555;
+}
+.page-tabs a {
+  color: #c0392b;
+  text-decoration: none;
+  border-bottom: 1px solid #c0392b;
+  margin-left: 6px;
+}
+.page-tabs a:hover { color: #1a1a1a; border-color: #1a1a1a; }
