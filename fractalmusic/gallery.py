@@ -8,7 +8,13 @@ import sys
 from pathlib import Path
 
 from fractalmusic.scales import mode_scale, penta
-from fractalmusic.svg import deck_grid, gatople_wheel, scale_strip
+from fractalmusic.svg import (
+    deck_grid,
+    fretboard_stickers_svg,
+    gatople_wheel,
+    piano_stickers_svg,
+    scale_strip,
+)
 
 _DEFAULT_DIR = Path("docs/assets")
 _GREEK_ROOTS = ("A", "B", "C", "D", "E", "F", "G")
@@ -50,6 +56,8 @@ def write_gallery(out_dir: Path = _DEFAULT_DIR) -> list[Path]:
         "penta-modes.svg": _stack(
             [scale_strip(penta(root, mode=roman)) for roman, root in _PENTA_ROOTS]
         ),
+        "piano-stickers.svg": piano_stickers_svg(),
+        "fretboard-stickers.svg": fretboard_stickers_svg(),
     }
     for name, svg in artifacts.items():
         path = out_dir / name

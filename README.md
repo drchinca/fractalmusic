@@ -17,29 +17,37 @@ native tone order: index 0 = A, index 3 = C.
 
 ## Gallery
 
-The **Gátople** wheel — 12 colored worlds, each with its mode glyph and note (the
-5 black-key stars carry roman numerals; A sits at 12 o'clock):
+The **Gátople** — the cat-cyclops mandala: a 12-world chromatic ring around the
+slit eye, with the pyramid nose and whiskers. **C Jónico sits at 12 o'clock and A
+Eólico at 9 o'clock**, following the book's circle-of-fourths clock:
 
 <p align="center">
-  <img src="docs/assets/gatople-wheel.png" alt="Gátople color wheel" width="420">
+  <img src="docs/assets/gatople-wheel.png" alt="The Gátople mandala" width="380">
 </p>
 
-The **7 Greek modes** (white keys) — each a rotation of the same colored cartas:
+**Piano & fretboard sticker overlays** — every key / every fret gets its Fractal
+carta (glyph + color + note/roman). This is Pattorres's "bolombombin" stickers
+and the fractalized guitar neck:
 
 <p align="center">
-  <img src="docs/assets/greek-modes.png" alt="The 7 Greek modes" width="640">
+  <img src="docs/assets/piano-stickers.png" alt="Piano carta stickers" width="520">
+  <br>
+  <img src="docs/assets/fretboard-stickers.png" alt="Fretboard carta stickers" width="640">
 </p>
 
-The **5 Penta modes** (black-key stars) — the pentatonic, semitone-free core:
+The **7 Greek modes** (white keys) and **5 Penta modes** (black-key stars) — each
+a rotation of the same colored cartas:
 
 <p align="center">
-  <img src="docs/assets/penta-modes.png" alt="The 5 Penta modes" width="640">
+  <img src="docs/assets/greek-modes.png" alt="The 7 Greek modes" width="560">
+  <br>
+  <img src="docs/assets/penta-modes.png" alt="The 5 Penta modes" width="560">
 </p>
 
-Regenerate these any time:
+Regenerate every visual any time:
 
 ```bash
-fractalmusic-gallery            # writes SVGs to docs/assets/
+fractalmusic-gallery            # writes all SVGs to docs/assets/
 ```
 
 ## Install

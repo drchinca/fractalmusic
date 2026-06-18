@@ -2,7 +2,13 @@
 
 from fractalmusic.gallery import write_gallery
 from fractalmusic.scales import mode_scale, penta
-from fractalmusic.svg import deck_grid, gatople_wheel, scale_strip
+from fractalmusic.svg import (
+    deck_grid,
+    fretboard_stickers_svg,
+    gatople_wheel,
+    piano_stickers_svg,
+    scale_strip,
+)
 
 
 def _is_svg(text: str) -> bool:
@@ -32,8 +38,36 @@ def test_penta_strip_is_all_stars():
     assert svg.count("★") == 5
 
 
-def test_gallery_writes_four_files(tmp_path):
+def test_wheel_renders_cat_face_elements():
+    # The Gátople is a cat face, not a bare donut: nose, whiskers, eye, body.
+    svg = gatople_wheel()
+    assert "#ec6fb0" in svg  # pink pyramid nose
+    assert "#e8c4a0" in svg  # peach cat-head silhouette
+    assert "stroke-linecap='round'" in svg  # whiskers
+
+
+def test_piano_stickers_render_all_twelve_worlds():
+    svg = piano_stickers_svg()
+    assert _is_svg(svg)
+    for glyph in ("⋮", "△", "□", "+", "♀", "↑", "↓", "★"):
+        assert glyph in svg
+
+
+def test_fretboard_stickers_render_open_and_frets():
+    svg = fretboard_stickers_svg(frets=12)
+    assert _is_svg(svg)
+    assert ">12<" in svg  # 12th-fret label present
+
+
+def test_gallery_writes_all_artifacts(tmp_path):
     paths = write_gallery(tmp_path)
     names = {p.name for p in paths}
-    assert names == {"gatople-wheel.svg", "deck.svg", "greek-modes.svg", "penta-modes.svg"}
+    assert names == {
+        "gatople-wheel.svg",
+        "deck.svg",
+        "greek-modes.svg",
+        "penta-modes.svg",
+        "piano-stickers.svg",
+        "fretboard-stickers.svg",
+    }
     assert all(p.read_text().startswith("<svg") for p in paths)

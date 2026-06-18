@@ -29,6 +29,25 @@ MINOR: Final[str] = "minor"
 DIMINISHED: Final[str] = "diminished"
 
 
+# The chromatic A-order (matches pytheory's western system: A=0, C=3).
+CHROMATIC_ORDER: Final[tuple[str, ...]] = (
+    "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#",
+)
+
+# The Gátople is a circle-of-FOURTHS clock ("Función Cuartal", Ch. 4): stepping a
+# perfect fourth (+5 semitones) advances one hour, anchored at A Eólico = 9 o'clock.
+# This bijection reproduces every clock hour the book names in prose:
+#   A=9  C=12  F=1  G=11  B=7  F#=6  C#=5  E=8 ...  (all 12 hours distinct).
+_HOUR_ANCHOR: Final[int] = 9  # A Eólico sits at 9 o'clock (the stable horizon, East)
+_FOURTH_SEMITONES: Final[int] = 5
+
+
+def _clock_hour(note: str) -> int:
+    """The Gátople clock hour for a note, via the circle of fourths from A=9."""
+    index = CHROMATIC_ORDER.index(note)
+    return ((_HOUR_ANCHOR - 1 + _FOURTH_SEMITONES * index) % 12) + 1
+
+
 @dataclass(frozen=True)
 class Mode:
     """A Gátople mode: the musical identity of one of the 12 worlds."""
@@ -38,28 +57,43 @@ class Mode:
     family: str  # HEPTA or PENTA
     glyph: str  # the world's symbol
     quality: str  # MAJOR / MINOR / DIMINISHED
-    clock_hour: int  # position on the 12-hour Gátople face
+    clock_hour: int  # position on the 12-hour Gátople face (circle of fourths)
     note_order: tuple[str, ...]  # the mode's scale, spelled from its own root
+
+
+def _hepta(note: str, name: str, glyph: str, quality: str) -> Mode:
+    """Build a heptatonic mode rooted on a natural note (scale = 7 naturals rotated)."""
+    start = "ABCDEFG".index(note)
+    order = tuple("ABCDEFG"[(start + step) % 7] for step in range(7))
+    return Mode(note, name, HEPTA, glyph, quality, _clock_hour(note), order)
+
+
+def _penta(note: str, name: str, quality: str) -> Mode:
+    """Build a pentatonic mode rooted on a black key (scale = black keys rotated)."""
+    black = ("C#", "D#", "F#", "G#", "A#")
+    start = black.index(note)
+    order = tuple(black[(start + step) % 5] for step in range(5))
+    return Mode(note, name, PENTA, "★", quality, _clock_hour(note), order)
 
 
 # Heptatonic modes — white keys (Ch. 4 & 8).
 _HEPTA_MODES: Final[tuple[Mode, ...]] = (
-    Mode("A", "Eólico", HEPTA, EOLICO, MINOR, 9, ("A", "B", "C", "D", "E", "F", "G")),
-    Mode("B", "Locrio", HEPTA, LOCRIO, DIMINISHED, 7, ("B", "C", "D", "E", "F", "G", "A")),
-    Mode("C", "Jónico", HEPTA, JONICO, MAJOR, 12, ("C", "D", "E", "F", "G", "A", "B")),
-    Mode("D", "Dórico", HEPTA, DORICO, MINOR, 2, ("D", "E", "F", "G", "A", "B", "C")),
-    Mode("E", "Frigio", HEPTA, FRIGIO, MINOR, 8, ("E", "F", "G", "A", "B", "C", "D")),
-    Mode("F", "Lidio", HEPTA, LIDIO, MAJOR, 1, ("F", "G", "A", "B", "C", "D", "E")),
-    Mode("G", "Mixolidio", HEPTA, MIXOLIDIO, MAJOR, 11, ("G", "A", "B", "C", "D", "E", "F")),
+    _hepta("A", "Eólico", EOLICO, MINOR),
+    _hepta("B", "Locrio", LOCRIO, DIMINISHED),
+    _hepta("C", "Jónico", JONICO, MAJOR),
+    _hepta("D", "Dórico", DORICO, MINOR),
+    _hepta("E", "Frigio", FRIGIO, MINOR),
+    _hepta("F", "Lidio", LIDIO, MAJOR),
+    _hepta("G", "Mixolidio", MIXOLIDIO, MAJOR),
 )
 
-# Pentatonic modes — black keys (Ch. 4 & 9). note_order spelled per book.
+# Pentatonic modes — black keys (Ch. 4 & 9). Each is a rotation of the black-key cycle.
 _PENTA_MODES: Final[tuple[Mode, ...]] = (
-    Mode("C#", "Penta 1", PENTA, "★", MINOR, 5, ("C#", "D#", "F#", "G#", "A#")),
-    Mode("D#", "Penta 2", PENTA, "★", MINOR, 9, ("D#", "F#", "G#", "A#", "C#")),
-    Mode("F#", "Penta 3", PENTA, "★", MAJOR, 6, ("F#", "G#", "C#", "A#", "D#")),
-    Mode("G#", "Penta 4", PENTA, "★", MINOR, 3, ("G#", "A#", "C#", "D#", "F#")),
-    Mode("A#", "Penta 5", PENTA, "★", MINOR, 1, ("A#", "C#", "D#", "F#", "G#")),
+    _penta("C#", "Penta 1", MINOR),
+    _penta("D#", "Penta 2", MINOR),
+    _penta("F#", "Penta 3", MAJOR),
+    _penta("G#", "Penta 4", MINOR),
+    _penta("A#", "Penta 5", MINOR),
 )
 
 # Penta roman order follows penta-mode number: Penta1=I … Penta5=V.
