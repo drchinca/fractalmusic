@@ -1,9 +1,8 @@
 """Integration tests — fractalmusic scales/triads round-trip into pytheory."""
 
 import pytest
-from pytheory import Tone
-
 from fractalmusic import Wheel, mode_scale, penta, triad_for
+from pytheory import Tone
 
 
 def test_eolico_scale_yields_seven_ascending_tones() -> None:

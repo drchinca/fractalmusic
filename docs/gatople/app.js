@@ -31,6 +31,7 @@ import {
   noteAtRolePosition,
   roleAtNote,
 } from "./lib.js";
+import { bindKeyboard } from "./audio.js";
 
 const RING_INNER = 165;
 const RING_MID = (RING_OUTER + RING_INNER) / 2;
@@ -381,6 +382,9 @@ async function main() {
 
   setTonic("A");
   setPalette("carta");
+
+  // QWERTY keyboard play layer — see ./audio.js for the mapping.
+  bindKeyboard({ onSetTonic: setTonic });
 }
 
 main();
