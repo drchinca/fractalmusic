@@ -38,6 +38,16 @@ from fractalmusic.scales import (
     mode_scale,
     penta,
 )
+from fractalmusic.wheel import (
+    ROLES,
+    Role,
+    Wheel,
+    WheelMode,
+    generate_scale,
+    generate_twelve_outputs,
+    is_valid_pattern,
+    spin,
+)
 
 __all__ = [
     # dodecamundo
@@ -76,4 +86,13 @@ __all__ = [
     "chessboard_grains",
     "interval_ratio",
     "consonance",
+    # wheel (the spinning Gátople)
+    "Wheel",
+    "WheelMode",
+    "Role",
+    "ROLES",
+    "spin",
+    "generate_scale",
+    "generate_twelve_outputs",
+    "is_valid_pattern",
 ]

@@ -9,6 +9,7 @@ from fractalmusic.cartas import carta, spell
 from fractalmusic.colors import ansi_bg
 from fractalmusic.dodecamundo import DODECAMUNDO, heptatonic_worlds, pentatonic_worlds
 from fractalmusic.gatople import cero_pitagoras, clock_hour, interval_angle
+from fractalmusic.modes import PENTA_ROOTS
 from fractalmusic.scales import PENTA_MODES, microstructures, mode_scale, penta
 
 RULE = "─" * 60
@@ -51,8 +52,7 @@ def show_heptatonic_modes() -> str:
 def show_pentatonic_modes() -> str:
     """The 5 Penta modes (the ancestral stars)."""
     lines = [_header("THE 5 PENTA MODES (black keys / stars)")]
-    roots = {"I": "C#", "II": "D#", "III": "F#", "IV": "G#", "V": "A#"}
-    for roman, root in roots.items():
+    for roman, root in PENTA_ROOTS:
         scale = penta(root, mode=roman)
         notes = " ".join(f"{n:<2}" for n in scale.notes)
         lines.append(f"★ {scale.name:<9} {notes}   no-semitone={not scale.has_semitone}")

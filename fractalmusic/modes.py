@@ -98,13 +98,15 @@ _PENTA_MODES: Final[tuple[Mode, ...]] = (
 )
 
 # Penta roman order follows penta-mode number: Penta1=I … Penta5=V.
-PENTA_ROMAN_BY_NOTE: Final[dict[str, str]] = {
-    "C#": "I",
-    "D#": "II",
-    "F#": "III",
-    "G#": "IV",
-    "A#": "V",
-}
+# Single source of truth — consumed by showcase, gallery, dodecamundo, tests.
+PENTA_ROOTS: Final[tuple[tuple[str, str], ...]] = (
+    ("I", "C#"),
+    ("II", "D#"),
+    ("III", "F#"),
+    ("IV", "G#"),
+    ("V", "A#"),
+)
+PENTA_ROMAN_BY_NOTE: Final[dict[str, str]] = {note: roman for roman, note in PENTA_ROOTS}
 
 MODE_BY_NOTE: Final[dict[str, Mode]] = {}
 for _mode in (*_HEPTA_MODES, *_PENTA_MODES):

@@ -17,7 +17,7 @@ def test_gallery_main_writes_to_arg_dir(tmp_path, monkeypatch, capsys):
     gallery_main()
     out = capsys.readouterr().out
     assert "wrote:" in out
-    assert (tmp_path / "gatople-wheel.svg").exists()
+    assert (tmp_path / "deck.svg").exists()
 
 
 def test_gallery_main_uses_default_dir(monkeypatch):

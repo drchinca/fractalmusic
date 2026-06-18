@@ -17,14 +17,10 @@ native tone order: index 0 = A, index 3 = C.
 
 ## Gallery
 
-The **Gátople** — the cat-cyclops mandala: a 12-world chromatic ring around the
-slit eye, with the pyramid nose and whiskers. The ring is laid out chromatically
-with **C Jónico at 12 o'clock and A Eólico at 9 o'clock**. (The named *clock
-hours* in the data follow the book's circle of fourths — see the showcase.)
-
-<p align="center">
-  <img src="docs/assets/gatople-wheel.png" alt="The Gátople mandala" width="380">
-</p>
+> The **Gátople** mandala (cat-cyclops with the 12-world ring) is a two-disc
+> spinner — outer disc fixed (glyphs + colors), inner disc rotates the notes.
+> The renderer for that artifact is being rebuilt to match the canonical paper
+> toy and is temporarily omitted from this gallery.
 
 **Piano & fretboard sticker overlays** — every key / every fret gets its Fractal
 carta (glyph + color + note/roman). This is Pattorres's "bolombombin" stickers

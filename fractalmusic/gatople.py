@@ -65,12 +65,14 @@ def polygon(notes: list[str]) -> tuple[tuple[float, float], ...]:
 
 
 def cero_pitagoras(root: str) -> list[str]:
-    """The 'Cero Pitágoras' move: the 5 black keys (pentatonic), rooted at a note.
+    """The Cero Pitágoras pentatonic seed (Penta-1 step pattern) from any root.
 
-    Ch. 4: 'poner los cinco dedos sobre las cinco teclas negras' — the five
-    fingers on the five black keys, the ancestral compositional seed.
+    Ch. 4 narrates this as 'poner los cinco dedos sobre las cinco teclas negras'
+    — the literal five black keys. That is the special case ``root='C#'``
+    (returns ``C# D# F# G# A#``). For any other root the same step pattern is
+    transposed, e.g. ``cero_pitagoras('A') → ['A','B','D','E','F#']``.
     """
-    from fractalmusic.scales import penta
+    from fractalmusic.scales import penta  # local import breaks cycle
 
     return list(penta(root, mode="I").notes)
 

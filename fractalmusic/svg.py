@@ -105,7 +105,14 @@ def _nose_and_whiskers(cx: float, cy: float, r: float) -> str:
 
 
 def gatople_wheel(size: int = 560) -> str:
-    """Render the Gátople: a cat-face mandala with the 12-world chromatic ring."""
+    """Render a draft Gátople mandala — visually inaccurate, kept for reference.
+
+    The canonical Gátople is a *two-disc* spinner (fixed outer roles / rotating
+    inner notes); this single-static render does not honor that. Use
+    :class:`fractalmusic.Wheel` for the data model; a faithful renderer is
+    pending. This function will be replaced or removed once the new renderer
+    lands.
+    """
     cx = size / 2
     cy = size * 0.56  # leave headroom for the ears
     head_r = size * 0.46
