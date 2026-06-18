@@ -158,6 +158,11 @@ function renderPiano(svg, chromatic) {
 }
 
 function repaintPiano(svg, roles, tonicOffset, chromatic, palette) {
+  // Two palettes:
+  //   carta — every key tinted with role.carta_color (red/green/blue/ivory)
+  //   mono  — Penta-BW rule: cells whose role is a ★ render solid black,
+  //           hepta cells render white. The pattern slides as the user spins
+  //           the wheel because role bindings change per tonic.
   for (const key of svg.querySelectorAll(".piano-key")) {
     const note = key.dataset.note;
     const role = roleAtNote(note, roles, tonicOffset, chromatic);
@@ -165,7 +170,17 @@ function repaintPiano(svg, roles, tonicOffset, chromatic, palette) {
     const tint = key.querySelector(".piano-tint");
     const glyph = key.querySelector(".piano-glyph");
     const label = key.querySelector(".piano-note");
-    tint.setAttribute("fill", palette === "mono" ? "#ffffff" : role.carta_color);
+    if (palette === "mono") {
+      const fill = role.is_penta ? "#111" : "#ffffff";
+      const fg = role.is_penta ? "#ffffff" : "#111";
+      tint.setAttribute("fill", fill);
+      glyph.setAttribute("fill", fg);
+      label.setAttribute("fill", fg);
+    } else {
+      tint.setAttribute("fill", role.carta_color);
+      glyph.removeAttribute("fill");
+      label.removeAttribute("fill");
+    }
     glyph.textContent = role.display_glyph;
     label.textContent = displayNote(note);
   }
@@ -235,6 +250,10 @@ function renderFretboard(svg, chromatic) {
 }
 
 function repaintFretboard(svg, roles, tonicOffset, chromatic, palette) {
+  // Penta-BW (mono): every fret position whose currently-bound role is a ★
+  // renders as a solid black cell with a white glyph. Hepta cells are white
+  // with a black glyph. The pattern slides horizontally as the user spins
+  // the wheel — that's the canonical "pentatonic on the neck" view.
   for (const cell of svg.querySelectorAll(".fret-cell")) {
     const note = cell.dataset.note;
     const role = roleAtNote(note, roles, tonicOffset, chromatic);
@@ -242,7 +261,17 @@ function repaintFretboard(svg, roles, tonicOffset, chromatic, palette) {
     const tint = cell.querySelector(".fret-tint");
     const glyph = cell.querySelector(".fret-glyph");
     const label = cell.querySelector(".fret-label");
-    tint.setAttribute("fill", palette === "mono" ? "#ffffff" : role.carta_color);
+    if (palette === "mono") {
+      const fill = role.is_penta ? "#111" : "#ffffff";
+      const fg = role.is_penta ? "#ffffff" : "#111";
+      tint.setAttribute("fill", fill);
+      glyph.setAttribute("fill", fg);
+      label.setAttribute("fill", role.is_penta ? "#ffffff" : "#444");
+    } else {
+      tint.setAttribute("fill", role.carta_color);
+      glyph.removeAttribute("fill");
+      label.setAttribute("fill", "#444");
+    }
     glyph.textContent = role.display_glyph;
     label.textContent = displayNote(note);
   }
