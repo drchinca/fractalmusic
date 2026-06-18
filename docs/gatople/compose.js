@@ -55,13 +55,18 @@ function renderOuter(svgGroup, roles) {
 
 // --- Inner disc (note labels at clock positions) ---
 
-function renderInner(group, roles) {
+function renderInner(group, roles, onNoteClick) {
   for (const role of roles) {
     const angle = clockAngle(role.clock_hour);
     const [x, y] = polar(angle, NOTE_RADIUS);
+    const note = role.note_default;
     const item = document.createElementNS(SVG_NS, "g");
     item.setAttribute("class", "note-item");
     item.setAttribute("transform", `translate(${x} ${y})`);
+    item.dataset.angle = String(angle);
+    item.dataset.note = note;
+    if (onNoteClick) item.addEventListener("click", () => onNoteClick(note));
+
     const disc = document.createElementNS(SVG_NS, "circle");
     disc.setAttribute("class", "note-disc");
     disc.setAttribute("r", NOTE_DISC_R);
@@ -69,7 +74,7 @@ function renderInner(group, roles) {
     label.setAttribute("class", "note-label");
     label.setAttribute("text-anchor", "middle");
     label.setAttribute("dominant-baseline", "central");
-    label.textContent = displayNote(role.note_default);
+    label.textContent = displayNote(note);
     item.appendChild(disc);
     item.appendChild(label);
     group.appendChild(item);
@@ -283,39 +288,19 @@ class Drone {
 
 // --- Scale notes from a step ---
 
-function scaleNotesFor(step, roles, chromatic) {
-  // step.improvise_in is e.g. "A Eólico", "D# Penta 2".
-  const match = step.improvise_in.match(/^([A-G][#b]?)\s+(.+)$/);
-  if (!match) return [];
-  const tonic = match[1];
-  const modeName = match[2];
-  const role = roles.find((r) => r.mode_name === modeName);
-  if (!role) return [];
-  const tonicIdx = indexOfNote(tonic, chromatic);
-  if (tonicIdx < 0) return [];
-  const out = [chromatic[tonicIdx]];
-  let idx = tonicIdx;
-  for (const stepSemi of role.scale_steps.slice(0, -1)) {
-    idx = (idx + stepSemi) % 12;
-    out.push(chromatic[idx]);
-  }
-  return out;
-}
-
-function tonicOf(step) {
-  const match = step.improvise_in.match(/^([A-G][#b]?)\s+/);
-  return match ? match[1] : "A";
-}
-
 // --- Main ---
+//
+// All music-theory derivation lives in the BE — see scripts/build_progressions_data.py.
+// The FE just reads progressions_baked.json: one fully-resolved BakedStep per
+// (preset × tonic_offset × stepIndex). Zero theory in JS.
 
 async function main() {
-  const [data, progData] = await Promise.all([
+  const [data, baked] = await Promise.all([
     fetch("data.json").then((r) => r.json()),
-    fetch("progressions.json").then((r) => r.json()),
+    fetch("progressions_baked.json").then((r) => r.json()),
   ]);
   const { chromatic, roles } = data;
-  const { progressions } = progData;
+  const { progressions } = baked;
 
   const outer = document.getElementById("outer-disc");
   const inner = document.getElementById("inner-disc");
@@ -324,7 +309,7 @@ async function main() {
   const fretboard = document.getElementById("fretboard");
 
   renderOuter(outer, roles);
-  renderInner(inner, roles);
+  renderInner(inner, roles, (note) => setTonicByNote(note));
   renderPiano(piano, chromatic);
   renderFretboard(fretboard, chromatic);
 
@@ -344,6 +329,7 @@ async function main() {
 
   let currentProg = progressions[0];
   let stepIndex = 0;
+  let tonicOffset = 0;  // 0..11; transposes the whole progression
   let playing = false;
   let bpm = 84;
   let droneOn = true;
@@ -352,63 +338,80 @@ async function main() {
   function activate(prog) {
     currentProg = prog;
     stepIndex = 0;
+    tonicOffset = prog.home_offset;  // start at the preset's bundled key
     select.value = prog.id;
     document.getElementById("prog-summary").textContent = prog.summary;
     document.getElementById("provenance").textContent =
       "Source: " + (prog.book_ref?.join(", ") ?? "—");
-    document.getElementById("step-total").textContent = String(prog.steps.length);
+    document.getElementById("step-total").textContent =
+      String(prog.keys[0].length);
     paintStep();
   }
 
+  /** The fully-baked step at the current (tonicOffset, stepIndex). */
   function currentStep() {
-    return currentProg.steps[stepIndex];
+    return currentProg.keys[tonicOffset][stepIndex];
   }
+  /** The fully-baked step that will play next. */
   function nextStep() {
-    return currentProg.steps[(stepIndex + 1) % currentProg.steps.length];
+    const idx = (stepIndex + 1) % currentProg.keys[tonicOffset].length;
+    return currentProg.keys[tonicOffset][idx];
+  }
+
+  /** Rotate the inner-note disc so the current tonic visually sits where the
+   * Eólico glyph is on the outer disc. 30° per semitone of offset from A. */
+  function applyWheelRotation() {
+    const deg = -tonicOffset * 30;
+    inner.setAttribute("transform", `rotate(${deg})`);
+    for (const item of inner.querySelectorAll(".note-item")) {
+      const angle = parseFloat(item.dataset.angle);
+      const [x, y] = polar(angle, NOTE_RADIUS);
+      item.setAttribute(
+        "transform",
+        `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${tonicOffset * 30})`,
+      );
+    }
   }
 
   function paintStep() {
     const step = currentStep();
     const next = nextStep();
-    const role = roles.find((r) => r.mode_name === step.role);
-    const nextRole = roles.find((r) => r.mode_name === next.role);
-    const notes = scaleNotesFor(step, roles, chromatic);
+    // BE pre-resolved which role.position to highlight + arrow toward.
+    const role = roles.find((r) => r.position === step.role_position);
+    const nextRole = roles.find((r) => r.position === next.role_position);
 
-    // Wheel — highlight current segment, draw arrow to next.
+    // Wheel — highlight current segment, draw arrow to next, rotate inner disc.
     for (const seg of outer.querySelectorAll(".role-segment")) {
-      seg.classList.toggle("is-current", seg.dataset.mode === step.role);
+      seg.classList.toggle("is-current", seg.dataset.mode === step.role_mode_name);
     }
     drawNextArrow(arrowLayer, role, nextRole);
+    applyWheelRotation();
 
-    // Side panel readout.
+    // Side panel readout — every value is BE-baked.
     document.getElementById("step-cur").textContent = String(stepIndex + 1);
-    document.getElementById("step-glyph").textContent = step.glyph;
-    document.getElementById("step-mode").textContent = step.role;
-    document.getElementById("step-scale").textContent = step.improvise_in;
+    document.getElementById("step-glyph").textContent = step.display_glyph;
+    document.getElementById("step-mode").textContent = step.role_mode_name;
+    document.getElementById("step-scale").textContent =
+      `${step.tonic_note} ${step.role_mode_name}`;
     document.getElementById("step-hint").textContent = step.hint;
     document.getElementById("step-bars").textContent = String(step.bars);
     const notesEl = document.getElementById("step-notes");
-    notesEl.innerHTML = notes
+    notesEl.innerHTML = step.scale_notes
       .map((n) => `<span class="note-pill">${displayNote(n)}</span>`)
       .join("");
-    document.getElementById("next-glyph").textContent = next.glyph;
-    document.getElementById("next-mode").textContent = next.role;
+    document.getElementById("next-glyph").textContent = next.display_glyph;
+    document.getElementById("next-mode").textContent = next.role_mode_name;
 
-    // Instruments.
-    repaintInstruments(piano, fretboard, roles, chromatic, notes);
+    // Instruments — paint with this step's pre-baked scale_notes set.
+    repaintInstruments(piano, fretboard, roles, chromatic, step.scale_notes);
 
     // Drone — soft sine on the step's tonic.
     if (droneOn) {
-      // Kick the AudioContext on first paint via a no-op note (gesture required).
-      const t = tonicOf(step);
-      // Drone needs the engine's ctx; the engine creates it on first playNote.
-      // Trigger a silent-ish note to bring up the ctx, then start the drone.
       try {
-        engine.playNote(t, 4, { durationMs: 1, gain: 0.001 });
-      } catch (_) { /* user hasn't interacted yet */ }
-      // Pull the ctx out of the engine via a probe oscillator's context.
-      const probe = engine.playNote(t, 4, { durationMs: 1, gain: 0.001 });
-      drone.start(t, 3, probe?.context ?? null);
+        engine.playNote(step.tonic_note, 4, { durationMs: 1, gain: 0.001 });
+      } catch { /* user hasn't interacted yet */ }
+      const probe = engine.playNote(step.tonic_note, 4, { durationMs: 1, gain: 0.001 });
+      drone.start(step.tonic_note, step.drone_octave, probe?.context ?? null);
     } else {
       drone.stop();
     }
@@ -420,12 +423,78 @@ async function main() {
     if (prog) activate(prog);
   });
 
+  function stepCount() {
+    return currentProg.keys[tonicOffset].length;
+  }
+
   document.querySelector("[data-action='prev']")?.addEventListener("click", () => {
-    stepIndex = (stepIndex - 1 + currentProg.steps.length) % currentProg.steps.length;
+    stepIndex = (stepIndex - 1 + stepCount()) % stepCount();
     paintStep();
   });
   document.querySelector("[data-action='next']")?.addEventListener("click", () => {
-    stepIndex = (stepIndex + 1) % currentProg.steps.length;
+    stepIndex = (stepIndex + 1) % stepCount();
+    paintStep();
+  });
+
+  // --- Spin handlers (transpose the whole progression) ---
+
+  function setTonicByNote(note) {
+    const idx = indexOfNote(note, chromatic);
+    if (idx < 0) return;
+    tonicOffset = idx;
+    paintStep();
+  }
+
+  // Drag-to-spin on the wheel. 30° drag = one semitone tonic shift.
+  const wheel = document.getElementById("wheel");
+  let dragging = false;
+  let dragStartAngle = 0;
+  let dragStartOffset = 0;
+  function pointerAngle(event) {
+    const rect = wheel.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    return Math.atan2(event.clientY - cy, event.clientX - cx) * (180 / Math.PI);
+  }
+  wheel.addEventListener("pointerdown", (event) => {
+    if (event.target.closest(".note-item")) return;
+    dragging = true;
+    dragStartAngle = pointerAngle(event);
+    dragStartOffset = tonicOffset;
+    wheel.classList.add("dragging");
+    wheel.setPointerCapture(event.pointerId);
+  });
+  wheel.addEventListener("pointermove", (event) => {
+    if (!dragging) return;
+    // Live preview during drag — no commit until pointerup.
+    const delta = pointerAngle(event) - dragStartAngle;
+    const liveDeg = -dragStartOffset * 30 + delta;
+    inner.setAttribute("transform", `rotate(${liveDeg})`);
+    for (const item of inner.querySelectorAll(".note-item")) {
+      const angle = parseFloat(item.dataset.angle);
+      const [x, y] = polar(angle, NOTE_RADIUS);
+      item.setAttribute(
+        "transform",
+        `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${-liveDeg})`,
+      );
+    }
+  });
+  function endDrag(event) {
+    if (!dragging) return;
+    dragging = false;
+    wheel.classList.remove("dragging");
+    wheel.releasePointerCapture(event.pointerId);
+    const delta = pointerAngle(event) - dragStartAngle;
+    const semitones = Math.round(delta / 30);
+    tonicOffset = ((dragStartOffset + semitones) % 12 + 12) % 12;
+    paintStep();
+  }
+  wheel.addEventListener("pointerup", endDrag);
+  wheel.addEventListener("pointercancel", endDrag);
+
+  // Reset-to-home button: live wheel state -> preset's bundled key.
+  document.querySelector("[data-action='reset-tonic']")?.addEventListener("click", () => {
+    tonicOffset = currentProg.home_offset;
     paintStep();
   });
 
@@ -449,7 +518,7 @@ async function main() {
     const dwellMs = step.bars * msPerBar;
     intervalId = window.setTimeout(() => {
       if (!playing) return;
-      stepIndex = (stepIndex + 1) % currentProg.steps.length;
+      stepIndex = (stepIndex + 1) % stepCount();
       paintStep();
       scheduleAdvance();
     }, dwellMs);
@@ -473,11 +542,11 @@ async function main() {
     if (event.target.matches("input, textarea, select")) return;
     if (event.key === "ArrowLeft") {
       event.preventDefault();
-      stepIndex = (stepIndex - 1 + currentProg.steps.length) % currentProg.steps.length;
+      stepIndex = (stepIndex - 1 + stepCount()) % stepCount();
       paintStep();
     } else if (event.key === "ArrowRight") {
       event.preventDefault();
-      stepIndex = (stepIndex + 1) % currentProg.steps.length;
+      stepIndex = (stepIndex + 1) % stepCount();
       paintStep();
     } else if (event.key === " ") {
       event.preventDefault();
