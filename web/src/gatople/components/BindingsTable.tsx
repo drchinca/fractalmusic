@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 import { displayNote, noteAtRolePosition } from "../geometry";
 import type { Chromatic, Role } from "../types";
 

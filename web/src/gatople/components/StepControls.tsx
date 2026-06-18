@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 interface StepControlsProps {
   readonly variant: "header" | "footer";
   readonly onStepBack: () => void;

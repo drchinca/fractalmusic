@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 import { RING_INNER, RING_MID, RING_OUTER, SEG_DEG } from "../constants";
 import { arcPath, clockAngle, polar } from "../geometry";
 import type { Role } from "../types";

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, type JSX } from "react";
 
 import { BindingsTable } from "./components/BindingsTable";
 import { Fretboard } from "./components/Fretboard";

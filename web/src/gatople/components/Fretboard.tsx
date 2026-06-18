@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 import {
   FRET_COUNT,
   FRET_PAD_LEFT,

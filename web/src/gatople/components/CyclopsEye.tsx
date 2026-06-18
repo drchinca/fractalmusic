@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 export function CyclopsEye(): JSX.Element {
   return (
     <g id="cyclops-eye">

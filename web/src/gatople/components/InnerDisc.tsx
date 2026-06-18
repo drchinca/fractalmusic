@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 import { NOTE_DISC_R, NOTE_RADIUS } from "../constants";
 import { clockAngle, displayNote, polar } from "../geometry";
 import type { Role } from "../types";

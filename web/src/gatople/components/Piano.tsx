@@ -1,3 +1,5 @@
+import type { JSX } from "react";
+
 import {
   BLACK_INDICES,
   BLACK_LOWER,
