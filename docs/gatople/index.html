@@ -10,9 +10,12 @@
   <header>
     <h1>El Gátople</h1>
     <p class="subtitle">
-      The outer disc is fixed: each role keeps its glyph, color, and clock
-      position. The inner disc rotates — drag it, or click any note to set it as
-      the tonic. The whole scale system re-arranges with a single rotation.
+      Two-disc spinner. The outer cat-face holds the 12 symbols at fixed clock
+      positions; the inner ring carries the notes and rotates under it (drag, or
+      click any note to set it as tonic). Below the wheel, the piano and
+      fretboard show the inverse view — <em>notes</em> are fixed (a real
+      instrument can't move them) while the <em>symbols/roles</em> at each
+      position change every time you spin.
     </p>
   </header>
 
@@ -44,6 +47,14 @@
         <button data-action="cero-pitagoras" type="button" title="The five fingers on the five black keys (Ch. 4)">Play Cero Pitágoras</button>
       </div>
     </div>
+
+    <aside class="carta-card" id="carta-card" aria-live="polite" aria-label="Hovered carta">
+      <img id="carta-card-img" alt="" />
+      <div class="carta-card-meta">
+        <h3 id="carta-card-title">Hover a wheel segment</h3>
+        <p id="carta-card-sub">to see the painted carta</p>
+      </div>
+    </aside>
 
     <aside class="readout">
       <h2>Current bindings</h2>

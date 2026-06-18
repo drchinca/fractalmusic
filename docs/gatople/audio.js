@@ -123,10 +123,27 @@ export function playNote(state, note, opts = {}) {
  */
 export function createAudioEngine() {
   const state = { ctx: null, octave: 4 };
+  /** Active oscillators (FIFO). Capped at MAX_VOICES to prevent the browser
+   * from throttling new oscillator nodes after sustained key-mashing. */
+  const MAX_VOICES = 8;
+  const active = /** @type {OscillatorNode[]} */ ([]);
 
   /** @param {string} note @param {number} [octave] */
   function trigger(note, octave, opts = {}) {
-    return playNote({ ctx: state.ctx, octave: octave ?? state.octave }, note, opts);
+    // Recycle: if we'd exceed the voice cap, hard-stop the oldest live note.
+    while (active.length >= MAX_VOICES) {
+      const oldest = active.shift();
+      try { oldest?.stop(); } catch { /* already stopped */ }
+    }
+    const osc = playNote({ ctx: state.ctx, octave: octave ?? state.octave }, note, opts);
+    // playNote may instantiate the AudioContext on first call — capture it.
+    if (!state.ctx && osc.context instanceof AudioContext) state.ctx = osc.context;
+    active.push(osc);
+    osc.addEventListener("ended", () => {
+      const i = active.indexOf(osc);
+      if (i >= 0) active.splice(i, 1);
+    });
+    return osc;
   }
 
   /**
@@ -205,13 +222,23 @@ export function bindKeyboard(hooks) {
 
     // Auto-repeat from holding a key would re-trigger; debounce on first hit.
     if (held.has(lower)) return;
-    held.add(lower);
-    engine.playNote(note, octave);
+    try {
+      engine.playNote(note, octave);
+      held.add(lower);
+    } catch (err) {
+      // If audio start failed (e.g. context suspended, voice limit hit) we
+      // skip the held bookkeeping so the key isn't permanently locked out.
+      console.warn("playNote failed:", err);
+    }
   }
 
   function release(event) {
     held.delete(event.key.toLowerCase());
   }
+
+  // Safety net: any time the window loses focus, blow away any "stuck" keys.
+  // Without this, alt-tabbing while holding a letter leaks that slot forever.
+  window.addEventListener("blur", () => held.clear());
 
   function announceOctave(octave) {
     const el = document.getElementById("octave-readout");

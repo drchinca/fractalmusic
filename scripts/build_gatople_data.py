@@ -28,6 +28,7 @@ class RoleEntry(TypedDict):
     family: str
     quality: str
     clock_hour: int
+    carta_image: str  # relative URL of the painted carta (e.g. ../assets/cartas/04-casita.jpg)
     scale_steps: list[int]
     wheel_color: str
     carta_color: str
@@ -66,6 +67,22 @@ CARTA_NAMES: tuple[str, ...] = (
     "Estrella IV",
 )
 
+# Filenames in /docs/assets/cartas/, indexed by chromatic-A position (A..G#).
+CARTA_FILES: tuple[str, ...] = (
+    "01-dos-puntos.jpg",
+    "02-estrella-v.jpg",
+    "03-triangulo.jpg",
+    "04-casita.jpg",
+    "05-estrella-i.jpg",
+    "06-mas.jpg",
+    "07-estrella-ii.jpg",
+    "08-llave.jpg",
+    "09-flecha-arriba.jpg",
+    "10-estrella-iii.jpg",
+    "11-flecha-abajo.jpg",
+    "12-estrella-iv.jpg",
+)
+
 
 def build_payload() -> GatoplePayload:
     """Snapshot ROLES + the canonical palette + carta names as JSON-ready data."""
@@ -93,6 +110,7 @@ def build_payload() -> GatoplePayload:
                 scale_steps=list(role.scale_steps),
                 wheel_color=WHEEL_HEX[role.position],
                 carta_color=CARTA_HEX[role.position],
+                carta_image=f"../assets/cartas/{CARTA_FILES[role.position]}",
                 glyph_fg=glyph_fg,
                 carta_name=CARTA_NAMES[role.position],
                 is_penta=is_penta,

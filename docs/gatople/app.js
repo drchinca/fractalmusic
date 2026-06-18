@@ -129,7 +129,7 @@ const RING_MID = (RING_OUTER + RING_INNER) / 2;
 
 // --- Outer disc (clock-hour layout, role glyphs) ---
 
-function renderOuter(svgGroup, roles) {
+function renderOuter(svgGroup, roles, onHover) {
   for (const role of roles) {
     const angle = clockAngle(role.clock_hour);
     const start = angle - SEG_DEG / 2;
@@ -139,11 +139,13 @@ function renderOuter(svgGroup, roles) {
     seg.setAttribute("d", arcPath(start, end, RING_OUTER, RING_INNER));
     seg.setAttribute("fill", role.wheel_color);
     seg.setAttribute("class", "role-segment");
+    seg.dataset.position = String(role.position);
     const title = document.createElementNS(SVG_NS, "title");
     title.textContent =
       `${role.carta_name}${role.clock_hour === 6 ? " (Casa de Gátople)" : ""}` +
       ` · ${role.mode_name} · ${role.quality} · ${role.clock_hour} o'clock`;
     seg.appendChild(title);
+    seg.addEventListener("pointerenter", () => onHover(role));
     svgGroup.appendChild(seg);
 
     const [gx, gy] = polar(angle, RING_MID);
@@ -417,7 +419,27 @@ async function main() {
   const shapes = { heptagon: false, pentagram: false, zonas: false };
   const engine = createAudioEngine();
 
-  renderOuter(outer, roles);
+  // Carta-card panel — slide in the painted card on segment hover.
+  const cartaCard = document.getElementById("carta-card");
+  const cartaImg = /** @type {HTMLImageElement} */ (document.getElementById("carta-card-img"));
+  const cartaTitle = document.getElementById("carta-card-title");
+  const cartaSub = document.getElementById("carta-card-sub");
+  function showCarta(role) {
+    if (!cartaCard) return;
+    cartaImg.src = role.carta_image;
+    cartaImg.alt = `${role.carta_name} carta`;
+    cartaTitle.textContent =
+      `${role.carta_name}${role.clock_hour === 6 ? " — casa de Gátople" : ""}`;
+    cartaSub.textContent =
+      `${role.mode_name} · ${role.quality} · ${role.clock_hour} o'clock`;
+    cartaCard.classList.add("is-visible");
+  }
+  // Hide when leaving the wheel altogether (not on segment-to-segment move).
+  document.getElementById("wheel")?.addEventListener("pointerleave", () => {
+    cartaCard?.classList.remove("is-visible");
+  });
+
+  renderOuter(outer, roles, showCarta);
   renderInnerNotes(inner, roles, setTonic);
   renderPiano(piano, chromatic);
   renderFretboard(fretboard, chromatic);
