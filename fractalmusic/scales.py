@@ -53,6 +53,47 @@ class FractalScale:
         """True if any adjacent step is a single semitone."""
         return 1 in _steps_of(self.worlds)
 
+    def to_pytheory(self, *, octave: int = 4) -> list["Tone"]:
+        """Materialize this scale as a list of pytheory ``Tone`` objects.
+
+        Returns ascending pitches anchored at ``octave`` (default A4). pytheory
+        uses scientific notation (octave numbers change at C), so the helper
+        bumps the octave when the scale crosses C upward::
+
+            from pytheory.play import play
+            play(Wheel('A').scale('Eólico').to_pytheory())
+        """
+        return _to_pytheory_tones(tuple(w.note for w in self.worlds), octave=octave)
+
+
+def _to_pytheory_tones(notes: tuple[str, ...], *, octave: int) -> list["Tone"]:
+    """Walk an ascending note sequence into pytheory ``Tone`` objects.
+
+    pytheory uses scientific pitch notation: octave numbers tick over at C
+    (C4 = 261 Hz, A4 = 440 Hz, B4 = 493 Hz, C5 = 523 Hz). To produce a strictly
+    ascending tone list we bump the octave whenever the next note's *scientific
+    pitch class* is lower than the previous (i.e. we crossed C upward) — and we
+    also bump for fractalmusic's A-indexed wrap when the next chromatic A-index
+    is ≤ the previous (which can only happen if we passed both A and C).
+    """
+    from pytheory import Tone
+
+    # Scientific pitch class order: C(0), C#, D, D#, E, F, F#, G, G#, A, A#, B.
+    sci_index = {"C": 0, "C#": 1, "D": 2, "D#": 3, "E": 4, "F": 5, "F#": 6,
+                 "G": 7, "G#": 8, "A": 9, "A#": 10, "B": 11}
+    enharmonic = {"Bb": "A#", "Db": "C#", "Eb": "D#", "Gb": "F#", "Ab": "G#"}
+
+    tones: list[Tone] = []
+    prev_sci = -1
+    current_octave = octave
+    for note in notes:
+        sci = sci_index[enharmonic.get(note, note)]
+        if tones and sci <= prev_sci:
+            current_octave += 1
+        tones.append(Tone.from_string(f"{note}{current_octave}"))
+        prev_sci = sci
+    return tones
+
 
 def _walk(root: str, steps: tuple[int, ...]) -> tuple[NoteWorld, ...]:
     """Walk a step pattern from a root, yielding worlds (excludes the octave)."""
@@ -129,6 +170,10 @@ class Triad:
         """Conventional chord symbol (e.g. 'Am', 'B°', 'C')."""
         suffix = {"minor": "m", "diminished": "°", "major": ""}[self.quality]
         return f"{self.root}{suffix}"
+
+    def to_pytheory(self, *, octave: int = 4) -> list["Tone"]:
+        """Materialize this triad as three ascending pytheory ``Tone`` objects."""
+        return _to_pytheory_tones(self.notes, octave=octave)
 
 
 def triad_for(note: str) -> Triad:
