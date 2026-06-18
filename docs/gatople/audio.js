@@ -4,14 +4,19 @@
 // short ADSR envelope. Latency is negligible; cold-start instantiates the
 // AudioContext on first user gesture (per Chrome autoplay policy).
 //
-// Keyboard convention (one octave on the QWERTY home row, the canonical
-// Synthtopia layout most music apps use):
+// Keyboard convention (the standard C-rooted layout every piano-typing app
+// uses — what your fingers expect when they hit the home row):
 //
-//     w e   t y u                  ← black keys (A# C# D# F# G#)
-//    a s d f g h j k               ← white keys (A B C D E F G A)
+//     w e   t y u                  ← black keys (C# D# F# G# A#)
+//    a s d f g h j k               ← white keys (C D E F G A B C)
 //
 //    z / x  → octave down / up
 //    Shift + key → set that note as tonic (move ⋮ Eólico to it)
+//
+// Note: the keyboard is C-rooted *as an input device* because that's the
+// universal piano-typing convention. The Gátople wheel itself stays A-origin
+// (matriarchal Eólico). The two are separate concerns — pressing 'a' plays
+// middle-C; Shift+'a' sets C as the tonic, which spins the wheel.
 
 const A4_FREQ = 440.0;
 const A4_INDEX_FROM_A = 0; // chromatic index 0 = A
@@ -20,22 +25,23 @@ const SEMITONES_PER_OCTAVE = 12;
 // Chromatic A-order (must match the Python CHROMATIC_ORDER + data.json).
 const CHROMATIC = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
 
-// QWERTY → chromatic-A note. Lowercase keys for the bottom row, uppercase
-// shift handled separately (we listen to event.key so case matches modifier).
+// QWERTY → note. Uses the C-rooted Synthtopia layout (universal piano-
+// typing convention). The home row plays C D E F G A B C; the row above
+// plays the black keys C# D# F# G# A#.
 export const KEY_TO_NOTE = Object.freeze({
-  a: "A",
-  w: "A#",
-  s: "B",
-  d: "C",
-  e: "C#",
-  f: "D",
-  t: "D#",
-  g: "E",
-  h: "F",
-  u: "F#",
-  j: "G",
-  i: "G#",
-  k: "A_OCT",  // top of the played range — A one octave up
+  a: "C",
+  w: "C#",
+  s: "D",
+  e: "D#",
+  d: "E",
+  f: "F",
+  t: "F#",
+  g: "G",
+  y: "G#",
+  h: "A",
+  u: "A#",
+  j: "B",
+  k: "C_OCT",  // top of the played range — C one octave up
 });
 
 /**
@@ -142,8 +148,8 @@ export function bindKeyboard(hooks) {
     if (!noteOrSentinel) return;
 
     event.preventDefault();
-    const note = noteOrSentinel === "A_OCT" ? "A" : noteOrSentinel;
-    const octave = noteOrSentinel === "A_OCT" ? state.octave + 1 : state.octave;
+    const note = noteOrSentinel === "C_OCT" ? "C" : noteOrSentinel;
+    const octave = noteOrSentinel === "C_OCT" ? state.octave + 1 : state.octave;
 
     if (event.shiftKey) {
       hooks.onSetTonic(note);
