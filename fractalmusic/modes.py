@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from typing import Final
 
 from fractalmusic.symbols import (
+    BLACK_STAR,
     DORICO,
     EOLICO,
     FRIGIO,
@@ -73,7 +74,7 @@ def _penta(note: str, name: str, quality: str) -> Mode:
     black = ("C#", "D#", "F#", "G#", "A#")
     start = black.index(note)
     order = tuple(black[(start + step) % 5] for step in range(5))
-    return Mode(note, name, PENTA, "★", quality, _clock_hour(note), order)
+    return Mode(note, name, PENTA, BLACK_STAR, quality, _clock_hour(note), order)
 
 
 # Heptatonic modes — white keys (Ch. 4 & 8).

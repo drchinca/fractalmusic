@@ -16,15 +16,16 @@ from fractalmusic.modes import PENTA, mode_for
 
 ORIGIN_NOTE: Final[str] = "A"  # La menor / Eólico — the matriarchal origin
 
-# The 5 pentatonic modes as semitone steps (sum = 12). Derived from the book's
-# note spellings; none contains a semitone (step of 1), per Ch. 9.
-# Each penta mode is a rotation of the black-key step cycle (2,3,2,2,3 from C#).
+# The 5 pentatonic modes as semitone-step patterns (each sums to 12, none has a
+# semitone, per Ch. 9). Each is a rotation of the black-key cycle (2,3,2,2,3).
+# The note spellings below are the canonical black-key roots; passing any other
+# root to penta() transposes the same step pattern.
 PENTA_MODES: Final[dict[str, tuple[int, ...]]] = {
-    "I": (2, 3, 2, 2, 3),  # Penta 1  C# D# F# G# A#
-    "II": (3, 2, 2, 3, 2),  # Penta 2  D# F# G# A# C#
-    "III": (2, 2, 3, 2, 3),  # Penta 3  F# G# A# C# D#
-    "IV": (2, 3, 2, 3, 2),  # Penta 4  G# A# C# D# F#
-    "V": (3, 2, 3, 2, 2),  # Penta 5  A# C# D# F# G#
+    "I": (2, 3, 2, 2, 3),  # Penta 1, from C#: C# D# F# G# A#
+    "II": (3, 2, 2, 3, 2),  # Penta 2, from D#: D# F# G# A# C#
+    "III": (2, 2, 3, 2, 3),  # Penta 3, from F#: F# G# A# C# D#
+    "IV": (2, 3, 2, 3, 2),  # Penta 4, from G#: G# A# C# D# F#
+    "V": (3, 2, 3, 2, 2),  # Penta 5, from A#: A# C# D# F# G#
 }
 
 

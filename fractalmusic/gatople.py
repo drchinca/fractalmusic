@@ -6,8 +6,8 @@ Dodecamundo. This is the geometric heart of Pattorres's "ubicación y medida
 musical" — the Cero Pitágoras measurement (Ch. 4).
 
 Two angular frames coexist:
-  * ``chromatic_angle`` — uniform 30°/semitone from A, used for interval math.
-  * ``clock_hour`` — the book's named mode positions on the 12-hour face.
+  * ``angle_deg`` (ClockPosition) — uniform 30°/semitone from A, for interval math.
+  * ``clock_hour`` — the book's circle-of-fourths mode positions on the 12-hour face.
 """
 
 from dataclasses import dataclass

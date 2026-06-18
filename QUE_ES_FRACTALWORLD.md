@@ -74,17 +74,21 @@ Cada mundo lleva el glifo de su modo (cap. 8, "Música de Colores"):
 | Nota | Modo | Glifo | Calidad | Hora | Color |
 |------|------|:-----:|---------|:----:|-------|
 | A | Eólico | `⋮` | menor | 9 | verde |
-| A♯ | Penta 5 | `★ V` | menor | 1 | magenta |
+| A♯ | Penta 5 | `★ V` | menor | 2 | magenta |
 | B | Locrio | `△` | disminuido | 7 | verde-amarillo |
 | C | Jónico | `□` | mayor | 12 | amarillo |
 | C♯ | Penta 1 | `★ I` | menor | 5 | turquesa |
-| D | Dórico | `+` | menor | 2 | azul |
-| D♯ | Penta 2 | `★ II` | menor | 9 | azul profundo |
+| D | Dórico | `+` | menor | 10 | azul |
+| D♯ | Penta 2 | `★ II` | menor | 3 | azul profundo |
 | E | Frigio | `♀` | menor | 8 | violeta |
 | F | Lidio | `↑` | mayor | 1 | índigo |
 | F♯ | Penta 3 | `★ III` | mayor | 6 | púrpura |
 | G | Mixolidio | `↓` | mayor | 11 | naranja |
-| G♯ | Penta 4 | `★ IV` | menor | 3 | rojo |
+| G♯ | Penta 4 | `★ IV` | menor | 4 | rojo |
+
+> Las horas siguen el **círculo de cuartas** (Función Cuartal, cap. 4): cada hora
+> avanza una cuarta justa (+5 semitonos) desde A Eólico = 9. Es una biyección:
+> las 12 notas ocupan las 12 horas sin repetición.
 
 - `⋮` Eólico — los dos puntos de la división; descanso, el horizonte estable.
 - `△` Locrio — el triángulo; puerta entre los mundos penta y hepta.
@@ -138,6 +142,10 @@ heptatónicas (el 5 viene antes que el 7). Son el "sistema óseo" de la música:
 - **Penta-modo** — uno de los 5 modos pentatónicos (estrellas I–V).
 - **Microestructura** — una de las 60 escalas penta (5 modos × 12 raíces).
 - **Etno-matemática** — el lenguaje numérico-natural-filosófico de la música.
+- **Función Cuartal** — el orden por cuartas justas (+5 semitonos) que rige el reloj
+  del Gátople; ubica cada nota en su hora desde A Eólico = 9.
+- **Potenciación** — el crecimiento geométrico (cuento del tablero de ajedrez): un
+  número se multiplica por sí mismo hasta el infinito (8 = ∞).
 - **VDMG** — "Virus del Mal Gusto", el antagonista pedagógico del libro.
 
 ---

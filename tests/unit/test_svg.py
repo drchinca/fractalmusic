@@ -1,6 +1,7 @@
 """Unit tests — SVG renderers and the gallery writer."""
 
-from fractalmusic.gallery import write_gallery
+import pytest
+from fractalmusic.gallery import _stack, write_gallery
 from fractalmusic.scales import mode_scale, penta
 from fractalmusic.svg import (
     deck_grid,
@@ -57,6 +58,11 @@ def test_fretboard_stickers_render_open_and_frets():
     svg = fretboard_stickers_svg(frets=12)
     assert _is_svg(svg)
     assert ">12<" in svg  # 12th-fret label present
+
+
+def test_stack_rejects_svg_without_dimensions():
+    with pytest.raises(ValueError, match="width/height"):
+        _stack(["<svg></svg>"])
 
 
 def test_gallery_writes_all_artifacts(tmp_path):

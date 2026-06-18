@@ -26,19 +26,5 @@ FRIGIO: Final[str] = "♀"  # E — female sign (stands in for koppa ϙ)
 LIDIO: Final[str] = "↑"  # F — up arrow
 MIXOLIDIO: Final[str] = "↓"  # G — down arrow
 
-# --- The pentatonic / black-key marker ---
-BLACK_STAR: Final[str] = "★"  # ★ — the 5 penta stars
-
-# Roman numerals label the 5 pentatonic stars, in penta-mode order.
-PENTA_ROMANS: Final[tuple[str, ...]] = ("I", "II", "III", "IV", "V")
-
-# Natural-note glyph in chromatic A-order at the natural indices (A B C D E F G).
-NATURAL_GLYPH_BY_NOTE: Final[dict[str, str]] = {
-    "A": EOLICO,
-    "B": LOCRIO,
-    "C": JONICO,
-    "D": DORICO,
-    "E": FRIGIO,
-    "F": LIDIO,
-    "G": MIXOLIDIO,
-}
+# --- The pentatonic / black-key marker (the 5 penta stars) ---
+BLACK_STAR: Final[str] = "★"
