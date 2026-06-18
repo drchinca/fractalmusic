@@ -15,6 +15,33 @@ first — it explains the method, grounded in the book *El Sistema Fractal* (202
 Everything is **A-origin** (La menor / matriarchal), which is also pytheory's
 native tone order: index 0 = A, index 3 = C.
 
+## Gallery
+
+The **Gátople** wheel — 12 colored worlds, each with its mode glyph and note (the
+5 black-key stars carry roman numerals; A sits at 12 o'clock):
+
+<p align="center">
+  <img src="docs/assets/gatople-wheel.png" alt="Gátople color wheel" width="420">
+</p>
+
+The **7 Greek modes** (white keys) — each a rotation of the same colored cartas:
+
+<p align="center">
+  <img src="docs/assets/greek-modes.png" alt="The 7 Greek modes" width="640">
+</p>
+
+The **5 Penta modes** (black-key stars) — the pentatonic, semitone-free core:
+
+<p align="center">
+  <img src="docs/assets/penta-modes.png" alt="The 5 Penta modes" width="640">
+</p>
+
+Regenerate these any time:
+
+```bash
+fractalmusic-gallery            # writes SVGs to docs/assets/
+```
+
 ## Install
 
 ```bash

@@ -23,6 +23,7 @@ dependencies = [
 
 [project.scripts]
 fractalmusic = "fractalmusic.showcase:main"
+fractalmusic-gallery = "fractalmusic.gallery:main"
 
 [project.optional-dependencies]
 dev = [
