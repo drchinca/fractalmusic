@@ -51,7 +51,7 @@ The notes shown are the A-tonic readings — they will all rotate when you spin.
   <td align="center"><img src="docs/assets/cartas/01-dos-puntos.jpg" width="120"><br><b>1 · ⋮ Dos Puntos</b><br>A · Eólico · red</td>
   <td align="center"><img src="docs/assets/cartas/02-estrella-v.jpg" width="120"><br><b>2 · ★ V Estrella V</b><br>A♯/B♭ · Penta 5 · blue</td>
   <td align="center"><img src="docs/assets/cartas/03-triangulo.jpg" width="120"><br><b>3 · △ Triángulo</b><br>B · Locrio · green</td>
-  <td align="center"><img src="docs/assets/cartas/04-casita.jpg" width="120"><br><b>4 · ■ Casita</b><br>C · Jónico · red roof</td>
+  <td align="center"><img src="docs/assets/cartas/04-casita.jpg" width="120"><br><b>4 · ■ Casita</b><br>C · Jónico · ivory wall + red roof</td>
 </tr>
 <tr>
   <td align="center"><img src="docs/assets/cartas/05-estrella-i.jpg" width="120"><br><b>5 · ★ I Estrella I</b><br>C♯/D♭ · Penta 1 · water blue</td>
@@ -204,11 +204,17 @@ uv run pytest tests/uat           # 9  — Gherkin behavioral scenarios
 
 ## Status & provenance
 
-The canonical bindings (note→mode→glyph→clock-hour, penta-mode spellings, the
-A-origin) are taken from *El Sistema Fractal: Música Viva y en Reproducción*
-(Torres, 2024), chapters 3–9. The **color palette** in `colors.py` is an
-interpretation of the hand-painted cartas and the Gátople logo — swap `WHEEL_HEX`
-for the exact card colors when the originals are digitized.
+Three-tier provenance:
+
+1. **Structural bindings** (note→mode→glyph, the 5+7=12 architecture, A-origin,
+   penta-mode spellings) are read directly from *El Sistema Fractal: Música Viva
+   y en Reproducción* (Torres, 2024), chapters 3–9.
+2. **Clock hours** are derived: each note's hour follows the *Función Cuartal*
+   (Ch. 4) — anchored at A Eólico = 9 and stepping a perfect fourth (+5
+   semitones) per hour. The bijection over 1–12 reproduces every hour the book
+   names in prose.
+3. **Color palette** in `colors.py` is eyeballed from the digitized 12-card deck
+   (see `docs/assets/cartas/`) — no longer interpretive.
 
 *All rights to the Sistema Fractal and the Gátople belong to Patricio Torres
 Rivera / Fractal Music World. This repository is a study implementation.*

@@ -27,7 +27,7 @@ WHEEL_HEX: Final[tuple[str, ...]] = (
     "#D43A2C",  # A  Eólico    Dos Puntos — red
     "#1B3A8C",  # A# Penta 5   Estrella V — deep blue
     "#3FA34D",  # B  Locrio    Triángulo — green
-    "#D43A2C",  # C  Jónico    Casita — red (roof)
+    "#F2E6D8",  # C  Jónico    Casita — ivory wall (the field; red roof is accent)
     "#3FA0C9",  # C# Penta 1   Estrella I — water blue
     "#3FA34D",  # D  Dórico    Más — green
     "#2E70C1",  # D# Penta 2   Estrella II — blue

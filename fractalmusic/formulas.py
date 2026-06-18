@@ -12,8 +12,11 @@ from fractalmusic.dodecamundo import DODECAMUNDO, NoteWorld, world
 
 PHI: Final[float] = 1.618033988749895
 
-# Just-intonation ratios for the 12 chromatic intervals (Pythagorean-leaning).
-PYTHAGOREAN_RATIOS: Final[tuple[tuple[int, int], ...]] = (
+# 5-limit just-intonation frequency ratios for the 12 chromatic intervals.
+# True Pythagorean ratios use only powers of 3/2 (e.g. 256/243 for the minor
+# second); these are 5-limit just intervals, which the book uses for harmonic
+# analysis. The two systems agree on the unison, octave, fifth, and fourth.
+JUST_RATIOS: Final[tuple[tuple[int, int], ...]] = (
     (1, 1),
     (16, 15),
     (9, 8),
@@ -27,6 +30,8 @@ PYTHAGOREAN_RATIOS: Final[tuple[tuple[int, int], ...]] = (
     (16, 9),
     (15, 8),
 )
+# Back-compat alias — older callers expected this name. Prefer JUST_RATIOS.
+PYTHAGOREAN_RATIOS: Final[tuple[tuple[int, int], ...]] = JUST_RATIOS
 
 
 def fibonacci(count: int) -> list[int]:

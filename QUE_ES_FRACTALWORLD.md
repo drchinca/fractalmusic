@@ -152,6 +152,21 @@ heptatónicas (el 5 viene antes que el 7). Son el "sistema óseo" de la música:
   número se multiplica por sí mismo hasta el infinito (8 = ∞).
 - **VDMG** — "Virus del Mal Gusto", el antagonista pedagógico del libro.
 
+### Las 12 cartas, por nombre
+
+- **Dos Puntos** (`⋮`) — carta 1, A, Eólico. Los dos puntos de la división.
+- **Estrella V** (`★ V`) — carta 2, A♯/B♭, Penta 5.
+- **Triángulo** (`△`) — carta 3, B, Locrio. La primera figura geométrica natural.
+- **Casita** (`■`) — carta 4, C, Jónico. Casa con techo rojo y puerta amarilla.
+- **Estrella I** (`★ I`) — carta 5, C♯/D♭, Penta 1.
+- **Más** (`+`) — carta 6, D, Dórico. La cruz, primer Cero Pitágoras.
+- **Estrella II** (`★ II`) — carta 7, D♯/E♭, Penta 2.
+- **Llave** (`♀`) — carta 8, E, Frigio. La koppa (ϙ) que cierra el círculo.
+- **Flecha arriba** (`↑`) — carta 9, F, Lidio.
+- **Estrella III** (`★ III`) — carta 10, F♯/G♭, Penta 3. La casa de Gátople.
+- **Flecha abajo** (`↓`) — carta 11, G, Mixolidio. Compresión hacia el dominante.
+- **Estrella IV** (`★ IV`) — carta 12, G♯/A♭, Penta 4.
+
 ---
 
 *Todos los derechos del Sistema Fractal y el Gátople pertenecen a Patricio

@@ -15,6 +15,7 @@ from math import cos, radians, sin
 from typing import Final
 
 from fractalmusic.dodecamundo import DODECAMUNDO, NoteWorld, world
+from fractalmusic.scales import penta
 
 DEGREES_PER_WORLD: Final[float] = 30.0  # 360° / 12
 TOP_OF_CLOCK: Final[float] = 90.0  # 12 o'clock at standard math 90°
@@ -72,8 +73,6 @@ def cero_pitagoras(root: str) -> list[str]:
     (returns ``C# D# F# G# A#``). For any other root the same step pattern is
     transposed, e.g. ``cero_pitagoras('A') → ['A','B','D','E','F#']``.
     """
-    from fractalmusic.scales import penta  # local import breaks cycle
-
     return list(penta(root, mode="I").notes)
 
 
