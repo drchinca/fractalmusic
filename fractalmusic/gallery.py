@@ -16,7 +16,9 @@ from fractalmusic.svg import (
     scale_strip,
 )
 
-_DEFAULT_DIR = Path("docs/assets")
+# Anchor the default output to the repo's docs/assets, not the caller's CWD, so
+# the gallery never scatters files into an arbitrary working directory.
+_DEFAULT_DIR = Path(__file__).resolve().parent.parent / "docs" / "assets"
 _GREEK_ROOTS = ("A", "B", "C", "D", "E", "F", "G")
 _PENTA_ROOTS = (("I", "C#"), ("II", "D#"), ("III", "F#"), ("IV", "G#"), ("V", "A#"))
 
@@ -29,7 +31,8 @@ def _stack(svgs: list[str], *, gap: int = 8) -> str:
     for svg in svgs:
         width_match = re.search(r"width='(\d+)'", svg)
         height_match = re.search(r"height='(\d+)'", svg)
-        assert width_match and height_match  # svg.py always emits both
+        if not (width_match and height_match):
+            raise ValueError("svg is missing width/height attributes")
         width = int(width_match.group(1))
         height = int(height_match.group(1))
         inner = re.sub(r"^<svg[^>]*>", "", svg)

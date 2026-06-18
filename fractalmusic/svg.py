@@ -68,7 +68,7 @@ def _cyclops_eye(cx: float, ey: float, w: float, h: float) -> str:
         f"Q {cx:.0f},{ey + h:.0f} {cx - w:.0f},{ey:.0f} Z' fill='#fff' "
         f"stroke='#000' stroke-width='7'/>"
         # pale-green iris, clearly lighter than the face field
-        f"<circle cx='{cx:.0f}' cy='{ey:.0f}' r='{iris_r:.0f}' fill='#bfe06a' "
+        f"<circle cx='{cx:.0f}' cy='{ey:.0f}' r='{iris_r:.0f}' fill='#3fa66a' "
         f"stroke='#000' stroke-width='2'/>"
         # vertical slit pupil
         f"<path d='M {cx:.0f},{ey - iris_r * 0.95:.0f} "

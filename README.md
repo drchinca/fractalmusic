@@ -18,8 +18,9 @@ native tone order: index 0 = A, index 3 = C.
 ## Gallery
 
 The **Gátople** — the cat-cyclops mandala: a 12-world chromatic ring around the
-slit eye, with the pyramid nose and whiskers. **C Jónico sits at 12 o'clock and A
-Eólico at 9 o'clock**, following the book's circle-of-fourths clock:
+slit eye, with the pyramid nose and whiskers. The ring is laid out chromatically
+with **C Jónico at 12 o'clock and A Eólico at 9 o'clock**. (The named *clock
+hours* in the data follow the book's circle of fourths — see the showcase.)
 
 <p align="center">
   <img src="docs/assets/gatople-wheel.png" alt="The Gátople mandala" width="380">
@@ -128,12 +129,12 @@ Cero Pitágoras (A)     A  B  D  E  F#         ⋮ △ + ♀ ★
 
 ## Testing
 
-Three tiers, **89 tests, ~98% coverage**:
+Three tiers, **120 tests, 100% coverage**:
 
 ```bash
 make test                         # pytest with coverage (all tiers)
 make check                        # lint, format, type-check, test, security scan
-uv run pytest tests/unit          # 67 — data model & invariants
+uv run pytest tests/unit          # 98 — data model & invariants
 uv run pytest tests/integration   # 13 — cross-module + pytheory interop
 uv run pytest tests/uat           # 9  — Gherkin behavioral scenarios
 ```
