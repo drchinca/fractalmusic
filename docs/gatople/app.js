@@ -31,7 +31,98 @@ import {
   noteAtRolePosition,
   roleAtNote,
 } from "./lib.js";
-import { bindKeyboard } from "./audio.js";
+import { bindKeyboard, createAudioEngine } from "./audio.js";
+
+// Inner-disc note positions live on a circle of radius NOTE_RADIUS at the
+// canonical clock-hour angle of each role. Geometry overlays sit on the same
+// circle so they rotate with the inner disc and stay tied to the notes.
+
+/**
+ * Render the chosen geometry overlays (heptagon / pentagram / zonas) into
+ * the #geometry-layer / #zonas-layer groups. Idempotent — clears + redraws.
+ *
+ * Heptagon: connects the 7 hepta worlds (⋮ △ □ + ♀ ↑ ↓) — the diatonic
+ *   skeleton drawn at the clock hours of A, B, C, D, E, F, G.
+ * Pentagram: connects the 5 ★ worlds (Penta I..V) — Pythagoras's pentalfa,
+ *   drawn through clock hours 5, 9, 1, 6, 2 in star order.
+ * Zonas: 4 quality-flavored quadrant arcs (Ch. 8 grouping).
+ *
+ * @param {{
+ *   inner: SVGGElement,
+ *   zonas: SVGGElement,
+ *   roles: readonly import("./lib.js").RoleEntry[],
+ *   shapes: { heptagon: boolean, pentagram: boolean, zonas: boolean },
+ * }} args
+ */
+function renderGeometry({ inner, zonas, roles, shapes }) {
+  while (inner.firstChild) inner.removeChild(inner.firstChild);
+  while (zonas.firstChild) zonas.removeChild(zonas.firstChild);
+
+  const points = (filterFn) =>
+    roles
+      .filter(filterFn)
+      .map((r) => polar(clockAngle(r.clock_hour), NOTE_RADIUS));
+
+  if (shapes.heptagon) {
+    const pts = points((r) => !r.is_penta);
+    inner.appendChild(makePoly(pts, "geom-heptagon"));
+  }
+  if (shapes.pentagram) {
+    // Star order: visit every other vertex around the 5-cycle.
+    const pentaPts = points((r) => r.is_penta);
+    const starOrder = [0, 2, 4, 1, 3];
+    const pts = starOrder.map((i) => pentaPts[i]).filter(Boolean);
+    inner.appendChild(makePoly(pts, "geom-pentagram"));
+  }
+  if (shapes.zonas) {
+    // Four zona arcs (Ch. 8): groupings of 3 modes by quality flavor.
+    // ⋮ Eólico zona = relaxation (red); + Dórico = opening (green);
+    // ♀ Frigio = closure (red-violet); ↓ Mixolidio = compression (green-orange).
+    // Drawn as faint colored arcs in the gap between inner ring and notes.
+    const zonaSpec = [
+      { glyph: "⋮", color: "#D43A2C", label: "zona ⋮" },
+      { glyph: "+", color: "#3FA34D", label: "zona +" },
+      { glyph: "♀", color: "#7D5BA6", label: "zona ♀" },
+      { glyph: "↓", color: "#E67E22", label: "zona ↓" },
+    ];
+    for (const spec of zonaSpec) {
+      const center = roles.find((r) => r.glyph === spec.glyph);
+      if (!center) continue;
+      // Each zona arc spans ±45° around its anchor mode, drawn at radius
+      // halfway between the inner ring and the notes.
+      const angle = clockAngle(center.clock_hour);
+      const arc = makeZonaArc(angle - 45, angle + 45, NOTE_RADIUS - 18, spec.color, spec.label);
+      zonas.appendChild(arc);
+    }
+  }
+}
+
+function makePoly(points, className) {
+  const path = document.createElementNS(SVG_NS, "polygon");
+  path.setAttribute(
+    "points",
+    points.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" "),
+  );
+  path.setAttribute("class", className);
+  return path;
+}
+
+function makeZonaArc(startDeg, endDeg, radius, color, label) {
+  const [x1, y1] = polar(startDeg, radius);
+  const [x2, y2] = polar(endDeg, radius);
+  const large = endDeg - startDeg > 180 ? 1 : 0;
+  const path = document.createElementNS(SVG_NS, "path");
+  path.setAttribute(
+    "d",
+    `M ${x1.toFixed(1)} ${y1.toFixed(1)} A ${radius} ${radius} 0 ${large} 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`,
+  );
+  path.setAttribute("class", "zona-arc");
+  path.setAttribute("stroke", color);
+  const title = document.createElementNS(SVG_NS, "title");
+  title.textContent = label;
+  path.appendChild(title);
+  return path;
+}
 
 const RING_INNER = 165;
 const RING_MID = (RING_OUTER + RING_INNER) / 2;
@@ -50,7 +141,8 @@ function renderOuter(svgGroup, roles) {
     seg.setAttribute("class", "role-segment");
     const title = document.createElementNS(SVG_NS, "title");
     title.textContent =
-      `${role.carta_name} · ${role.mode_name} · ${role.quality} · ${role.clock_hour} o'clock`;
+      `${role.carta_name}${role.clock_hour === 6 ? " (Casa de Gátople)" : ""}` +
+      ` · ${role.mode_name} · ${role.quality} · ${role.clock_hour} o'clock`;
     seg.appendChild(title);
     svgGroup.appendChild(seg);
 
@@ -315,19 +407,40 @@ async function main() {
   const wheel = document.getElementById("wheel");
   const outer = document.getElementById("outer-disc");
   const inner = document.getElementById("inner-disc");
+  const geometryLayer = document.getElementById("geometry-layer");
+  const zonasLayer = document.getElementById("zonas-layer");
   const piano = document.getElementById("piano");
   const fretboard = document.getElementById("fretboard");
 
   let tonicOffset = 0;
   let palette = "carta";
+  const shapes = { heptagon: false, pentagram: false, zonas: false };
+  const engine = createAudioEngine();
 
   renderOuter(outer, roles);
   renderInnerNotes(inner, roles, setTonic);
   renderPiano(piano, chromatic);
   renderFretboard(fretboard, chromatic);
+  renderGeometry({ inner: geometryLayer, zonas: zonasLayer, roles, shapes });
+
+  // Click-to-play on piano keys + fretboard cells. Uses the shared engine so
+  // the AudioContext is the same one driving the QWERTY keyboard.
+  function noteAtClick(target) {
+    const node = target.closest("[data-note]");
+    return node?.dataset.note ?? null;
+  }
+  piano.addEventListener("pointerdown", (event) => {
+    const note = noteAtClick(event.target);
+    if (note) engine.playNote(note);
+  });
+  fretboard.addEventListener("pointerdown", (event) => {
+    const note = noteAtClick(event.target);
+    if (note) engine.playNote(note);
+  });
 
   function repaint() {
     applyRotation(inner, -tonicOffset * SEG_DEG);
+    applyRotation(geometryLayer, -tonicOffset * SEG_DEG);
     updateTonicReadout(roles, tonicOffset, chromatic);
     updateBindings(roles, tonicOffset, chromatic);
     repaintPiano(piano, roles, tonicOffset, chromatic, palette);
@@ -362,6 +475,29 @@ async function main() {
     .forEach((b) => b.addEventListener("click", () => step(1)));
   document.querySelectorAll("[data-palette]")
     .forEach((b) => b.addEventListener("click", () => setPalette(b.dataset.palette)));
+
+  // Geometry overlay toggles + Cero Pitágoras.
+  document.querySelectorAll("[data-shape]").forEach((b) => {
+    b.addEventListener("click", () => {
+      const key = b.dataset.shape;
+      shapes[key] = !shapes[key];
+      b.setAttribute("aria-pressed", shapes[key] ? "true" : "false");
+      b.classList.toggle("active", shapes[key]);
+      renderGeometry({ inner: geometryLayer, zonas: zonasLayer, roles, shapes });
+      applyRotation(geometryLayer, -tonicOffset * SEG_DEG);
+    });
+  });
+  // Cero Pitágoras (Ch. 4): the founding gesture — five fingers on five black
+  // keys, arpeggiated. Always plays C# D# F# G# A# regardless of the wheel's
+  // current tonic, because the gesture's identity is the literal black keys.
+  document.querySelectorAll("[data-action='cero-pitagoras']").forEach((b) => {
+    b.addEventListener("click", () => {
+      const oct = engine.getOctave();
+      engine.playSequence([
+        ["C#", oct], ["D#", oct], ["F#", oct], ["G#", oct], ["A#", oct],
+      ], { stepMs: 240 });
+    });
+  });
 
   document.addEventListener("keydown", (event) => {
     if (event.target.matches("input, textarea, select")) return;
@@ -413,7 +549,7 @@ async function main() {
   setPalette("carta");
 
   // QWERTY keyboard play layer — see ./audio.js for the mapping.
-  bindKeyboard({ onSetTonic: setTonic });
+  bindKeyboard({ onSetTonic: setTonic, engine });
 }
 
 main();

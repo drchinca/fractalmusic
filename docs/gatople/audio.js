@@ -110,6 +110,50 @@ export function playNote(state, note, opts = {}) {
 }
 
 /**
+ * Build a shared audio engine. One AudioContext for the whole page.
+ * All UI surfaces (keyboard, click-to-play, Cero Pitágoras button, geometry
+ * arpeggiator) borrow the same engine so they don't fight over playback.
+ *
+ * @returns {{
+ *   playNote: (note: string, octave?: number, opts?: object) => OscillatorNode,
+ *   playSequence: (notes: Array<[string, number]>, opts?: object) => void,
+ *   getOctave: () => number,
+ *   setOctave: (octave: number) => void,
+ * }}
+ */
+export function createAudioEngine() {
+  const state = { ctx: null, octave: 4 };
+
+  /** @param {string} note @param {number} [octave] */
+  function trigger(note, octave, opts = {}) {
+    return playNote({ ctx: state.ctx, octave: octave ?? state.octave }, note, opts);
+  }
+
+  /**
+   * Arpeggiate a list of [note, octave] pairs at fixed spacing.
+   * @param {Array<[string, number]>} notes
+   * @param {{stepMs?: number, durationMs?: number, gain?: number}} [opts]
+   */
+  function playSequence(notes, opts = {}) {
+    const stepMs = opts.stepMs ?? 220;
+    const durationMs = opts.durationMs ?? 380;
+    const gain = opts.gain ?? 0.18;
+    notes.forEach(([note, octave], i) => {
+      window.setTimeout(() => {
+        trigger(note, octave, { durationMs, gain });
+      }, i * stepMs);
+    });
+  }
+
+  return {
+    playNote: trigger,
+    playSequence,
+    getOctave: () => state.octave,
+    setOctave: (oct) => { state.octave = Math.max(1, Math.min(7, oct)); },
+  };
+}
+
+/**
  * Wire keyboard listeners. Returns a cleanup function.
  *
  * Behavior:
@@ -118,11 +162,12 @@ export function playNote(state, note, opts = {}) {
  *   - 'z' / 'x' → octave down / up (clamped 1..7)
  *   - Shift+letter → set that note as tonic via ``onSetTonic(note)``
  *
- * @param {{onSetTonic: (note: string) => void}} hooks
+ * @param {{onSetTonic: (note: string) => void, engine?: ReturnType<typeof createAudioEngine>}} hooks
  * @returns {() => void}
  */
 export function bindKeyboard(hooks) {
-  const state = { ctx: null, octave: 4 };
+  const engine = hooks.engine ?? createAudioEngine();
+  const state = { ctx: null, octave: engine.getOctave() };
   const held = new Set();
 
   function handler(event) {
@@ -133,12 +178,14 @@ export function bindKeyboard(hooks) {
     if (!event.shiftKey && (key === "z" || key === "Z")) {
       event.preventDefault();
       state.octave = Math.max(1, state.octave - 1);
+      engine.setOctave(state.octave);
       announceOctave(state.octave);
       return;
     }
     if (!event.shiftKey && (key === "x" || key === "X")) {
       event.preventDefault();
       state.octave = Math.min(7, state.octave + 1);
+      engine.setOctave(state.octave);
       announceOctave(state.octave);
       return;
     }
@@ -159,8 +206,7 @@ export function bindKeyboard(hooks) {
     // Auto-repeat from holding a key would re-trigger; debounce on first hit.
     if (held.has(lower)) return;
     held.add(lower);
-    playNote({ ctx: state.ctx, octave }, note);
-    state.ctx ??= /** @type {AudioContext} */ (event.timeStamp ? state.ctx : null);
+    engine.playNote(note, octave);
   }
 
   function release(event) {

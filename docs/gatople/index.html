@@ -19,9 +19,11 @@
   <main>
     <div class="stage">
       <svg id="wheel" viewBox="-260 -260 520 520" aria-label="Gátople wheel">
-        <!-- Outer disc: fixed roles. Inner disc: rotating notes. -->
+        <!-- Outer disc: fixed roles. Inner disc: rotating notes + geometry overlays. -->
         <g id="outer-disc"></g>
+        <g id="zonas-layer" aria-hidden="true"></g>
         <g id="inner-disc"></g>
+        <g id="geometry-layer" aria-hidden="true"></g>
         <g id="cyclops-eye">
           <circle r="36" fill="#fff" stroke="#000" stroke-width="3"/>
           <ellipse cx="0" cy="0" rx="14" ry="32" fill="#0a3d2e"/>
@@ -34,6 +36,12 @@
         <button data-action="step-back" type="button" aria-label="Step back one semitone">◀</button>
         <button data-action="reset" type="button">Reset to A</button>
         <button data-action="step-fwd" type="button" aria-label="Step forward one semitone">▶</button>
+      </div>
+      <div class="geometry-controls" role="group" aria-label="Geometry overlays">
+        <button data-shape="heptagon" type="button" aria-pressed="false">7-gon (hepta)</button>
+        <button data-shape="pentagram" type="button" aria-pressed="false">★ pentagram (penta)</button>
+        <button data-shape="zonas" type="button" aria-pressed="false">4 zonas</button>
+        <button data-action="cero-pitagoras" type="button" title="The five fingers on the five black keys (Ch. 4)">Play Cero Pitágoras</button>
       </div>
     </div>
 

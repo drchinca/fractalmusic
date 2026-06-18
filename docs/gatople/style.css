@@ -278,3 +278,66 @@ kbd {
   border-radius: 4px;
   background: #f0e9d8;
 }
+
+/* --- Geometry overlay layer --- */
+
+.geom-heptagon, .geom-pentagram {
+  fill: rgba(255, 250, 234, 0.18);
+  stroke: #1a1a1a;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+.geom-heptagon {
+  stroke: #2BA39A;        /* teal — the A Eólico hue */
+  stroke-width: 2.5;
+}
+
+.geom-pentagram {
+  stroke: #B687C6;        /* violet — the F# Penta-III hue (casa de Gátople) */
+  stroke-width: 2;
+  fill: rgba(182, 135, 198, 0.12);
+}
+
+.zona-arc {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.geometry-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e6dfd0;
+}
+
+.geometry-controls button {
+  appearance: none;
+  border: 1px solid #1a1a1a;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font: 13px/1 inherit;
+  background: #fff;
+  cursor: pointer;
+}
+
+.geometry-controls button.active,
+.geometry-controls button[aria-pressed="true"] {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+/* Penta-BW sliding animation: when the tonic changes, the role bound to
+   each fixed sticker changes, and the carta_color/fill swaps. A short
+   transition makes the ★ pattern visibly slide across the neck. */
+.piano-tint, .fret-tint {
+  transition: fill 200ms ease-out;
+}
