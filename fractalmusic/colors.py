@@ -1,42 +1,107 @@
-"""The 12-segment color wheel of the Gátople — canonical palette from the cartas.
+"""Two distinct color systems. They are NOT the same palette.
 
-Hex values are eyeballed from the dominant fields of Patricio Torres's
-hand-painted 12-card deck (digitized 2026-06):
+1. ``WHEEL_HEX`` — the 12 segments INSIDE the Gátople cat-face mandala. This is
+   a CHROMATIC GRADIENT laid out by clock hour: yellow at 12, orange at 1,
+   red at 4, violet at 6, blue at 8, green at 10, yellow-green at 11, back to
+   yellow at 12. Pulled directly from the canonical Logo Gátople artwork.
+   Used by: the spinning interactive wheel (docs/gatople/).
 
-    1  ⋮  Dos Puntos     A    red ("dos puntos" on red)
-    2  ★  Estrella V     A#   deep blue (water + window)
-    3  △  Triángulo      B    green (white triangle on green field)
-    4  ■  Casita         C    red roof + ivory wall + yellow door
-    5  ★  Estrella I     C#   water blue + sunset orange (pelicans + boat)
-    6  +  Más / Cruz     D    green (red flowers on green field)
-    7  ★  Estrella II    D#   blue + orange sun (horizon + fish)
-    8  ♀  Llave (koppa)  E    red (skeleton key on red)
-    9  ↑  Flecha arriba  F    blue (sky / snow mountain)
-    10 ★  Estrella III   F#   red (casa de Gátople — earth + fire)
-    11 ↓  Flecha abajo   G    green (green fields, ant on string, moon)
-    12 ★  Estrella IV    G#   blue + orange reflection (water table, drums)
-
-Where a card has two dominant colors, ``WHEEL_HEX`` keeps the field/background
-hue (the strongest reading from across the room).
+2. ``CARTA_HEX`` — the 12 hand-painted cards as standalone artworks. The
+   palette here is mostly RED / GREEN / BLUE / WHITE-BLACK-IVORY (the cover
+   legend's four-color rule), e.g. ⋮ Dos Puntos on red, ▲ Triángulo on green,
+   ↑ Flecha arriba on blue, ■ Casita with red roof + ivory wall.
+   Used by: piano stickers, fretboard stickers, mode strips — the
+   educational sticker overlays a student would print and place.
 """
 
 from typing import Final
 
-# A-indexed canonical palette read directly from the 12 cartas.
+# Canonical Gátople-logo gradient. The hue ROTATES around the wheel by clock
+# hour (yellow→orange→red→pink→violet→blue→teal→green→yellow-green→yellow),
+# NOT by chromatic-A index. The list below is keyed by chromatic-A index for
+# back-compat with WHEEL_HEX consumers; each entry's color is the segment color
+# at that note's clock hour in the canonical logo.
+#
+#   hour 12 (C)   yellow               #E8E66A
+#   hour 1  (F)   orange               #F0A85A
+#   hour 2  (A♯)  deeper orange        #F08A4A
+#   hour 3  (D♯)  pink/coral           #F4B5B0
+#   hour 4  (G♯)  red                  #DC4A38
+#   hour 5  (C♯)  pale pink/lavender   #EFC4DA
+#   hour 6  (F♯)  violet               #B687C6
+#   hour 7  (B)   light blue           #BFD8E8
+#   hour 8  (E)   slate blue           #6F86B8
+#   hour 9  (A)   teal/blue-green      #2BA39A
+#   hour 10 (D)   green-teal           #4FB387
+#   hour 11 (G)   yellow-green/lime    #B5D04A
 WHEEL_HEX: Final[tuple[str, ...]] = (
-    "#D43A2C",  # A  Eólico    Dos Puntos — red
-    "#1B3A8C",  # A# Penta 5   Estrella V — deep blue
-    "#3FA34D",  # B  Locrio    Triángulo — green
-    "#F2E6D8",  # C  Jónico    Casita — ivory wall (the field; red roof is accent)
-    "#3FA0C9",  # C# Penta 1   Estrella I — water blue
-    "#3FA34D",  # D  Dórico    Más — green
-    "#2E70C1",  # D# Penta 2   Estrella II — blue
-    "#D43A2C",  # E  Frigio    Llave — red
-    "#3FA0C9",  # F  Lidio     Flecha arriba — blue
-    "#C0382C",  # F# Penta 3   Estrella III — red (casa de Gátople)
-    "#3FA34D",  # G  Mixolidio Flecha abajo — green
-    "#2E70C1",  # G# Penta 4   Estrella IV — blue
+    "#2BA39A",  # A   hour 9   teal
+    "#F08A4A",  # A#  hour 2   deeper orange
+    "#BFD8E8",  # B   hour 7   light blue
+    "#E8E66A",  # C   hour 12  yellow
+    "#EFC4DA",  # C#  hour 5   pale pink/lavender
+    "#4FB387",  # D   hour 10  green-teal
+    "#F4B5B0",  # D#  hour 3   pink/coral
+    "#6F86B8",  # E   hour 8   slate blue
+    "#F0A85A",  # F   hour 1   orange
+    "#B687C6",  # F#  hour 6   violet
+    "#B5D04A",  # G   hour 11  yellow-green/lime
+    "#DC4A38",  # G#  hour 4   red
 )
+
+# Glyph-foreground colors from the canonical logo (the ring shows the segment
+# fill, but the glyph drawn OUTSIDE the ring on the cat body is in one of four
+# colors only): red, green, blue, or — uniquely for ★III — red. Stars on the
+# 4 other Penta cells are deep blue; the III star matches the red square at 12.
+GLYPH_FG: Final[dict[str, str]] = {
+    "⋮": "#D43A2C",  # red
+    "★V": "#1B3A8C",  # deep blue
+    "△": "#3FA34D",  # green
+    "□": "#D43A2C",  # red — the Casita glyph (matches the red square in legend)
+    "★I": "#1B3A8C",  # deep blue
+    "+": "#3FA34D",  # green
+    "★II": "#1B3A8C",  # deep blue
+    "♀": "#D43A2C",  # red
+    "↑": "#1B3A8C",  # deep blue
+    "★III": "#D43A2C",  # RED — the casa-de-Gátople pair with the red □
+    "↓": "#3FA34D",  # green
+    "★IV": "#1B3A8C",  # deep blue
+}
+
+
+# Carta palette — the cover-legend four-color rule (red / green / blue /
+# white-black-ivory). Used for the educational sticker overlays (piano,
+# fretboard, mode strips). Each entry is the dominant background of the
+# corresponding card in the digitized deck.
+RED: Final[str] = "#D43A2C"
+GREEN: Final[str] = "#3FA34D"
+BLUE: Final[str] = "#2E70C1"
+DEEP_BLUE: Final[str] = "#1B3A8C"
+WATER_BLUE: Final[str] = "#3FA0C9"
+SKY_BLUE: Final[str] = "#7CB6E0"
+IVORY: Final[str] = "#F2E6D8"
+
+CARTA_HEX: Final[tuple[str, ...]] = (
+    RED,  # A   ⋮ Dos Puntos    on red
+    DEEP_BLUE,  # A#  ★V Estrella V   on deep blue
+    GREEN,  # B   △ Triángulo      on green
+    IVORY,  # C   ■ Casita         ivory wall (red roof accent)
+    WATER_BLUE,  # C#  ★I Estrella I    water blue
+    GREEN,  # D   + Más            on green
+    BLUE,  # D#  ★II Estrella II  blue + orange sun
+    RED,  # E   ♀ Llave           on red
+    SKY_BLUE,  # F   ↑ Flecha arriba  sky blue
+    RED,  # F#  ★III Estrella III red (casa de Gátople)
+    GREEN,  # G   ↓ Flecha abajo   on green
+    BLUE,  # G#  ★IV Estrella IV  blue + orange
+)
+
+
+# Monochrome palette — for the black/white instructional view of stickers
+# (piano, fretboard) where you want to focus on glyph + position only.
+INK: Final[str] = "#111111"
+PAPER: Final[str] = "#FFFFFF"
+MONO_HEX: Final[tuple[str, ...]] = tuple([PAPER] * 12)
 
 DEGREES_PER_SEMITONE: Final[int] = 30  # 360° / 12 worlds
 

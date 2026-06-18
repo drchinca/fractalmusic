@@ -62,16 +62,18 @@ def chessboard_grains(square: int) -> int:
 
 
 def self_squaring_grains(step: int) -> int:
-    """The self-squaring sequence the book recites in Ch. 5: ``2 ** (2 ** (n-1))``.
+    """The self-squaring sequence the book recites in Ch. 5.
 
-    Yields 2, 4, 16, 256, 65 536, 4 294 967 296, 1.84e19, 3.4e38, ... — the
-    book's "potenciación" variant where each step squares the previous. Python
-    ints are unbounded, so any positive ``step`` is valid; ``step >= 9`` produces
-    numbers larger than int64 but Python handles them natively.
+    Step 1 is the seed (1 grain); each subsequent step squares the previous:
+    ``1, 2, 4, 16, 256, 65_536, 4_294_967_296, …``. Closed form for ``step >= 2``
+    is ``2 ** (2 ** (step - 2))``. Python ints are unbounded, so ``step >= 9``
+    just produces astronomically large numbers natively.
     """
     if step < 1:
         raise ValueError("step must be >= 1")
-    return int(2 ** (2 ** (step - 1)))
+    if step == 1:
+        return 1
+    return int(2 ** (2 ** (step - 2)))
 
 
 def interval_ratio(from_note: str, to_note: str) -> tuple[int, int]:
