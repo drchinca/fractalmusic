@@ -110,7 +110,7 @@ def build_payload() -> GatoplePayload:
                 scale_steps=list(role.scale_steps),
                 wheel_color=WHEEL_HEX[role.position],
                 carta_color=CARTA_HEX[role.position],
-                carta_image=f"../assets/cartas/{CARTA_FILES[role.position]}",
+                carta_image=f"cartas/{CARTA_FILES[role.position]}",
                 glyph_fg=glyph_fg,
                 carta_name=CARTA_NAMES[role.position],
                 is_penta=is_penta,
