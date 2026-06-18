@@ -69,7 +69,6 @@ def test_gallery_writes_all_artifacts(tmp_path):
     paths = write_gallery(tmp_path)
     names = {p.name for p in paths}
     assert names == {
-        "gatople-wheel.svg",
         "deck.svg",
         "greek-modes.svg",
         "penta-modes.svg",

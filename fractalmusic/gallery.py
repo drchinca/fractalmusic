@@ -12,7 +12,6 @@ from fractalmusic.scales import mode_scale, penta
 from fractalmusic.svg import (
     deck_grid,
     fretboard_stickers_svg,
-    gatople_wheel,
     piano_stickers_svg,
     scale_strip,
 )
@@ -52,8 +51,9 @@ def write_gallery(out_dir: Path = _DEFAULT_DIR) -> list[Path]:
     """Write all gallery SVGs and return the paths written."""
     out_dir.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
+    # The Gátople wheel renderer is omitted while it is rebuilt to honor the
+    # two-disc (fixed outer / rotating inner) model — see fractalmusic.wheel.
     artifacts = {
-        "gatople-wheel.svg": gatople_wheel(),
         "deck.svg": deck_grid(),
         "greek-modes.svg": _stack([scale_strip(mode_scale(n)) for n in _GREEK_ROOTS]),
         "penta-modes.svg": _stack(
