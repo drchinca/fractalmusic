@@ -9,9 +9,10 @@
 <body>
   <header class="topbar">
     <div class="brand">
-      <span class="brand-mark">Sistema Fractal</span>
+      <span class="brand-mark">Sistema Fractal · Flow Lab</span>
       <h1>El Gátople</h1>
     </div>
+    <a class="classic-link" href="../">Classic</a>
     <div class="tonic-readout" aria-live="polite">
       <span>Tonic</span>
       <strong id="tonic-label">A</strong>
@@ -56,7 +57,11 @@
         <button data-action="step-fwd" type="button" aria-label="Step forward one semitone" title="Step forward">▶</button>
         <label class="range-control">
           <span>Speed</span>
-          <input id="spin-speed" type="range" min="0" max="72" step="1" value="24">
+          <input id="spin-speed" type="range" min="0" max="72" step="1" value="24" aria-label="Spin speed">
+        </label>
+        <label class="range-control">
+          <span>Orbit</span>
+          <input id="orbit-offset" type="range" min="-180" max="180" step="1" value="0" aria-label="Function orbit">
         </label>
         <label class="select-control">
           <span>Scale</span>

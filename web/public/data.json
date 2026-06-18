@@ -1,0 +1,342 @@
+{
+  "chromatic": [
+    "A",
+    "A#",
+    "B",
+    "C",
+    "C#",
+    "D",
+    "D#",
+    "E",
+    "F",
+    "F#",
+    "G",
+    "G#"
+  ],
+  "roles": [
+    {
+      "position": 0,
+      "note_default": "A",
+      "mode_name": "Eólico",
+      "glyph": "⋮",
+      "display_glyph": "⋮",
+      "display_label": "A",
+      "family": "hepta",
+      "quality": "minor",
+      "clock_hour": 9,
+      "scale_steps": [
+        2,
+        1,
+        2,
+        2,
+        1,
+        2,
+        2
+      ],
+      "wheel_color": "#2BA39A",
+      "carta_color": "#D43A2C",
+      "glyph_fg": "#D43A2C",
+      "carta_name": "Dos Puntos",
+      "is_penta": false,
+      "roman": null
+    },
+    {
+      "position": 1,
+      "note_default": "A#",
+      "mode_name": "Penta 5",
+      "glyph": "★",
+      "display_glyph": "★V",
+      "display_label": "V",
+      "family": "penta",
+      "quality": "minor",
+      "clock_hour": 2,
+      "scale_steps": [
+        3,
+        2,
+        3,
+        2,
+        2
+      ],
+      "wheel_color": "#F08A4A",
+      "carta_color": "#1B3A8C",
+      "glyph_fg": "#1B3A8C",
+      "carta_name": "Estrella V",
+      "is_penta": true,
+      "roman": "V"
+    },
+    {
+      "position": 2,
+      "note_default": "B",
+      "mode_name": "Locrio",
+      "glyph": "△",
+      "display_glyph": "△",
+      "display_label": "B",
+      "family": "hepta",
+      "quality": "diminished",
+      "clock_hour": 7,
+      "scale_steps": [
+        1,
+        2,
+        2,
+        1,
+        2,
+        2,
+        2
+      ],
+      "wheel_color": "#BFD8E8",
+      "carta_color": "#3FA34D",
+      "glyph_fg": "#3FA34D",
+      "carta_name": "Triángulo",
+      "is_penta": false,
+      "roman": null
+    },
+    {
+      "position": 3,
+      "note_default": "C",
+      "mode_name": "Jónico",
+      "glyph": "□",
+      "display_glyph": "□",
+      "display_label": "C",
+      "family": "hepta",
+      "quality": "major",
+      "clock_hour": 12,
+      "scale_steps": [
+        2,
+        2,
+        1,
+        2,
+        2,
+        2,
+        1
+      ],
+      "wheel_color": "#E8E66A",
+      "carta_color": "#F2E6D8",
+      "glyph_fg": "#D43A2C",
+      "carta_name": "Casita",
+      "is_penta": false,
+      "roman": null
+    },
+    {
+      "position": 4,
+      "note_default": "C#",
+      "mode_name": "Penta 1",
+      "glyph": "★",
+      "display_glyph": "★I",
+      "display_label": "I",
+      "family": "penta",
+      "quality": "minor",
+      "clock_hour": 5,
+      "scale_steps": [
+        2,
+        3,
+        2,
+        2,
+        3
+      ],
+      "wheel_color": "#EFC4DA",
+      "carta_color": "#3FA0C9",
+      "glyph_fg": "#1B3A8C",
+      "carta_name": "Estrella I",
+      "is_penta": true,
+      "roman": "I"
+    },
+    {
+      "position": 5,
+      "note_default": "D",
+      "mode_name": "Dórico",
+      "glyph": "+",
+      "display_glyph": "+",
+      "display_label": "D",
+      "family": "hepta",
+      "quality": "minor",
+      "clock_hour": 10,
+      "scale_steps": [
+        2,
+        1,
+        2,
+        2,
+        2,
+        1,
+        2
+      ],
+      "wheel_color": "#4FB387",
+      "carta_color": "#3FA34D",
+      "glyph_fg": "#3FA34D",
+      "carta_name": "Más",
+      "is_penta": false,
+      "roman": null
+    },
+    {
+      "position": 6,
+      "note_default": "D#",
+      "mode_name": "Penta 2",
+      "glyph": "★",
+      "display_glyph": "★II",
+      "display_label": "II",
+      "family": "penta",
+      "quality": "minor",
+      "clock_hour": 3,
+      "scale_steps": [
+        3,
+        2,
+        2,
+        3,
+        2
+      ],
+      "wheel_color": "#F4B5B0",
+      "carta_color": "#2E70C1",
+      "glyph_fg": "#1B3A8C",
+      "carta_name": "Estrella II",
+      "is_penta": true,
+      "roman": "II"
+    },
+    {
+      "position": 7,
+      "note_default": "E",
+      "mode_name": "Frigio",
+      "glyph": "♀",
+      "display_glyph": "♀",
+      "display_label": "E",
+      "family": "hepta",
+      "quality": "minor",
+      "clock_hour": 8,
+      "scale_steps": [
+        1,
+        2,
+        2,
+        2,
+        1,
+        2,
+        2
+      ],
+      "wheel_color": "#6F86B8",
+      "carta_color": "#D43A2C",
+      "glyph_fg": "#D43A2C",
+      "carta_name": "Llave",
+      "is_penta": false,
+      "roman": null
+    },
+    {
+      "position": 8,
+      "note_default": "F",
+      "mode_name": "Lidio",
+      "glyph": "↑",
+      "display_glyph": "↑",
+      "display_label": "F",
+      "family": "hepta",
+      "quality": "major",
+      "clock_hour": 1,
+      "scale_steps": [
+        2,
+        2,
+        2,
+        1,
+        2,
+        2,
+        1
+      ],
+      "wheel_color": "#F0A85A",
+      "carta_color": "#7CB6E0",
+      "glyph_fg": "#1B3A8C",
+      "carta_name": "Flecha arriba",
+      "is_penta": false,
+      "roman": null
+    },
+    {
+      "position": 9,
+      "note_default": "F#",
+      "mode_name": "Penta 3",
+      "glyph": "★",
+      "display_glyph": "★III",
+      "display_label": "III",
+      "family": "penta",
+      "quality": "major",
+      "clock_hour": 6,
+      "scale_steps": [
+        2,
+        2,
+        3,
+        2,
+        3
+      ],
+      "wheel_color": "#B687C6",
+      "carta_color": "#D43A2C",
+      "glyph_fg": "#D43A2C",
+      "carta_name": "Estrella III",
+      "is_penta": true,
+      "roman": "III"
+    },
+    {
+      "position": 10,
+      "note_default": "G",
+      "mode_name": "Mixolidio",
+      "glyph": "↓",
+      "display_glyph": "↓",
+      "display_label": "G",
+      "family": "hepta",
+      "quality": "major",
+      "clock_hour": 11,
+      "scale_steps": [
+        2,
+        2,
+        1,
+        2,
+        2,
+        1,
+        2
+      ],
+      "wheel_color": "#B5D04A",
+      "carta_color": "#3FA34D",
+      "glyph_fg": "#3FA34D",
+      "carta_name": "Flecha abajo",
+      "is_penta": false,
+      "roman": null
+    },
+    {
+      "position": 11,
+      "note_default": "G#",
+      "mode_name": "Penta 4",
+      "glyph": "★",
+      "display_glyph": "★IV",
+      "display_label": "IV",
+      "family": "penta",
+      "quality": "minor",
+      "clock_hour": 4,
+      "scale_steps": [
+        2,
+        3,
+        2,
+        3,
+        2
+      ],
+      "wheel_color": "#DC4A38",
+      "carta_color": "#2E70C1",
+      "glyph_fg": "#1B3A8C",
+      "carta_name": "Estrella IV",
+      "is_penta": true,
+      "roman": "IV"
+    }
+  ],
+  "penta_roots": [
+    {
+      "roman": "I",
+      "note": "C#"
+    },
+    {
+      "roman": "II",
+      "note": "D#"
+    },
+    {
+      "roman": "III",
+      "note": "F#"
+    },
+    {
+      "roman": "IV",
+      "note": "G#"
+    },
+    {
+      "roman": "V",
+      "note": "A#"
+    }
+  ]
+}

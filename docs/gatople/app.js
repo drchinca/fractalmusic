@@ -9,70 +9,31 @@
 // not chromatic index. Hour 12 sits at the top, hour 9 (A Eólico, the horizon)
 // at 9 o'clock, hour 6 (★III, casa de Gátople) at the bottom.
 
-const SVG_NS = "http://www.w3.org/2000/svg";
+import {
+  SVG_NS,
+  SEG_DEG,
+  RING_OUTER,
+  NOTE_RADIUS,
+  NOTE_DISC_R,
+  GUITAR_TUNING,
+  FRET_COUNT,
+  FRET_W,
+  STRING_H,
+  FRET_PAD_LEFT,
+  WHITE_INDICES,
+  BLACK_INDICES,
+  BLACK_LOWER,
+  polar,
+  clockAngle,
+  arcPath,
+  indexOfNote,
+  displayNote,
+  noteAtRolePosition,
+  roleAtNote,
+} from "./lib.js";
 
-const RING_OUTER = 240;
 const RING_INNER = 165;
 const RING_MID = (RING_OUTER + RING_INNER) / 2;
-const NOTE_RADIUS = 130;
-const NOTE_DISC_R = 22;
-const SEG_DEG = 30;
-
-const ENHARMONIC_FLAT = {
-  "A#": "Bb", "C#": "Db", "D#": "Eb", "F#": "Gb", "G#": "Ab",
-};
-
-const GUITAR_TUNING = ["E", "A", "D", "G", "B", "E"];
-const FRET_COUNT = 12;
-
-function polar(deg, radius) {
-  const rad = (deg - 90) * (Math.PI / 180);
-  return [radius * Math.cos(rad), radius * Math.sin(rad)];
-}
-
-function clockAngle(hour) {
-  return (hour % 12) * SEG_DEG;
-}
-
-function arcPath(startDeg, endDeg, rOuter, rInner) {
-  const [x1o, y1o] = polar(startDeg, rOuter);
-  const [x2o, y2o] = polar(endDeg, rOuter);
-  const [x1i, y1i] = polar(startDeg, rInner);
-  const [x2i, y2i] = polar(endDeg, rInner);
-  const large = endDeg - startDeg > 180 ? 1 : 0;
-  return [
-    "M", x1i, y1i,
-    "L", x1o, y1o,
-    "A", rOuter, rOuter, 0, large, 1, x2o, y2o,
-    "L", x2i, y2i,
-    "A", rInner, rInner, 0, large, 0, x1i, y1i,
-    "Z",
-  ].join(" ");
-}
-
-function indexOfNote(note, chromatic) {
-  const i = chromatic.indexOf(note);
-  if (i >= 0) return i;
-  for (const [sharp, flat] of Object.entries(ENHARMONIC_FLAT)) {
-    if (flat === note) return chromatic.indexOf(sharp);
-  }
-  return -1;
-}
-
-function displayNote(note) {
-  return ENHARMONIC_FLAT[note] ? `${note}/${ENHARMONIC_FLAT[note]}` : note;
-}
-
-function noteAtRolePosition(rolePosition, tonicOffset, chromatic) {
-  return chromatic[(rolePosition + tonicOffset) % 12];
-}
-
-function roleAtNote(note, roles, tonicOffset, chromatic) {
-  const noteIdx = indexOfNote(note, chromatic);
-  if (noteIdx < 0) return null;
-  const position = (noteIdx - tonicOffset + 12) % 12;
-  return roles.find((r) => r.position === position) ?? null;
-}
 
 // --- Outer disc (clock-hour layout, role glyphs) ---
 
@@ -147,9 +108,6 @@ function applyRotation(innerDisc, deg) {
 
 const PIANO_W = 560;
 const PIANO_H = 180;
-const WHITE_INDICES = [0, 2, 3, 5, 7, 8, 10];
-const BLACK_INDICES = [1, 4, 6, 9, 11];
-const BLACK_LOWER = { 1: 0, 4: 3, 6: 5, 9: 8, 11: 10 };
 
 function renderPiano(svg, chromatic) {
   while (svg.firstChild) svg.removeChild(svg.firstChild);
@@ -213,10 +171,6 @@ function repaintPiano(svg, roles, tonicOffset, chromatic, palette) {
 }
 
 // --- Guitar fretboard (EADGBE × 12 frets) ---
-
-const FRET_W = 60;
-const STRING_H = 36;
-const FRET_PAD_LEFT = 56;
 
 function renderFretboard(svg, chromatic) {
   while (svg.firstChild) svg.removeChild(svg.firstChild);
@@ -323,7 +277,9 @@ function updateTonicReadout(roles, tonicOffset, chromatic) {
 // --- Main ---
 
 async function main() {
-  const data = await fetch("data.json").then((r) => r.json());
+  const data = /** @type {import("./lib.js").Payload} */ (
+    await fetch("data.json").then((r) => r.json())
+  );
   const { chromatic, roles } = data;
 
   const wheel = document.getElementById("wheel");

@@ -134,6 +134,16 @@ function orbitHour(role, functionDeg) {
   return hour === 0 ? 12 : hour;
 }
 
+function orbitControlValue(functionDeg) {
+  return Math.round(((functionDeg + 180) % 360 + 360) % 360 - 180);
+}
+
+function syncOrbitControl(control, state) {
+  if (document.activeElement !== control) {
+    control.value = String(orbitControlValue(state.functionDeg));
+  }
+}
+
 // --- Wheel layers ---
 
 function renderOuter(svgGroup, roles, onRoleClick) {
@@ -464,6 +474,59 @@ function repaintFretboard(svg, roles, state, chromatic, currentScale) {
   }
 }
 
+function transformSticker(parts, transform) {
+  for (const part of parts) {
+    if (part) part.style.transform = transform;
+  }
+}
+
+function updateInstrumentFlow(piano, fretboard, state) {
+  const currentScale = state.currentScale;
+  if (!currentScale) return;
+
+  const pianoPhase = state.flowPhase * 0.075 + state.visualDeg * 0.026;
+  const fretPhase = state.flowPhase * 0.055 - state.functionDeg * 0.02;
+  const energy = state.autoSpin ? 1 : 0.68;
+
+  for (const key of piano.querySelectorAll(".piano-key")) {
+    const noteIdx = Number(key.dataset.chromaticIndex);
+    const distance = normalizeOffset(noteIdx - currentScale.rootIdx);
+    const inScale = currentScale.indexSet.has(noteIdx);
+    const isRoot = noteIdx === currentScale.rootIdx;
+    const wave = Math.sin(pianoPhase + distance * 0.82);
+    const lift = inScale ? -5 - (wave + 1) * 4.7 * energy : wave * 0.9;
+    const scale = inScale ? 1 + (isRoot ? 0.052 : 0.032) * ((wave + 1) / 2) : 1;
+    const opacity = inScale ? 0.76 + 0.22 * ((wave + 1) / 2) : 0.5 + 0.07 * ((wave + 1) / 2);
+    const transform = `translateY(${lift.toFixed(2)}px) scale(${scale.toFixed(3)})`;
+    transformSticker([
+      key.querySelector(".piano-tint"),
+      key.querySelector(".piano-glyph"),
+      key.querySelector(".piano-note"),
+    ], transform);
+    key.querySelector(".piano-tint").style.opacity = opacity.toFixed(3);
+  }
+
+  for (const cell of fretboard.querySelectorAll(".fret-cell")) {
+    const noteIdx = Number(cell.dataset.chromaticIndex);
+    const fret = Number(cell.dataset.fret);
+    const string = Number(cell.dataset.string);
+    const distance = normalizeOffset(noteIdx - currentScale.rootIdx);
+    const inScale = currentScale.indexSet.has(noteIdx);
+    const isRoot = noteIdx === currentScale.rootIdx;
+    const wave = Math.sin(fretPhase + fret * 0.36 + string * 0.7 + distance * 0.2);
+    const drift = inScale ? wave * 5.4 * energy : wave * 1.2;
+    const scale = inScale ? 1 + (isRoot ? 0.058 : 0.034) * ((wave + 1) / 2) : 1;
+    const opacity = inScale ? 0.7 + 0.26 * ((wave + 1) / 2) : 0.48 + 0.08 * ((wave + 1) / 2);
+    const transform = `translateX(${drift.toFixed(2)}px) scale(${scale.toFixed(3)})`;
+    transformSticker([
+      cell.querySelector(".fret-tint"),
+      cell.querySelector(".fret-glyph"),
+      cell.querySelector(".fret-label"),
+    ], transform);
+    cell.querySelector(".fret-tint").style.opacity = opacity.toFixed(3);
+  }
+}
+
 // --- State readouts ---
 
 function updateScaleOptions(select, roles, state, chromatic) {
@@ -552,10 +615,12 @@ async function main() {
   const scaleSelect = document.getElementById("scale-select");
   const spinToggle = document.getElementById("spin-toggle");
   const speedControl = document.getElementById("spin-speed");
+  const orbitControl = document.getElementById("orbit-offset");
 
   const state = {
     activeRolePosition: 0,
     autoSpin: false,
+    currentScale: null,
     flowPhase: 0,
     functionDeg: 0,
     palette: "carta",
@@ -566,6 +631,7 @@ async function main() {
 
   function refresh() {
     const currentScale = scaleState(roles, state.activeRolePosition, state.tonicOffset, chromatic);
+    state.currentScale = currentScale;
     renderScaleWeb(scaleWeb, currentScale, roles);
     updateScaleOptions(scaleSelect, roles, state, chromatic);
     scaleSelect.value = String(state.activeRolePosition);
@@ -575,6 +641,8 @@ async function main() {
     repaintPiano(piano, roles, state, chromatic, currentScale);
     repaintFretboard(fretboard, roles, state, chromatic, currentScale);
     applyWheelTransforms(state, inner, orbitDisc);
+    updateInstrumentFlow(piano, fretboard, state);
+    syncOrbitControl(orbitControl, state);
   }
 
   function setOffset(offset, syncVisual = true) {
@@ -643,6 +711,10 @@ async function main() {
   speedControl.addEventListener("input", () => {
     state.spinSpeed = Number(speedControl.value);
   });
+  orbitControl.addEventListener("input", () => {
+    state.functionDeg = Number(orbitControl.value);
+    refresh();
+  });
   spinToggle.addEventListener("click", () => {
     state.autoSpin = !state.autoSpin;
     spinToggle.setAttribute("aria-pressed", String(state.autoSpin));
@@ -703,6 +775,7 @@ async function main() {
     } else {
       applyWheelTransforms(state, inner, orbitDisc);
       updateOrbitCells(roles, state);
+      syncOrbitControl(orbitControl, state);
     }
   });
 
@@ -740,7 +813,9 @@ async function main() {
 
     updateSymbolTrails(trails, state);
     applyWheelTransforms(state, inner, orbitDisc);
+    updateInstrumentFlow(piano, fretboard, state);
     updateOrbitCells(roles, state);
+    syncOrbitControl(orbitControl, state);
     requestAnimationFrame(animate);
   }
   requestAnimationFrame(animate);
