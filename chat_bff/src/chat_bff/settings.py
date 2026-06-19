@@ -27,7 +27,11 @@ class ChatSettings(BaseSettings):
 
     # Pipeline knobs
     retrieval_k: int = 8
-    fidelity_threshold: float = 0.55  # I-3 threshold; PROVISIONAL until calibrated
+    # I-3 threshold. Calibrated on 40 hand-labeled (claim, snippet) pairs;
+    # F1=0.857, P=0.818, R=0.900 at this value. See
+    # tests/eval/calibration_results.md for the sweep + the polar-negation
+    # failure mode (cosine can't distinguish "X is Y" from "X is NOT Y").
+    fidelity_threshold: float = 0.79
     max_regenerations: int = 1
     request_timeout_s: float = 30.0
 

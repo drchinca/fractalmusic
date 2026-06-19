@@ -130,7 +130,7 @@ I-1 **Scope.** Every retrieved chunk and every citation has `book_hash ∈ {f39c
 
 I-2 **Membership.** Every verified citation matches a chunk that was retrieved *this turn*, by tuple `(book_hash, chapter_idx, section_idx, paragraph_idx)`. Hash-lookup of `book_hash` alone is not sufficient.
 
-I-3 **Snippet supports the claim.** For every verified Citation, `semantic.score(claim_sentence, citation.snippet) ≥ 0.55`. Threshold marked **PROVISIONAL** until calibrated against ≥40 labeled (claim, snippet, supports?) pairs (see calibration note at end).
+I-3 **Snippet supports the claim.** For every verified Citation, `semantic.score(claim_sentence, citation.snippet) ≥ 0.79`. Calibrated on 40 hand-labeled pairs (F1=0.857, P=0.818, R=0.900); see `chat_bff/tests/eval/calibration_results.md`. Known failure: polar negation ("X is Y" vs "X is NOT Y") scores ≥0.79 in both directions because cosine over nomic-embed measures topicality, not propositional truth — adding an NLI judge for negation is v2.
 
 I-4 **No PII / no secrets in logs.** Structured logger never emits raw question body, raw LLM response, or any header containing `Authorization` / `x-api-key` / `cookie`. Tested via log-capture (see §4).
 
@@ -211,4 +211,4 @@ Mobile-first UI is verified by a Playwright check at 320×568, not by Gherkin (p
 
 ---
 
-> **Calibration note (not part of the contract).** Before merging, hand-label 20 supporting + 20 non-supporting (claim, snippet) pairs from real book passages, score them through `semantic.score`, pick the threshold that maximizes F1, and update I-3 to the calibrated value. Record the run beside the eval tests.
+> **Calibration done.** 40 hand-labeled pairs, F1=0.857 at threshold 0.79. Full sweep + per-pair scores in `chat_bff/tests/eval/calibration_results.md`. Re-run with `cd chat_bff && uv run python tests/eval/run_calibration.py` if the embedder model changes.
