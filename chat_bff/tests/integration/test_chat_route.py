@@ -54,6 +54,8 @@ def test_happy_path_one_citation(
     body = response.json()
     assert body["answer"] is not None
     assert "Dodecamundo" in body["answer"]
+    # Verified path → model_reading must be None (I-5 mutual exclusivity)
+    assert body["model_reading"] is None
     assert len(body["citations"]) == 1
     assert body["citations"][0]["book_hash"] == "b202598c"
     assert body["citations"][0]["page_start"] == 16
@@ -63,12 +65,14 @@ def test_happy_path_one_citation(
 def test_hash_fabrication_caught(
     client: TestClient, fake_retriever: FakeRetriever, fake_claude: FakeLLM
 ) -> None:
-    """LLM emits an in-scope hash but a tuple we never retrieved."""
+    """LLM emits an in-scope hash but a tuple we never retrieved.
+
+    Strict path fails twice → model_reading second pass takes over."""
     fake_retriever.default = (DODECAMUNDO_CHUNK,)
-    # First answer fabricates; regeneration also fabricates.
     fake_claude.set_responses(
         "Frigio is dominant of Eólico [f39cb7c5·ch99§9¶999 p.999].",
         "Still wrong [f39cb7c5·ch99§9¶999 p.999].",
+        "Mi lectura es que Frigio cumple un rol modal específico.",
     )
     response = client.post(
         "/api/chat",
@@ -76,10 +80,11 @@ def test_hash_fabrication_caught(
     )
     assert response.status_code == 200
     body = response.json()
-    assert fake_claude.call_count == 2  # one regeneration
+    # 2 strict + 1 model_reading = 3 LLM calls
+    assert fake_claude.call_count == 3
     assert body["answer"] is None
+    assert body["model_reading"] == "Mi lectura es que Frigio cumple un rol modal específico."
     assert body["reason"] == "unknown_chunk"
-    # Unverified citations are returned so the FE can show what was retrieved.
     assert len(body["citations"]) == 1
     assert body["citations"][0]["verified"] is False
 
@@ -115,10 +120,10 @@ def test_frigio_flamenco_real_failure_mode(
         text="Sabes por qué y para qué existen los semitonos?",
     )
     fake_retriever.default = (p17, p25)
-    # LLM hallucinates a paragraph that isn't in the retrieval set.
     fake_claude.set_responses(
         "Frigio funciona como dominante del Eólico [b202598c·ch0§0¶45 p.26].",
         "Frigio funciona como dominante del Eólico [b202598c·ch0§0¶45 p.26].",
+        "Mi lectura es que el Frigio comparte la sonoridad andaluza por su segunda menor.",
     )
     response = client.post(
         "/api/chat",
@@ -128,7 +133,9 @@ def test_frigio_flamenco_real_failure_mode(
     assert response.status_code == 200
     assert body["answer"] is None
     assert body["reason"] == "unknown_chunk"
-    # FE gets the two real chunks as unverified citations to display.
+    # FE gets the model's interpretive reading + the unverified retrieved chunks.
+    assert body["model_reading"] is not None
+    assert "Mi lectura" in body["model_reading"]
     assert len(body["citations"]) == 2
     assert all(c["verified"] is False for c in body["citations"])
     assert {c["page_start"] for c in body["citations"]} == {17, 25}
@@ -142,11 +149,13 @@ def test_contaminated_regen_answer_is_rejected(
     BFF must NOT show that mixed text to the user — fall back to null
     answer with retrieved sources."""
     fake_retriever.default = (DODECAMUNDO_CHUNK,)
-    # First attempt has no citation; second is the contaminated mix.
+    # First attempt has no citation; second is the contaminated mix;
+    # third is the model_reading pass.
     fake_claude.set_responses(
         "Frigio is dominant of Eólico.",  # no citation → triggers regen
         "El Dodecamundo es doce mundos [b202598c·ch0§0¶27 p.16]. "
         "No tengo evidencia suficiente en estos libros para responder.",
+        "Mi lectura: el Frigio se construye desde la mediante.",
     )
     response = client.post("/api/chat", json={"question": "test"})
     assert response.status_code == 200
@@ -167,7 +176,8 @@ def test_contaminated_regen_answer_is_rejected(
 def test_repetition_gaming_caught_by_fidelity(
     fake_retriever: FakeRetriever, fake_claude: FakeLLM, fake_ollama: FakeLLM, settings: ChatSettings
 ) -> None:
-    """Same citation pasted on unrelated claims; fidelity rejects."""
+    """Same citation pasted on unrelated claims; fidelity rejects.
+    Then model_reading runs and the FE gets a friendly interpretive reply."""
 
     async def low_sim(_claim: str, _snippet: str) -> float:
         return 0.3
@@ -184,19 +194,24 @@ def test_repetition_gaming_caught_by_fidelity(
         "Función cíclica returns to home [b202598c·ch0§0¶17 p.11]. "
         "And penta has nothing to do with semitones [b202598c·ch0§0¶17 p.11].",
         "Same low-fidelity again [b202598c·ch0§0¶17 p.11].",
+        "Una forma de pensarlo: las ciclos cierran cuando volvés al punto de partida.",
     )
     client = TestClient(create_app(services=services))
     response = client.post("/api/chat", json={"question": "tell me about cycles"})
     assert response.status_code == 200
     body = response.json()
     assert body["answer"] is None
+    assert body["model_reading"] is not None
     assert body["reason"] == "low_fidelity"
 
 
 def test_out_of_corpus_refusal(
     client: TestClient, fake_retriever: FakeRetriever, fake_claude: FakeLLM
 ) -> None:
-    """Retriever returns nothing → BFF refuses without calling the LLM at all."""
+    """Retriever returns nothing → BFF refuses without calling the LLM at all.
+
+    No retrieval = no model_reading either; both answer and model_reading are
+    None and the FE renders the 'try a fractal-related question' empty state."""
     fake_retriever.default = ()
     response = client.post(
         "/api/chat",
@@ -205,6 +220,7 @@ def test_out_of_corpus_refusal(
     assert response.status_code == 200
     body = response.json()
     assert body["answer"] is None
+    assert body["model_reading"] is None
     assert body["reason"] == "no_evidence_in_corpus"
     assert body["citations"] == []
     assert fake_claude.call_count == 0

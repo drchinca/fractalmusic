@@ -24,6 +24,7 @@ export interface ChatResponse {
   readonly llm: LLMChoice;
   readonly answer: string | null;
   readonly citations: readonly Citation[];
+  readonly model_reading: string | null;
   readonly reason: string | null;
   readonly elapsed_ms: number;
 }

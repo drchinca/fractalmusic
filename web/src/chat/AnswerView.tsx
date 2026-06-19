@@ -10,10 +10,23 @@ const MARKER_RE =
   /\[[a-f0-9]{8}\s*[·.:\-\s]\s*ch\d+\s*[§·.:\-\s]\s*\d+\s*[¶·.:\-\s]\s*\d+\s+p\.?\s*\d+\]/gu;
 
 export function AnswerView({ result }: AnswerViewProps): JSX.Element {
-  if (result.answer === null) {
-    return <NullAnswer result={result} />;
+  if (result.answer !== null) {
+    return <GroundedAnswer answer={result.answer} citations={result.citations} />;
   }
-  return <GroundedAnswer answer={result.answer} citations={result.citations} />;
+  if (result.model_reading !== null) {
+    return <ReadingAnswer text={result.model_reading} citations={result.citations} />;
+  }
+  // No verified answer AND no reading: retrieval was empty (out of corpus)
+  // or the model_reading second pass itself failed.
+  const headline =
+    result.reason === "no_evidence_in_corpus"
+      ? "No encontré nada en estos libros sobre tu pregunta. Probá una más cercana al Sistema Fractal — el Dodecamundo, los modos griegos, o las cartas."
+      : "No pude responder con seguridad.";
+  return (
+    <div className="answer-view answer-null">
+      <p className="answer-null-message">{headline}</p>
+    </div>
+  );
 }
 
 function GroundedAnswer({
@@ -42,49 +55,25 @@ function GroundedAnswer({
   );
 }
 
-function copyForReason(
-  reason: string | null,
-  hasSources: boolean,
-): { readonly headline: string; readonly hint: string | null } {
-  // unknown_chunk: LLM cited a paragraph we didn't retrieve — almost
-  //   always means the answer is in a chapter not yet indexed.
-  // low_fidelity | uncited_claim | no_citations: model saw passages but
-  //   couldn't ground in them.
-  // no_evidence_in_corpus: retrieval found nothing.
-  if (reason === "no_evidence_in_corpus") {
-    return {
-      headline:
-        "No encontré nada en estos libros sobre tu pregunta. Probá una más cercana al Sistema Fractal — el Dodecamundo, los modos griegos, o las cartas.",
-      hint: null,
-    };
-  }
-  if (reason === "unknown_chunk") {
-    return {
-      headline:
-        "El modelo intentó citar un pasaje que no está en la parte indexada de los libros. Esa respuesta probablemente vive en un capítulo aún no incluido.",
-      hint: hasSources ? "Pasajes relacionados que sí están indexados:" : null,
-    };
-  }
-  if (reason === "low_fidelity" || reason === "uncited_claim" || reason === "no_citations") {
-    return {
-      headline:
-        "Encontré pasajes pero no pude responder con confianza desde ellos. Mirá lo que aparece y juzgá vos.",
-      hint: hasSources ? "Pasajes relacionados:" : null,
-    };
-  }
-  return { headline: "No pude responder con seguridad.", hint: null };
-}
-
-function NullAnswer({ result }: { readonly result: ChatResponse }): JSX.Element {
-  const copy = copyForReason(result.reason, result.citations.length > 0);
+function ReadingAnswer({
+  text,
+  citations,
+}: {
+  readonly text: string;
+  readonly citations: readonly Citation[];
+}): JSX.Element {
+  // The interpretive reply when strict citation grounding failed.
+  // Badge + dashed border carry the "this is softer" signal; the prose
+  // and the chunk list below it speak for themselves.
   return (
-    <div className="answer-view answer-null">
-      <p className="answer-null-message">{copy.headline}</p>
-      {copy.hint !== null && result.citations.length > 0 && (
+    <div className="answer-view answer-reading">
+      <span className="answer-reading-badge">Lectura del modelo</span>
+      <p className="answer-prose">{text}</p>
+      {citations.length > 0 && (
         <>
-          <p className="answer-null-hint">{copy.hint}</p>
+          <p className="answer-null-hint">Pasajes encontrados en los libros:</p>
           <div className="answer-citations">
-            {result.citations.map((c, i) => (
+            {citations.map((c, i) => (
               <CitationChip
                 key={`${c.book_hash}-${c.chapter_idx}-${c.section_idx}-${c.paragraph_idx}-${i}`}
                 citation={c}
@@ -97,3 +86,4 @@ function NullAnswer({ result }: { readonly result: ChatResponse }): JSX.Element 
     </div>
   );
 }
+

@@ -44,6 +44,7 @@ function isChatResponse(x: unknown): x is ChatResponse {
     (r.answer === null || typeof r.answer === "string") &&
     Array.isArray(r.citations) &&
     r.citations.every(isCitation) &&
+    (r.model_reading === null || typeof r.model_reading === "string") &&
     (r.reason === null || typeof r.reason === "string") &&
     typeof r.elapsed_ms === "number"
   );

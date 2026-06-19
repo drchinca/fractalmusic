@@ -54,9 +54,14 @@ class Citation(BaseModel):
 
 
 class ChatResponse(BaseModel):
+    """Either ``answer`` (verified path) or ``model_reading`` (interpretive
+    fallback) is populated, never both. When retrieval was empty, both are
+    None and ``reason`` is ``"no_evidence_in_corpus"``."""
+
     model_config = ConfigDict(frozen=True)
     llm: LLMChoice
     answer: str | None
     citations: tuple[Citation, ...] = ()
+    model_reading: str | None = None
     reason: str | None = None
     elapsed_ms: Annotated[int, Field(ge=0)]
