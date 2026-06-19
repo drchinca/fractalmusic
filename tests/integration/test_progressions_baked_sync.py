@@ -11,9 +11,7 @@ from build_progressions_data import build_baked  # noqa: E402
 
 
 def test_progressions_baked_json_matches_build_baked() -> None:
-    on_disk = json.loads(
-        (REPO_ROOT / "docs" / "gatople" / "progressions_baked.json").read_text()
-    )
+    on_disk = json.loads((REPO_ROOT / "docs" / "gatople" / "progressions_baked.json").read_text())
     fresh = build_baked()
     assert on_disk == fresh, (
         "docs/gatople/progressions_baked.json is stale. "

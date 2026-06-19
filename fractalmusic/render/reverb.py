@@ -31,7 +31,7 @@ def _algorithmic_hall_ir(sr: int, *, length_s: float = 2.2, decay_s: float = 1.6
     fade_end = pre_delay + fade.shape[0]
     if fade_end <= ir.shape[0]:
         ir[pre_delay:fade_end] *= fade
-    return ir / (np.max(np.abs(ir)) + 1e-9)
+    return np.asarray(ir / (np.max(np.abs(ir)) + 1e-9), dtype=np.float32)
 
 
 def apply_reverb(
@@ -74,4 +74,4 @@ def apply_reverb(
     out = np.zeros_like(full_wet)
     out[: dry.shape[0]] = dry
     out += full_wet * wet_gain
-    return out
+    return np.asarray(out, dtype=np.float32)

@@ -1,6 +1,5 @@
 """Step definitions for the composing-with-the-Gátople feature."""
 
-import json
 import sys
 from pathlib import Path
 
@@ -92,7 +91,18 @@ def reads_glyphs(ctx, glyphs):
 
 
 CHROMATIC: list[str] = [
-    "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#",
+    "A",
+    "A#",
+    "B",
+    "C",
+    "C#",
+    "D",
+    "D#",
+    "E",
+    "F",
+    "F#",
+    "G",
+    "G#",
 ]
 
 
@@ -112,10 +122,7 @@ def spin_one(ctx, prog_id, tonic):
 @when("I spin every progression to every key")
 def spin_all(ctx):
     ctx["all_steps"] = [
-        step
-        for prog in ctx["baked"].values()
-        for key in prog["keys"]
-        for step in key
+        step for prog in ctx["baked"].values() for key in prog["keys"] for step in key
     ]
 
 

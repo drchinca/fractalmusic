@@ -4,9 +4,7 @@ import json
 from pathlib import Path
 
 import pytest
-
 from fractalmusic.generate import (
-    Event,
     GenerationRequest,
     JsonCorpus,
     Pattern,
@@ -22,7 +20,6 @@ from fractalmusic.generate import (
 )
 from fractalmusic.wheel import Wheel
 
-
 PROV = Provenance(book_hash="b202598c", book_title="El Sistema Fractal")
 
 
@@ -35,12 +32,17 @@ def _pattern(
 ) -> Pattern:
     rhythm = rhythm or tuple(1.0 for _ in degrees)
     return Pattern(
-        name="test", tonic=tonic, mode=mode,
-        degrees=degrees, rhythm=rhythm, provenance=PROV,
+        name="test",
+        tonic=tonic,
+        mode=mode,
+        degrees=degrees,
+        rhythm=rhythm,
+        provenance=PROV,
     )
 
 
 # --- Contract tests ----------------------------------------------------------
+
 
 def test_generation_request_validates_inputs():
     GenerationRequest(tonic="A", mode="Eólico", length_events=8)
@@ -55,21 +57,29 @@ def test_generation_request_validates_inputs():
 def test_pattern_rejects_out_of_range_degrees_for_penta():
     with pytest.raises(ValueError, match="degrees"):
         Pattern(
-            name="bad", tonic="A", mode="Penta 1",
-            degrees=(1, 2, 6), rhythm=(1.0, 1.0, 1.0), provenance=PROV,
+            name="bad",
+            tonic="A",
+            mode="Penta 1",
+            degrees=(1, 2, 6),
+            rhythm=(1.0, 1.0, 1.0),
+            provenance=PROV,
         )
 
 
 def test_pattern_requires_provenance_book_fields():
     with pytest.raises(ValueError, match="Provenance"):
         Pattern(
-            name="bad", tonic="A", mode="Eólico",
-            degrees=(1, 2), rhythm=(1.0, 1.0),
+            name="bad",
+            tonic="A",
+            mode="Eólico",
+            degrees=(1, 2),
+            rhythm=(1.0, 1.0),
             provenance=Provenance(book_hash="", book_title="x"),
         )
 
 
 # --- Realize -----------------------------------------------------------------
+
 
 def test_realize_notes_are_in_mode_for_a_eolico():
     pattern = _pattern()
@@ -85,8 +95,12 @@ def test_realize_prebakes_time_sec_and_freq_hz():
     assert events[1].time_sec > 0
     assert all(e.freq_hz > 0 for e in events)
     # A4 ≈ 440 Hz baseline holds somewhere in an A-Eólico walk
-    assert any(abs(e.freq_hz - 440.0) < 0.01 or abs(e.freq_hz - 220.0) < 0.01
-               or abs(e.freq_hz - 880.0) < 0.01 for e in events)
+    assert any(
+        abs(e.freq_hz - 440.0) < 0.01
+        or abs(e.freq_hz - 220.0) < 0.01
+        or abs(e.freq_hz - 880.0) < 0.01
+        for e in events
+    )
 
 
 def test_realize_attaches_role_hour_and_carta_glyph():
@@ -97,7 +111,8 @@ def test_realize_attaches_role_hour_and_carta_glyph():
 
 def test_realize_penta_uses_penta_scale():
     pattern = _pattern(
-        tonic="A", mode="Penta 1",
+        tonic="A",
+        mode="Penta 1",
         degrees=(1, 2, 3, 4, 5, 1),
     )
     events = realize(pattern)
@@ -106,6 +121,7 @@ def test_realize_penta_uses_penta_scale():
 
 
 # --- Score -------------------------------------------------------------------
+
 
 def test_score_full_in_mode_yields_high_membership():
     pattern = _pattern()
@@ -121,6 +137,7 @@ def test_score_band_brackets():
 
 
 # --- Web payload + MIDI ------------------------------------------------------
+
 
 def test_to_web_payload_shape():
     pattern = _pattern()
@@ -205,8 +222,8 @@ def test_to_strudel_code_sanitizes_metadata_comments():
         rhythm=(1.0, 0.5, 1.5, 1.0),
         provenance=Provenance(
             book_hash="b202598c",
-            book_title="Book\nnote(\"c4\").play()",
-            chapter="Ch\nstack(note(\"d4\"))",
+            book_title='Book\nnote("c4").play()',
+            chapter='Ch\nstack(note("d4"))',
         ),
     )
     events = realize(pattern)
@@ -214,9 +231,9 @@ def test_to_strudel_code_sanitizes_metadata_comments():
     code = to_strudel_code(pattern=pattern, events=events, score=s)
 
     assert "// Fractal Music: test hush()" in code
-    assert "// source: Book note(\"c4\").play()" in code
+    assert '// source: Book note("c4").play()' in code
     assert "\nhush()" not in code
-    assert "\nnote(\"c4\").play()" not in code
+    assert '\nnote("c4").play()' not in code
     assert "// warning: rhythm_quantized_to_event_sequence" in code
 
 
@@ -228,6 +245,7 @@ def test_to_midi_writes_a_file(tmp_path: Path):
 
 
 # --- Loop --------------------------------------------------------------------
+
 
 def test_research_loop_produces_in_mode_result(tmp_path: Path):
     request = GenerationRequest(tonic="A", mode="Eólico", length_events=8)

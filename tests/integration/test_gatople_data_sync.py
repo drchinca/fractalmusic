@@ -29,6 +29,5 @@ def test_data_json_matches_build_payload(relative_parts: tuple[str, ...]) -> Non
     on_disk = json.loads(path.read_text())
     fresh = build_payload()
     assert on_disk == fresh, (
-        f"{path.relative_to(REPO_ROOT)} is stale. "
-        "Run: uv run python scripts/build_gatople_data.py"
+        f"{path.relative_to(REPO_ROOT)} is stale. Run: uv run python scripts/build_gatople_data.py"
     )

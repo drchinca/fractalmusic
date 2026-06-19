@@ -139,9 +139,7 @@ def _book_guidance_comments(
             f"p.{item['page_start']} "
             f"{_comment_text(item['book_title'], limit=64)}"
         )
-        comments.append(
-            f"// strudel use {idx}: {_comment_text(item['strudel_use'], limit=180)}"
-        )
+        comments.append(f"// strudel use {idx}: {_comment_text(item['strudel_use'], limit=180)}")
     return comments
 
 

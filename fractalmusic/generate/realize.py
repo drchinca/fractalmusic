@@ -30,7 +30,7 @@ def _midi_number(note: str, octave: int) -> int:
 def _freq_hz(note: str, octave: int) -> float:
     """Equal-temperament frequency in Hz for a note + octave."""
     midi = _midi_number(note, octave)
-    return A4_FREQ_HZ * (2.0 ** ((midi - A4_MIDI) / 12.0))
+    return float(A4_FREQ_HZ * (2.0 ** ((midi - A4_MIDI) / 12.0)))
 
 
 def freq_for(note: str, octave: int) -> float:
@@ -65,7 +65,8 @@ def realize(pattern: Pattern, *, seed: int = 0, bpm: int = DEFAULT_BPM) -> tuple
     carta_glyph are read off the Wheel so the FE can highlight cartas as the
     music plays.
     """
-    rng = random.Random(seed)
+    # Deterministic musical variation; not used for security.
+    rng = random.Random(seed)  # nosec B311
     wheel = Wheel(tonic=pattern.tonic)
     scale = _scale_for_mode(wheel=wheel, mode=pattern.mode)
     seconds_per_beat = 60.0 / bpm

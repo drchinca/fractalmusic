@@ -153,13 +153,9 @@ def test_generate_twelve_outputs_rejects_bad_inputs():
     with pytest.raises(ValueError):
         generate_twelve_outputs([[2, 2, 1, 2, 2]] * 11, list(CHROMATIC_ORDER), "A")
     with pytest.raises(ValueError):
-        generate_twelve_outputs(
-            [[2, 2, 1, 2, 2]] * 12, list(CHROMATIC_ORDER)[:11], "A"
-        )
+        generate_twelve_outputs([[2, 2, 1, 2, 2]] * 12, list(CHROMATIC_ORDER)[:11], "A")
     with pytest.raises(ValueError):
-        generate_twelve_outputs(
-            [[2, 2, 1, 2, 2]] * 12, list(CHROMATIC_ORDER), "H"
-        )
+        generate_twelve_outputs([[2, 2, 1, 2, 2]] * 12, list(CHROMATIC_ORDER), "H")
 
 
 def test_wheelmode_properties():
