@@ -28,3 +28,41 @@ Feature: Composing with the Gátople
     Given a fresh Dodecamundo
     When I spell the chord "A C E"
     Then it reads "⋮ □ ♀" in glyphs
+
+  # The book-sourced progressions wrap a real Wheel transposition. These
+  # scenarios pin the cadences the publisher cares about — if any of the
+  # 12 keys disagrees with the wheel, this feature fails.
+
+  Scenario: The matriarchal cycle resolves to its own tonic in every key
+    Given the baked progressions
+    When I spin "matriarchal-cycle" to "D"
+    Then the first step is rooted on "D"
+    And the first step's mode is "Eólico"
+    And the last step is rooted on "D"
+
+  Scenario: The Frigio dominant lands a semitone above Eólico
+    Given the baked progressions
+    When I spin "matriarchal-cycle" to "A"
+    Then step 3 is rooted on "E"
+    And step 3's mode is "Frigio"
+
+  Scenario: The major cadence ends a fifth above its dominant
+    Given the baked progressions
+    When I spin "jonico-cadence" to "G"
+    Then step 1 is rooted on "G"
+    And step 1's mode is "Jónico"
+    And step 2 is rooted on "D"
+    And step 2's mode is "Mixolidio"
+
+  Scenario: The DodecaFuga walks all 12 stations without repetition
+    Given the baked progressions
+    When I spin "dodecafuga" to "A"
+    Then the progression has 12 steps
+    And every step has a unique mode
+    And every step has a unique tonic
+
+  Scenario: Every progression survives a spin to all 12 keys
+    Given the baked progressions
+    When I spin every progression to every key
+    Then every step's scale is exactly seven or five notes
+    And every step's scale has no repeated notes

@@ -1,11 +1,20 @@
 """Step definitions for the composing-with-the-Gátople feature."""
 
+import json
+import sys
+from pathlib import Path
+
 import pytest
 from fractalmusic.cartas import spell
 from fractalmusic.dodecamundo import DODECAMUNDO
 from fractalmusic.gatople import cero_pitagoras, interval_angle
 from fractalmusic.scales import PENTA_MODES, microstructures, penta
 from pytest_bdd import given, parsers, scenarios, then, when
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "scripts"))
+
+from build_progressions_data import build_baked  # noqa: E402
 
 scenarios("features/composing.feature")
 
@@ -77,3 +86,89 @@ def angle_is(ctx, degrees):
 @then(parsers.parse('it reads "{glyphs}" in glyphs'))
 def reads_glyphs(ctx, glyphs):
     assert ctx["glyphs"] == glyphs
+
+
+# ----- Book-sourced progressions (baked in all 12 keys) -----
+
+
+CHROMATIC: list[str] = [
+    "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#",
+]
+
+
+@given("the baked progressions")
+def load_baked(ctx):
+    payload = build_baked()
+    ctx["baked"] = {p["id"]: p for p in payload["progressions"]}
+
+
+@when(parsers.parse('I spin "{prog_id}" to "{tonic}"'))
+def spin_one(ctx, prog_id, tonic):
+    prog = ctx["baked"][prog_id]
+    tonic_offset = CHROMATIC.index(tonic)
+    ctx["steps"] = prog["keys"][tonic_offset]
+
+
+@when("I spin every progression to every key")
+def spin_all(ctx):
+    ctx["all_steps"] = [
+        step
+        for prog in ctx["baked"].values()
+        for key in prog["keys"]
+        for step in key
+    ]
+
+
+@then(parsers.parse('the first step is rooted on "{note}"'))
+def first_step_root(ctx, note):
+    assert ctx["steps"][0]["tonic_note"] == note
+
+
+@then(parsers.parse('the first step\'s mode is "{mode}"'))
+def first_step_mode(ctx, mode):
+    assert ctx["steps"][0]["role_mode_name"] == mode
+
+
+@then(parsers.parse('the last step is rooted on "{note}"'))
+def last_step_root(ctx, note):
+    assert ctx["steps"][-1]["tonic_note"] == note
+
+
+@then(parsers.parse('step {n:d} is rooted on "{note}"'))
+def step_n_root(ctx, n, note):
+    assert ctx["steps"][n - 1]["tonic_note"] == note
+
+
+@then(parsers.parse('step {n:d}\'s mode is "{mode}"'))
+def step_n_mode(ctx, n, mode):
+    assert ctx["steps"][n - 1]["role_mode_name"] == mode
+
+
+@then(parsers.parse("the progression has {n:d} steps"))
+def step_count(ctx, n):
+    assert len(ctx["steps"]) == n
+
+
+@then("every step has a unique mode")
+def unique_modes(ctx):
+    modes = [s["role_mode_name"] for s in ctx["steps"]]
+    assert len(set(modes)) == len(modes), modes
+
+
+@then("every step has a unique tonic")
+def unique_tonics(ctx):
+    tonics = [s["tonic_note"] for s in ctx["steps"]]
+    assert len(set(tonics)) == len(tonics), tonics
+
+
+@then("every step's scale is exactly seven or five notes")
+def scale_size(ctx):
+    sizes = {len(s["scale_notes"]) for s in ctx["all_steps"]}
+    assert sizes <= {5, 7}, sizes
+
+
+@then("every step's scale has no repeated notes")
+def scale_unique(ctx):
+    for step in ctx["all_steps"]:
+        scale = step["scale_notes"]
+        assert len(set(scale)) == len(scale), step

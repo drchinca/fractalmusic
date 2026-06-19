@@ -1,0 +1,653 @@
+* { box-sizing: border-box; }
+
+:root {
+  color-scheme: light;
+  --ink: #171615;
+  --muted: #67605a;
+  --paper: #faf6ee;
+  --panel: #fff;
+  --line: rgba(23, 22, 21, 0.18);
+  --shadow: 0 18px 44px rgba(42, 32, 20, 0.14);
+  --accent: #d43a2c;
+  --cool: #1b6f8f;
+  --green: #1f7a5a;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+button,
+select,
+input {
+  font: inherit;
+}
+
+button,
+select {
+  border: 1px solid var(--ink);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  min-height: 40px;
+  padding: 0 13px;
+  cursor: pointer;
+}
+
+button:hover,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid rgba(27, 111, 143, 0.32);
+  outline-offset: 2px;
+}
+
+button:hover {
+  background: var(--ink);
+  color: #fff;
+}
+
+.topbar {
+  width: calc(100% - 32px);
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 20px 0 14px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.classic-link {
+  align-self: center;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fff;
+  padding: 7px 12px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.classic-link:hover,
+.classic-link:focus-visible {
+  background: var(--ink);
+  color: #fff;
+  outline: 2px solid rgba(27, 111, 143, 0.32);
+  outline-offset: 2px;
+}
+
+.brand-mark {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.2rem, 6vw, 4.7rem);
+  line-height: 0.92;
+  letter-spacing: 0;
+}
+
+.tonic-readout {
+  min-width: 220px;
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+}
+
+.tonic-readout span,
+.tonic-readout em,
+.readout-head p,
+.instrument-head p {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.tonic-readout strong {
+  color: var(--accent);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 0.95;
+}
+
+.app-grid {
+  width: calc(100% - 32px);
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 26px;
+  align-items: start;
+}
+
+.wheel-panel,
+.readout,
+.instruments {
+  min-width: 0;
+  background: var(--panel);
+  border: 1px solid rgba(23, 22, 21, 0.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.wheel-panel {
+  padding: clamp(14px, 2.4vw, 26px);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#wheel {
+  display: block;
+  width: 100%;
+  max-width: 680px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+#wheel.dragging { cursor: grabbing; }
+
+.field-disc {
+  fill: #fff;
+  stroke: rgba(23, 22, 21, 0.18);
+  stroke-width: 1.5;
+  filter: url("#soft-shadow");
+}
+
+#orbit-disc,
+#inner-disc,
+.note-item,
+.role-glyph,
+.role-segment,
+.symbol-trail,
+.scale-path,
+.scale-node {
+  transition:
+    transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+    fill 0.25s ease,
+    opacity 0.25s ease,
+    stroke 0.25s ease;
+}
+
+#wheel.dragging #orbit-disc,
+#wheel.dragging #inner-disc,
+#wheel.dragging .note-item,
+#wheel.dragging .role-glyph {
+  transition: none;
+}
+
+.role-segment {
+  cursor: pointer;
+  stroke: rgba(23, 22, 21, 0.72);
+  stroke-width: 1;
+}
+
+.role-segment.is-active {
+  stroke: #111;
+  stroke-width: 3;
+  filter: url("#glow");
+}
+
+.role-glyph {
+  font-size: 25px;
+  font-weight: 850;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.role-glyph.is-active {
+  font-size: 34px;
+}
+
+.symbol-trail {
+  font-size: 12px;
+  font-weight: 900;
+  text-anchor: middle;
+  dominant-baseline: central;
+  opacity: 0.32;
+  pointer-events: none;
+}
+
+.scale-path {
+  fill: rgba(255, 250, 241, 0.24);
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  filter: url("#glow");
+}
+
+.scale-spoke {
+  stroke: rgba(23, 22, 21, 0.14);
+  stroke-width: 1.4;
+}
+
+.scale-node {
+  fill: #fff;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+
+.scale-node.root {
+  fill: var(--accent);
+  stroke: #111;
+  stroke-width: 2.5;
+}
+
+.note-disc {
+  fill: #faf6ee;
+  stroke: #171615;
+  stroke-width: 1.35;
+  cursor: pointer;
+}
+
+.note-disc.in-scale {
+  fill: #fff3d5;
+  stroke-width: 2.2;
+}
+
+.note-disc.is-root {
+  fill: var(--accent);
+}
+
+.note-label {
+  font-size: 16px;
+  font-weight: 800;
+  text-anchor: middle;
+  dominant-baseline: central;
+  cursor: pointer;
+  fill: #111;
+}
+
+.note-label.is-root {
+  fill: #fff;
+}
+
+.eye-white {
+  fill: #fff;
+  stroke: #111;
+  stroke-width: 3;
+}
+
+.eye-iris {
+  fill: #0d513e;
+}
+
+.eye-glint {
+  fill: #fff;
+  opacity: 0.62;
+}
+
+.control-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+#spin-toggle[aria-pressed="true"] {
+  background: var(--accent);
+  color: #fff;
+  border-color: #8f1f16;
+}
+
+.range-control,
+.select-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 0 10px;
+  background: #fff;
+}
+
+.range-control span,
+.select-control span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+#spin-speed,
+#orbit-offset {
+  width: 124px;
+  accent-color: var(--accent);
+}
+
+#scale-select {
+  min-height: 30px;
+  max-width: 178px;
+  border: 0;
+  background: transparent;
+  font-weight: 750;
+}
+
+.palette-toggle {
+  display: inline-flex;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.palette-toggle button {
+  min-height: 32px;
+  border: 0;
+  border-radius: 5px;
+  padding: 0 10px;
+}
+
+.palette-toggle button.active {
+  background: var(--ink);
+  color: #fff;
+}
+
+.readout {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.readout-head,
+.instrument-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.readout-head {
+  padding: 16px 16px 12px;
+}
+
+h2 {
+  font-size: 0.86rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+#bindings {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+#bindings th,
+#bindings td {
+  padding: 8px 10px;
+  text-align: left;
+  border-top: 1px solid rgba(23, 22, 21, 0.09);
+  white-space: nowrap;
+}
+
+#bindings th {
+  background: #f0ece2;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+#bindings tr.is-active {
+  background: rgba(212, 58, 44, 0.1);
+}
+
+#bindings .glyph-cell {
+  width: 42px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 850;
+}
+
+#bindings .swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.24);
+  border-radius: 3px;
+  margin-right: 7px;
+  vertical-align: -1px;
+}
+
+.instruments {
+  width: calc(100% - 32px);
+  max-width: 1180px;
+  margin: 26px auto 0;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.instrument-head + svg {
+  margin-top: 10px;
+}
+
+.instrument-head:not(:first-child) {
+  margin-top: 24px;
+}
+
+#piano,
+#fretboard {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;
+  border: 1px solid rgba(23, 22, 21, 0.16);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.piano-key,
+.fret-cell {
+  --flow-color: var(--accent);
+  --flow-delay: 0ms;
+}
+
+.piano-tint,
+.fret-tint,
+.piano-glyph,
+.piano-note,
+.fret-glyph,
+.fret-label {
+  transition:
+    fill 0.25s ease,
+    opacity 0.16s linear,
+    filter 0.25s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.piano-key:not(.in-scale) .piano-tint,
+.fret-cell:not(.in-scale) .fret-tint {
+  opacity: 0.64;
+}
+
+.piano-key.in-scale .piano-tint {
+  filter: drop-shadow(0 5px 9px color-mix(in srgb, var(--flow-color) 42%, transparent));
+}
+
+.fret-cell.in-scale .fret-tint {
+  filter: drop-shadow(0 3px 7px color-mix(in srgb, var(--flow-color) 34%, transparent));
+}
+
+.piano-key.is-root .piano-tint,
+.fret-cell.is-root .fret-tint {
+  stroke-width: 2.5;
+  opacity: 1;
+}
+
+.piano-glyph,
+.fret-glyph {
+  font-weight: 850;
+}
+
+.piano-note,
+.fret-label,
+.fret-number {
+  fill: #4f4944;
+  font-weight: 700;
+}
+
+.piano-black .piano-note,
+.piano-black .piano-glyph {
+  fill: #fff;
+}
+
+footer {
+  width: calc(100% - 32px);
+  max-width: 1180px;
+  margin: 18px auto 28px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+footer code {
+  color: var(--ink);
+}
+
+@media (max-width: 920px) {
+  .topbar {
+    align-items: start;
+  }
+
+  .app-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .readout {
+    order: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    background: var(--paper);
+  }
+
+  .topbar {
+    width: calc(100% - 20px);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .classic-link {
+    align-self: start;
+  }
+
+  .tonic-readout {
+    min-width: 0;
+    justify-items: start;
+  }
+
+  .app-grid,
+  .instruments,
+  footer {
+    width: calc(100% - 20px);
+  }
+
+  .wheel-panel,
+  .instruments {
+    padding: 10px;
+  }
+
+  .control-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    justify-content: stretch;
+    gap: 8px;
+  }
+
+  .control-strip > button {
+    width: 100%;
+    min-width: 0;
+    padding: 0 8px;
+  }
+
+  .range-control,
+  .select-control,
+  .palette-toggle {
+    grid-column: 1 / -1;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .range-control,
+  .select-control {
+    width: 100%;
+  }
+
+  #spin-speed,
+  #orbit-offset,
+  #scale-select {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .palette-toggle button {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  #wheel {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .readout {
+    overflow-x: auto;
+  }
+
+  #bindings {
+    font-size: 12px;
+    min-width: 330px;
+  }
+
+  #bindings th,
+  #bindings td {
+    padding: 7px 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}

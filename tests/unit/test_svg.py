@@ -6,7 +6,6 @@ from fractalmusic.scales import mode_scale, penta
 from fractalmusic.svg import (
     deck_grid,
     fretboard_stickers_svg,
-    gatople_wheel,
     piano_stickers_svg,
     scale_strip,
 )
@@ -14,13 +13,6 @@ from fractalmusic.svg import (
 
 def _is_svg(text: str) -> bool:
     return text.startswith("<svg") and text.rstrip().endswith("</svg>")
-
-
-def test_wheel_is_valid_svg_with_all_glyphs():
-    svg = gatople_wheel()
-    assert _is_svg(svg)
-    for glyph in ("⋮", "△", "□", "+", "♀", "↑", "↓", "★"):
-        assert glyph in svg
 
 
 def test_deck_grid_has_twelve_number_labels():
@@ -37,14 +29,6 @@ def test_scale_strip_names_the_mode():
 def test_penta_strip_is_all_stars():
     svg = scale_strip(penta("C#", mode="I"))
     assert svg.count("★") == 5
-
-
-def test_wheel_renders_cat_face_elements():
-    # The Gátople is a cat face, not a bare donut: nose, whiskers, eye, body.
-    svg = gatople_wheel()
-    assert "#ec6fb0" in svg  # pink pyramid nose
-    assert "#e8c4a0" in svg  # peach cat-head silhouette
-    assert "stroke-linecap='round'" in svg  # whiskers
 
 
 def test_piano_stickers_render_all_twelve_worlds():

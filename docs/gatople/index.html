@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Gátople — the spinning wheel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>El Gátople</h1>
+    <p class="page-tabs"><strong>Theory</strong> · <a href="compose.html">Compose / Improvise →</a></p>
+    <p class="subtitle">
+      Two-disc spinner. The outer cat-face holds the 12 symbols at fixed clock
+      positions; the inner ring carries the notes and rotates under it (drag, or
+      click any note to set it as tonic). Below the wheel, the piano and
+      fretboard show the inverse view — <em>notes</em> are fixed (a real
+      instrument can't move them) while the <em>symbols/roles</em> at each
+      position change every time you spin.
+    </p>
+  </header>
+
+  <main>
+    <div class="stage">
+      <svg id="wheel" viewBox="-260 -260 520 520" aria-label="Gátople wheel">
+        <!-- Outer disc: fixed roles. Inner disc: rotating notes + geometry overlays. -->
+        <g id="outer-disc"></g>
+        <g id="zonas-layer" aria-hidden="true"></g>
+        <g id="inner-disc"></g>
+        <g id="geometry-layer" aria-hidden="true"></g>
+        <g id="cyclops-eye">
+          <circle r="36" fill="#fff" stroke="#000" stroke-width="3"/>
+          <ellipse cx="0" cy="0" rx="14" ry="32" fill="#0a3d2e"/>
+          <ellipse cx="0" cy="-6" rx="4" ry="6" fill="#fff" opacity="0.5"/>
+        </g>
+      </svg>
+      <p class="tonic-readout">Tonic: <strong id="tonic-label">A</strong>
+        <span class="tonic-mode">(<span id="tonic-mode">Eólico</span>)</span></p>
+      <div class="step-controls">
+        <button data-action="step-back" type="button" aria-label="Step back one semitone">◀</button>
+        <button data-action="reset" type="button">Reset to A</button>
+        <button data-action="step-fwd" type="button" aria-label="Step forward one semitone">▶</button>
+      </div>
+      <div class="geometry-controls" role="group" aria-label="Geometry overlays">
+        <button data-shape="heptagon" type="button" aria-pressed="false">7-gon (hepta)</button>
+        <button data-shape="pentagram" type="button" aria-pressed="false">★ pentagram (penta)</button>
+        <button data-shape="zonas" type="button" aria-pressed="false">4 zonas</button>
+        <button data-action="cero-pitagoras" type="button" title="The five fingers on the five black keys (Ch. 4)">Play Cero Pitágoras</button>
+      </div>
+    </div>
+
+    <aside class="carta-card" id="carta-card" aria-live="polite" aria-label="Hovered carta">
+      <img id="carta-card-img" alt="" />
+      <div class="carta-card-meta">
+        <h3 id="carta-card-title">Hover a wheel segment</h3>
+        <p id="carta-card-sub">to see the painted carta</p>
+      </div>
+    </aside>
+
+    <aside class="readout">
+      <h2>Current bindings</h2>
+      <table id="bindings">
+        <thead><tr><th>Role</th><th>Glyph</th><th>Note</th><th>Hour</th></tr></thead>
+        <tbody></tbody>
+      </table>
+
+      <h2 style="margin-top:18px">Play with your keyboard</h2>
+      <p class="caption" style="font-size:13px; line-height:1.5">
+        White keys: <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> <kbd>F</kbd>
+        <kbd>G</kbd> <kbd>H</kbd> <kbd>J</kbd> <kbd>K</kbd>
+        (= C D E F G A B C — standard piano typing).<br>
+        Black keys: <kbd>W</kbd> <kbd>E</kbd> <kbd>T</kbd> <kbd>Y</kbd>
+        <kbd>U</kbd> (= C♯ D♯ F♯ G♯ A♯).<br>
+        Octave: <kbd>Z</kbd> down · <kbd>X</kbd> up.
+        <span id="octave-readout" style="font-weight:700">Octave 4</span>.<br>
+        Set tonic (move the ⋮ glyph): <kbd>Shift</kbd>+letter.
+      </p>
+    </aside>
+  </main>
+
+  <section class="instruments">
+    <div class="palette-toggle">
+      <span>Sticker palette:</span>
+      <button data-palette="carta" type="button" class="active">Carta colors</button>
+      <button data-palette="mono" type="button" title="Penta-only B&amp;W: ★ stars render solid black, hepta cells white. The pattern slides as you spin.">Penta B&amp;W</button>
+    </div>
+
+    <h2>Piano</h2>
+    <p class="caption">Each key wears the role currently bound to its physical
+      note. Spin the wheel and the keyboard repaints in lockstep.</p>
+    <svg id="piano" viewBox="0 0 560 180" aria-label="Piano sticker overlay"></svg>
+
+    <h2>Guitar fretboard (EADGBE)</h2>
+    <p class="caption">12 frets across all 6 strings, every position painted
+      with its current role. Same data model, same rotation.</p>
+    <svg id="fretboard" viewBox="0 0 776 238" aria-label="Guitar fretboard sticker overlay"></svg>
+
+    <div class="step-controls step-controls-footer">
+      <button data-action="step-back" type="button" aria-label="Step back one semitone">◀ back</button>
+      <button data-action="reset" type="button">Reset to A</button>
+      <button data-action="step-fwd" type="button" aria-label="Step forward one semitone">forward ▶</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      Data sourced from <code>fractalmusic.wheel.ROLES</code>. Glyphs and colors
+      come from the 12 hand-painted cartas of the
+      <a href="https://github.com/drchinca/fractalmusic">Sistema Fractal</a>.
+    </p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

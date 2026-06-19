@@ -11,6 +11,8 @@ Penta interval patterns are derived from the book's spelling of each penta mode
 from dataclasses import dataclass
 from typing import Final
 
+from pytheory import Tone
+
 from fractalmusic.dodecamundo import DODECAMUNDO, NoteWorld, world
 from fractalmusic.modes import PENTA, mode_for
 
@@ -52,6 +54,47 @@ class FractalScale:
     def has_semitone(self) -> bool:
         """True if any adjacent step is a single semitone."""
         return 1 in _steps_of(self.worlds)
+
+    def to_pytheory(self, *, octave: int = 4) -> list[Tone]:
+        """Materialize this scale as a list of pytheory ``Tone`` objects.
+
+        Returns ascending pitches anchored at ``octave`` (default A4). pytheory
+        uses scientific notation (octave numbers change at C), so the helper
+        bumps the octave when the scale crosses C upward::
+
+            from pytheory.play import play
+            play(Wheel('A').scale('Eólico').to_pytheory())
+        """
+        return _to_pytheory_tones(tuple(w.note for w in self.worlds), octave=octave)
+
+
+_SCI_INDEX: Final[dict[str, int]] = {
+    "C": 0, "C#": 1, "D": 2, "D#": 3, "E": 4, "F": 5, "F#": 6,
+    "G": 7, "G#": 8, "A": 9, "A#": 10, "B": 11,
+}
+_ENHARMONIC: Final[dict[str, str]] = {
+    "Bb": "A#", "Db": "C#", "Eb": "D#", "Gb": "F#", "Ab": "G#",
+}
+
+
+def _to_pytheory_tones(notes: tuple[str, ...], *, octave: int) -> list[Tone]:
+    """Walk an ascending note sequence into pytheory ``Tone`` objects.
+
+    pytheory uses scientific pitch notation: octave numbers tick over at C
+    (C4 = 261 Hz, A4 = 440 Hz, B4 = 493 Hz, C5 = 523 Hz). To produce a strictly
+    ascending tone list we bump the octave whenever the next note's *scientific
+    pitch class* is lower than the previous (i.e. we crossed C upward).
+    """
+    tones: list[Tone] = []
+    prev_sci = -1
+    current_octave = octave
+    for note in notes:
+        sci = _SCI_INDEX[_ENHARMONIC.get(note, note)]
+        if tones and sci <= prev_sci:
+            current_octave += 1
+        tones.append(Tone.from_string(f"{note}{current_octave}"))
+        prev_sci = sci
+    return tones
 
 
 def _walk(root: str, steps: tuple[int, ...]) -> tuple[NoteWorld, ...]:
@@ -98,4 +141,65 @@ def mode_scale(note: str) -> FractalScale:
         root=note,
         family=mode.family,
         worlds=tuple(world(n) for n in mode.note_order),
+    )
+
+
+# Triad qualities for the 7 diatonic positions of A natural minor — the book's
+# default rotation. Index 0 = root mode (Eólico), then up the cycle of fourths.
+# Confirmed against image 9 of the user's notebook: i ii° III iv v VI VII.
+_TRIAD_QUALITIES: Final[dict[str, str]] = {
+    "Eólico": "minor",
+    "Locrio": "diminished",
+    "Jónico": "major",
+    "Dórico": "minor",
+    "Frigio": "minor",
+    "Lidio": "major",
+    "Mixolidio": "major",
+}
+
+
+@dataclass(frozen=True)
+class Triad:
+    """A 1-3-5 triad picked from a heptatonic mode's scale."""
+
+    root: str
+    notes: tuple[str, str, str]
+    glyphs: tuple[str, str, str]
+    quality: str  # "major" / "minor" / "diminished"
+
+    @property
+    def symbol(self) -> str:
+        """Conventional chord symbol (e.g. 'Am', 'B°', 'C')."""
+        suffix = {"minor": "m", "diminished": "°", "major": ""}[self.quality]
+        return f"{self.root}{suffix}"
+
+    def to_pytheory(self, *, octave: int = 4) -> list[Tone]:
+        """Materialize this triad as three ascending pytheory ``Tone`` objects."""
+        return _to_pytheory_tones(self.notes, octave=octave)
+
+
+def triad_for(note: str) -> Triad:
+    """The diatonic 1-3-5 triad rooted on a heptatonic note (image 9 invariant).
+
+    Picks scale positions 1, 3, 5 from the Greek mode rooted on ``note``, then
+    spells the triad in glyphs. Verified against the book's diatonic theory in
+    A natural minor (Am, B°, C, Dm, Em, F, G).
+
+    Raises :class:`ValueError` for pentatonic (black-key) roots — triads in this
+    sense are a heptatonic construct.
+    """
+    mode = mode_for(note)
+    if mode.family != "hepta":
+        raise ValueError(
+            f"triad_for: {note!r} is a pentatonic root; "
+            f"diatonic triads are heptatonic only"
+        )
+    scale = mode_scale(note)
+    triad_notes = (scale.notes[0], scale.notes[2], scale.notes[4])
+    triad_glyphs = (scale.glyphs[0], scale.glyphs[2], scale.glyphs[4])
+    return Triad(
+        root=note,
+        notes=triad_notes,
+        glyphs=triad_glyphs,
+        quality=_TRIAD_QUALITIES[mode.mode_name],
     )
