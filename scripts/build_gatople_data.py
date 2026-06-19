@@ -127,13 +127,25 @@ def build_payload() -> GatoplePayload:
     )
 
 
+# Both consumers read the same payload. The static surface lives at
+# docs/gatople/data.json; the React app imports web/public/data.json.
+# Keeping them in lockstep is enforced by the drift test in
+# tests/integration/test_gatople_data_sync.py.
+OUTPUT_PATHS: tuple[tuple[str, ...], ...] = (
+    ("docs", "gatople", "data.json"),
+    ("web", "public", "data.json"),
+)
+
+
 def main() -> None:
-    """Write docs/gatople/data.json beside the package root."""
+    """Write the canonical payload to every consumer site."""
     repo_root = Path(__file__).resolve().parent.parent
-    out = repo_root / "docs" / "gatople" / "data.json"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(build_payload(), indent=2, ensure_ascii=False) + "\n")
-    print(f"wrote {out.relative_to(repo_root)} ({out.stat().st_size} bytes)")
+    payload_text = json.dumps(build_payload(), indent=2, ensure_ascii=False) + "\n"
+    for parts in OUTPUT_PATHS:
+        out = repo_root.joinpath(*parts)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(payload_text)
+        print(f"wrote {out.relative_to(repo_root)} ({out.stat().st_size} bytes)")
 
 
 if __name__ == "__main__":

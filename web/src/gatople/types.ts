@@ -21,6 +21,7 @@ export interface Role {
   readonly scale_steps: readonly number[];
   readonly wheel_color: string;
   readonly carta_color: string;
+  readonly carta_image: string;
   readonly glyph_fg: string;
   readonly carta_name: string;
   readonly is_penta: boolean;
