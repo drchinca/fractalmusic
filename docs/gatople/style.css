@@ -39,6 +39,14 @@ main {
   main { grid-template-columns: 1fr; }
 }
 
+/* Phone breakpoint — keep the layout breathable down to 320px. */
+@media (max-width: 480px) {
+  body { padding: 12px; }
+  h1 { font-size: 1.5rem; }
+  header { margin-bottom: 16px; }
+  main { gap: 20px; }
+}
+
 .stage {
   display: flex;
   flex-direction: column;

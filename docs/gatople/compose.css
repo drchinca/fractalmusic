@@ -32,6 +32,22 @@
   .compose-grid { grid-template-columns: 1fr; }
 }
 
+/* Phone breakpoint — keep transport, picker, BPM all reachable on 320px. */
+@media (max-width: 480px) {
+  .compose-page header h1 { font-size: 1.3rem; }
+  .compose-grid { gap: 16px; }
+  .progression-picker, .improvise-panel { padding: 12px; }
+  .transport { gap: 8px; }
+  .transport button { padding: 8px 10px; min-width: 40px; }
+  #play-toggle { min-width: 72px; padding: 8px 12px; }
+  .bpm-control, .drone-control { font-size: 12px; }
+  #bpm { width: 100px; }
+  .improvise-panel .step-role { font-size: 1.2rem; }
+  .improvise-panel .role-glyph-inline { font-size: 1.6rem; }
+  .improvise-panel .step-scale { font-size: 0.95rem; }
+  .next-stop span:first-child { font-size: 1.2rem; }
+}
+
 .progression-picker, .improvise-panel {
   background: #fffaf1;
   border: 1px solid rgba(23, 22, 21, 0.16);
