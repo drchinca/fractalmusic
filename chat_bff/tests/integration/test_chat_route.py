@@ -84,6 +84,86 @@ def test_hash_fabrication_caught(
     assert body["citations"][0]["verified"] is False
 
 
+def test_frigio_flamenco_real_failure_mode(
+    client: TestClient, fake_retriever: FakeRetriever, fake_claude: FakeLLM
+) -> None:
+    """The exact live-UI failure: 'Por qué Frigio suena flamenco?'
+
+    The chapter that explains Frigio's flamenco color isn't in the
+    indexed Cap 0. Retrieval surfaces topical-but-wrong chunks; the LLM
+    confidently cites a paragraph it remembers from training but that
+    paragraph wasn't in the retrieval set. Validator must catch this and
+    surface the (unverified) retrieved chunks to the FE.
+    """
+    # Retrieval returns chunks from p.17 and p.25 (what live UI showed).
+    p17 = RetrievedChunk(
+        book_hash="b202598c",
+        book_title="Libro El Metodo Fractal Cap 0 Bado",
+        chapter_idx=0,
+        section_idx=0,
+        paragraph_idx=28,
+        page_start=17,
+        text="¿Quién soy? ¿Cómo suena mi música ancestral?",
+    )
+    p25 = RetrievedChunk(
+        book_hash="b202598c",
+        book_title="Libro El Metodo Fractal Cap 0 Bado",
+        chapter_idx=0,
+        section_idx=0,
+        paragraph_idx=44,
+        page_start=25,
+        text="Sabes por qué y para qué existen los semitonos?",
+    )
+    fake_retriever.default = (p17, p25)
+    # LLM hallucinates a paragraph that isn't in the retrieval set.
+    fake_claude.set_responses(
+        "Frigio funciona como dominante del Eólico [b202598c·ch0§0¶45 p.26].",
+        "Frigio funciona como dominante del Eólico [b202598c·ch0§0¶45 p.26].",
+    )
+    response = client.post(
+        "/api/chat",
+        json={"question": "¿Por qué Frigio suena flamenco?", "llm": "claude"},
+    )
+    body = response.json()
+    assert response.status_code == 200
+    assert body["answer"] is None
+    assert body["reason"] == "unknown_chunk"
+    # FE gets the two real chunks as unverified citations to display.
+    assert len(body["citations"]) == 2
+    assert all(c["verified"] is False for c in body["citations"])
+    assert {c["page_start"] for c in body["citations"]} == {17, 25}
+
+
+def test_contaminated_regen_answer_is_rejected(
+    client: TestClient, fake_retriever: FakeRetriever, fake_claude: FakeLLM
+) -> None:
+    """If the LLM produces a cited sentence AND the escape hatch in the
+    same response (qwen2.5 was doing this on the live regen turn), the
+    BFF must NOT show that mixed text to the user — fall back to null
+    answer with retrieved sources."""
+    fake_retriever.default = (DODECAMUNDO_CHUNK,)
+    # First attempt has no citation; second is the contaminated mix.
+    fake_claude.set_responses(
+        "Frigio is dominant of Eólico.",  # no citation → triggers regen
+        "El Dodecamundo es doce mundos [b202598c·ch0§0¶27 p.16]. "
+        "No tengo evidencia suficiente en estos libros para responder.",
+    )
+    response = client.post("/api/chat", json={"question": "test"})
+    assert response.status_code == 200
+    body = response.json()
+    # The mixed answer must not reach the user as a confident answer.
+    # Either it's rejected (answer is None + unverified citations), or
+    # the validator accepts it but the FE-visible answer doesn't carry
+    # the escape-hatch sentence as load-bearing copy.
+    if body["answer"] is not None:
+        assert "No tengo evidencia suficiente" not in body["answer"], (
+            "Confident answer must not carry the escape hatch"
+        )
+    else:
+        # Null path: user sees retrieved chunks instead.
+        assert all(c["verified"] is False for c in body["citations"])
+
+
 def test_repetition_gaming_caught_by_fidelity(
     fake_retriever: FakeRetriever, fake_claude: FakeLLM, fake_ollama: FakeLLM, settings: ChatSettings
 ) -> None:

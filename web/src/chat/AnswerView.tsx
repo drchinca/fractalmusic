@@ -42,21 +42,47 @@ function GroundedAnswer({
   );
 }
 
+function copyForReason(
+  reason: string | null,
+  hasSources: boolean,
+): { readonly headline: string; readonly hint: string | null } {
+  // unknown_chunk: LLM cited a paragraph we didn't retrieve — almost
+  //   always means the answer is in a chapter not yet indexed.
+  // low_fidelity | uncited_claim | no_citations: model saw passages but
+  //   couldn't ground in them.
+  // no_evidence_in_corpus: retrieval found nothing.
+  if (reason === "no_evidence_in_corpus") {
+    return {
+      headline:
+        "No encontré nada en estos libros sobre tu pregunta. Probá una más cercana al Sistema Fractal — el Dodecamundo, los modos griegos, o las cartas.",
+      hint: null,
+    };
+  }
+  if (reason === "unknown_chunk") {
+    return {
+      headline:
+        "El modelo intentó citar un pasaje que no está en la parte indexada de los libros. Esa respuesta probablemente vive en un capítulo aún no incluido.",
+      hint: hasSources ? "Pasajes relacionados que sí están indexados:" : null,
+    };
+  }
+  if (reason === "low_fidelity" || reason === "uncited_claim" || reason === "no_citations") {
+    return {
+      headline:
+        "Encontré pasajes pero no pude responder con confianza desde ellos. Mirá lo que aparece y juzgá vos.",
+      hint: hasSources ? "Pasajes relacionados:" : null,
+    };
+  }
+  return { headline: "No pude responder con seguridad.", hint: null };
+}
+
 function NullAnswer({ result }: { readonly result: ChatResponse }): JSX.Element {
-  const reasonCopy: Record<string, string> = {
-    no_evidence_in_corpus: "No tengo evidencia suficiente en estos libros para responder.",
-    unknown_chunk: "Encontré pasajes, pero no pude anclar la respuesta a ellos con confianza.",
-    low_fidelity: "Encontré pasajes, pero no pude anclar la respuesta a ellos con confianza.",
-    uncited_claim: "Encontré pasajes, pero no pude anclar la respuesta a ellos con confianza.",
-    no_citations: "Encontré pasajes, pero no pude anclar la respuesta a ellos con confianza.",
-  };
-  const message = reasonCopy[result.reason ?? ""] ?? "No pude responder con seguridad.";
+  const copy = copyForReason(result.reason, result.citations.length > 0);
   return (
     <div className="answer-view answer-null">
-      <p className="answer-null-message">{message}</p>
-      {result.citations.length > 0 && (
+      <p className="answer-null-message">{copy.headline}</p>
+      {copy.hint !== null && result.citations.length > 0 && (
         <>
-          <p className="answer-null-hint">Lo que sí encontré en los libros:</p>
+          <p className="answer-null-hint">{copy.hint}</p>
           <div className="answer-citations">
             {result.citations.map((c, i) => (
               <CitationChip
