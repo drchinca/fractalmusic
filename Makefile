@@ -1,4 +1,4 @@
-.PHONY: help install dev-install test test-quick smoke check format clean lint type-check pre-commit build \
+.PHONY: help install dev-install test test-quick smoke check verify format clean lint type-check pre-commit build \
         bff bff-install bff-test web web-install web-build chat chat-stop
 
 UV_RUN := uv run --extra dev
@@ -13,6 +13,7 @@ help:
 	@echo "    make test-quick    Run tests without coverage"
 	@echo "    make smoke         Generate WAV + Strudel smoke artifacts"
 	@echo "    make check         Run lint, format, type, test, and security checks"
+	@echo "    make verify        Run full local merge gate: core, BFF, and web"
 	@echo "    make format        Format code with Ruff"
 	@echo "    make lint          Lint code with Ruff"
 	@echo "    make type-check    Run Mypy"
@@ -48,6 +49,12 @@ smoke:
 
 check:
 	$(UV_RUN) bash scripts/check_code.sh
+
+verify:
+	$(MAKE) check
+	$(MAKE) bff-test
+	cd web && npm run lint
+	cd web && npm run build
 
 format:
 	$(UV_RUN) ruff format fractalmusic tests
