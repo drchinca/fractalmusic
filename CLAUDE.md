@@ -2,6 +2,61 @@
 
 > Patricio Torres's **Sistema Fractal** as a typed Python layer over [pytheory](https://pytheory.org), with a TypeScript/React companion app under `web/`. Source of truth: *El Sistema Fractal* (2024) and *2025 Fractal Music World*.
 
+## Project Rules (override the global BrightHive defaults)
+
+This is a **personal music-theory project**, single developer, no team, no Jira, no BrightHive context. The global rules at `~/.claude/CLAUDE.md` are calibrated for enterprise multi-person workflows; the rules below override them for work in this repo.
+
+### What's dropped
+
+- **No Jira, no tickets, no epics.** Don't run `/create-jira-ticket`. Don't reference BH-*. Don't add story points.
+- **No team reviewers.** PRs are assigned to `drchinca`. No `--add-reviewer`. The PR template's "Assignees + Reviewers" rule does not apply.
+- **No multi-agent review on every code change.** Use the project agent roster below, and only when the work warrants it (specs, non-trivial features, security-adjacent code). Routine fixes don't need 4 reviewers.
+- **No OTel observability contract section in specs** unless the feature actually ships telemetry (this app doesn't yet).
+- **No BrightHive-grade SDD ceremony.** See lean spec template below.
+
+### Lean spec template (5 sections, not 9)
+
+When a feature warrants a spec (LLM behavior, cross-service contract, new public surface), use this shape — total length usually under 200 lines. Specs live at `docs/specs/SPEC-{slug}.md`.
+
+```
+1. Context           — problem, who, why now (≤ 1 paragraph + optional mermaid)
+2. Interface         — Pydantic models, HTTP shapes, type contracts
+3. Invariants        — what must always hold (max 5; if you need more, split the feature)
+4. Acceptance        — Gherkin scenarios (max 8; the headline behaviors)
+5. Out of scope      — explicit non-goals
+```
+
+Dropped from the global template: §6 Dependencies (put in README), §7 Correctness Properties (collapse into §3 invariants), §8 Eval Criteria (only when LLM behavior is the feature, and then inline a small "how we know it works" subsection — not a full evaluator table), §9 Observability Contract.
+
+When in doubt: **fewer sections, fewer invariants, fewer scenarios.** The simplifier agent reviews specs and will cut what doesn't earn its place.
+
+### Project agent roster
+
+| Agent | Role | When to invoke |
+|---|---|---|
+| `react-frontend-expert` | React 19 + TS + Vite review | UI work in `web/` |
+| `ux-designer` | Voice of the everyday musician (not a dev) | Any user-facing change — flags jargon, pedagogy gaps, mobile/touch UX |
+| `senior-python` | Python core + BFF review | Non-trivial Python changes |
+| `simplifier` | Lean-keeper. Reads specs/PRs through "does this earn its place in a 1-dev music app?" | Every spec; every PR over ~200 lines; whenever ceremony creeps in |
+
+Multi-agent review for a feature spec = these four agents in parallel, **not** the global Solutions Architect → Senior Python → QA → Junior Dev sequence. Routine code changes need none.
+
+### Commit / branch / PR
+
+- Branches off `develop` (created in v1 release). `master` only on explicit user say-so.
+- Conventional commits, no AI attribution. (Same as global.)
+- PR size cap is **soft, not hard**, here: prefer ≤500 lines but a coherent feature milestone can land in one squash PR. Acknowledge the deviation in the PR body when over.
+- Draft PR after first commit on a branch — same as global. This rule earns its place even on a 1-dev project (gives CI a green/red signal early).
+- Squash-merge into `develop`.
+
+### Testability
+
+The global `testable-code.md` rule (no `patch()`, DI everywhere) applies. It earns its place even on a 1-dev project — singletons rot fast.
+
+### When to escalate to the global rules
+
+If a feature genuinely needs SLOs, observability, or a calibrated eval set, write that section *and* mark it as such. The lean template is a default, not a ceiling.
+
 ## Cardinal Invariants
 
 These are non-negotiable. Code that violates them is wrong, even if tests pass.
