@@ -1,8 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import { GatopleApp } from "./gatople/GatopleApp";
+import "./chat/chat.css";
 import "./gatople/gatople.css";
+import "./shell/shell.css";
+import { AppShell } from "./shell/AppShell";
 
 const container = document.getElementById("root");
 if (container === null) {
@@ -11,6 +13,6 @@ if (container === null) {
 
 createRoot(container).render(
   <StrictMode>
-    <GatopleApp />
+    <AppShell />
   </StrictMode>,
 );
