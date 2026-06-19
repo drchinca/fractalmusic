@@ -99,14 +99,10 @@ def piano_stickers_svg(*, octaves: int = 1, white_w: int = 56, height: int = 220
                 f"<rect x='{x:.1f}' y='0' width='{black_w:.1f}' height='{black_h:.1f}' "
                 f"fill='#000'/>"
             )
-            parts.append(
-                _carta_cell(w, x + 3, black_h - 44, black_w - 6, 38, font=16)
-            )
+            parts.append(_carta_cell(w, x + 3, black_h - 44, black_w - 6, 38, font=16))
     return (
         f"<svg xmlns='http://www.w3.org/2000/svg' width='{width}' height='{height}' "
-        f"viewBox='0 0 {width} {height}'>"
-        + "".join(parts)
-        + "</svg>"
+        f"viewBox='0 0 {width} {height}'>" + "".join(parts) + "</svg>"
     )
 
 
@@ -149,9 +145,7 @@ def fretboard_stickers_svg(
             parts.append(_carta_cell(w, x + 4, y + 4, cw - 8, cell - 8, font=20))
     return (
         f"<svg xmlns='http://www.w3.org/2000/svg' width='{width}' height='{height}' "
-        f"viewBox='0 0 {width} {height}'>"
-        + "".join(parts)
-        + "</svg>"
+        f"viewBox='0 0 {width} {height}'>" + "".join(parts) + "</svg>"
     )
 
 
@@ -177,7 +171,5 @@ def deck_grid(*, cols: int = 6, cell: int = 80) -> str:
     return (
         f"<svg xmlns='http://www.w3.org/2000/svg' width='{width}' height='{height}' "
         f"viewBox='0 0 {width} {height}'>"
-        f"<rect width='{width}' height='{height}' fill='#fff'/>"
-        + "".join(cells)
-        + "</svg>"
+        f"<rect width='{width}' height='{height}' fill='#fff'/>" + "".join(cells) + "</svg>"
     )

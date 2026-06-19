@@ -92,12 +92,16 @@ def services(
     async def always_high(_claim: str, _snippet: str) -> float:
         return 0.9
 
+    from fractalmusic.generate import JsonCorpus, StubExpert
+
     return ChatServices(
         retriever=fake_retriever,
         llm_claude=fake_claude,
         llm_ollama=fake_ollama,
         similarity=always_high,
         settings=settings,
+        expert=StubExpert(),
+        corpus=JsonCorpus(root=settings.corpus_root),
     )
 
 

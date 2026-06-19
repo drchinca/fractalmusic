@@ -69,11 +69,25 @@ class FractalScale:
 
 
 _SCI_INDEX: Final[dict[str, int]] = {
-    "C": 0, "C#": 1, "D": 2, "D#": 3, "E": 4, "F": 5, "F#": 6,
-    "G": 7, "G#": 8, "A": 9, "A#": 10, "B": 11,
+    "C": 0,
+    "C#": 1,
+    "D": 2,
+    "D#": 3,
+    "E": 4,
+    "F": 5,
+    "F#": 6,
+    "G": 7,
+    "G#": 8,
+    "A": 9,
+    "A#": 10,
+    "B": 11,
 }
 _ENHARMONIC: Final[dict[str, str]] = {
-    "Bb": "A#", "Db": "C#", "Eb": "D#", "Gb": "F#", "Ab": "G#",
+    "Bb": "A#",
+    "Db": "C#",
+    "Eb": "D#",
+    "Gb": "F#",
+    "Ab": "G#",
 }
 
 
@@ -191,8 +205,7 @@ def triad_for(note: str) -> Triad:
     mode = mode_for(note)
     if mode.family != "hepta":
         raise ValueError(
-            f"triad_for: {note!r} is a pentatonic root; "
-            f"diatonic triads are heptatonic only"
+            f"triad_for: {note!r} is a pentatonic root; diatonic triads are heptatonic only"
         )
     scale = mode_scale(note)
     triad_notes = (scale.notes[0], scale.notes[2], scale.notes[4])

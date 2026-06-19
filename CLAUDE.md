@@ -66,6 +66,7 @@ These are non-negotiable. Code that violates them is wrong, even if tests pass.
 3. **Two-disc model is load-bearing.** Outer disc = roles `(glyph, color, clock-position, scale-pattern)` — *never moves*. Inner disc = 12 notes — *rotates freely*. Pedagogy is geometric, not nominal. Any abstraction that collapses these into a single layer breaks the system.
 4. **Pentatonic-first.** Scales are derived from pentatonic skeletons, not bolted on as a subset of heptatonic. The 5 penta roots (`PENTA_ROOTS`) and the 7 Greek modes are co-equal members of the 12-role wheel.
 5. **The 12 cartas are canonical.** Each carta = `(glyph, color, default-tonic note, mode)`. They are the source of truth for role identity. Painted deck order matters; do not renumber.
+6. **BE owns logic, FE only renders.** All music-theory, generation, scoring, and learning logic lives in the Python core. The web app consumes JSON snapshots and plays/draws them — it never re-derives wheel logic, never scores, never picks notes. New behavior → add it to Python and re-emit JSON. If you find yourself writing theory code in `web/src/`, stop and move it to `fractalmusic/`.
 
 ## Architecture Overview
 

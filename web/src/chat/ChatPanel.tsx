@@ -109,10 +109,7 @@ export function ChatPanel(): JSX.Element {
         {status.kind === "ready" && <AnswerView result={status.result} />}
         {status.kind === "error" && (
           <div className="chat-error" role="alert">
-            <p>{status.message}</p>
-            <p className="chat-error-hint">
-              Si el BFF no está corriendo: <code>cd chat_bff &amp;&amp; uv run uvicorn chat_bff.app:create_app --factory</code>
-            </p>
+            <p>No pudimos llegar a los libros. Probá en un minuto, o avisale a quien instaló la app.</p>
           </div>
         )}
       </output>

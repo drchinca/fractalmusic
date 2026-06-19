@@ -32,7 +32,18 @@ DIMINISHED: Final[str] = "diminished"
 
 # The chromatic A-order (matches pytheory's western system: A=0, C=3).
 CHROMATIC_ORDER: Final[tuple[str, ...]] = (
-    "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#",
+    "A",
+    "A#",
+    "B",
+    "C",
+    "C#",
+    "D",
+    "D#",
+    "E",
+    "F",
+    "F#",
+    "G",
+    "G#",
 )
 
 # The Gátople is a circle-of-FOURTHS clock ("Función Cuartal", Ch. 4): stepping a

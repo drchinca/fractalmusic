@@ -1,6 +1,6 @@
 """Generate the SVG visual gallery (wheel, deck, Greek + Penta mode charts).
 
-    python -m fractalmusic.gallery [output_dir]
+python -m fractalmusic.gallery [output_dir]
 """
 
 import re

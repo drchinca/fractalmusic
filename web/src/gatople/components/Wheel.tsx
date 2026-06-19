@@ -123,7 +123,7 @@ export function Wheel({
       viewBox="-260 -260 520 520"
       role="slider"
       tabIndex={0}
-      aria-label="Gátople tonic wheel"
+      aria-label="Rueda de tónica del Gátople"
       aria-valuemin={0}
       aria-valuemax={11}
       aria-valuenow={tonicOffset}

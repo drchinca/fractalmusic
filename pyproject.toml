@@ -19,6 +19,7 @@ classifiers = [
 ]
 dependencies = [
     "pytheory>=0.57.0",
+    "soundfile>=0.14.0",
 ]
 
 [project.scripts]
@@ -26,6 +27,9 @@ fractalmusic = "fractalmusic.showcase:main"
 fractalmusic-gallery = "fractalmusic.gallery:main"
 
 [project.optional-dependencies]
+midi = [
+    "mido>=1.3",
+]
 dev = [
     "bandit[toml]>=1.8.0",
     "build>=1.2.0",
@@ -117,6 +121,7 @@ python_functions = ["test_*"]
 markers = [
     "unit: fast, isolated data-model tests",
     "integration: cross-module and pytheory interop tests",
+    "smoke: end-to-end sanity tests that generate music artifacts",
     "uat: behavioral acceptance tests",
     "slow: marks tests as slow",
 ]

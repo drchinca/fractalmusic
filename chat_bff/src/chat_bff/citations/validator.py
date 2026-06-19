@@ -30,10 +30,10 @@ SimilarityFn = Callable[[str, str], Awaitable[float]]
 
 class ValidationVerdict(StrEnum):
     OK = "ok"
-    NO_CITATIONS = "no_citations"          # answer contains no citations at all
-    UNCITED_CLAIM = "uncited_claim"        # ≥1 fact-bearing sentence missing a marker
-    UNKNOWN_CHUNK = "unknown_chunk"        # marker tuple wasn't retrieved this turn
-    LOW_FIDELITY = "low_fidelity"          # snippet doesn't support the claim
+    NO_CITATIONS = "no_citations"  # answer contains no citations at all
+    UNCITED_CLAIM = "uncited_claim"  # ≥1 fact-bearing sentence missing a marker
+    UNKNOWN_CHUNK = "unknown_chunk"  # marker tuple wasn't retrieved this turn
+    LOW_FIDELITY = "low_fidelity"  # snippet doesn't support the claim
 
 
 @dataclass(frozen=True, slots=True)

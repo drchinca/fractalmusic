@@ -42,7 +42,7 @@ function GroundedAnswer({
   return (
     <div className="answer-view answer-grounded">
       <p className="answer-prose">{prose}</p>
-      <div className="answer-citations" aria-label="Citations supporting this answer">
+      <div className="answer-citations" aria-label="Citas que respaldan esta respuesta">
         {citations.map((c, i) => (
           <CitationChip
             key={`${c.book_hash}-${c.chapter_idx}-${c.section_idx}-${c.paragraph_idx}-${i}`}

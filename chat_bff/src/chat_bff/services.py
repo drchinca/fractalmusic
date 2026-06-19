@@ -3,6 +3,8 @@
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 
+from fractalmusic.generate import ExpertClient, PatternCorpus
+
 from chat_bff.protocols import LLM, Retriever
 from chat_bff.settings import ChatSettings
 
@@ -14,3 +16,5 @@ class ChatServices:
     llm_ollama: LLM
     similarity: Callable[[str, str], Awaitable[float]]
     settings: ChatSettings
+    expert: ExpertClient
+    corpus: PatternCorpus

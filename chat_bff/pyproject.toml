@@ -14,11 +14,13 @@ dependencies = [
     "anthropic>=0.40.0",
     "cemaf",
     "meridian-library",
+    "fractalmusic",
 ]
 
 [tool.uv.sources]
 cemaf = { path = "../../iccha_context_multi_agent/cemaf", editable = true }
 meridian-library = { path = "../../iccha_context_multi_agent/meridian_library", editable = true }
+fractalmusic = { path = "..", editable = true }
 
 [project.optional-dependencies]
 dev = [

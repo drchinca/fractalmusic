@@ -118,9 +118,7 @@ async def chat(
     started = time.monotonic()
 
     # 1. Retrieval, scope-filtered.
-    raw = await services.retriever.search(
-        question=request.question, k=services.settings.retrieval_k
-    )
+    raw = await services.retriever.search(question=request.question, k=services.settings.retrieval_k)
     chunks = _retrieved_in_scope(raw)
 
     if not chunks:
@@ -133,9 +131,7 @@ async def chat(
             elapsed_ms=int((time.monotonic() - started) * 1000),
         )
 
-    chunks_by_key = {
-        (c.book_hash, c.chapter_idx, c.section_idx, c.paragraph_idx): c for c in chunks
-    }
+    chunks_by_key = {(c.book_hash, c.chapter_idx, c.section_idx, c.paragraph_idx): c for c in chunks}
     retrieved_lookup = {k: v.text for k, v in chunks_by_key.items()}
 
     # 2. Build prompt.

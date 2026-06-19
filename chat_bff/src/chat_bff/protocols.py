@@ -37,5 +37,4 @@ class LLM(Protocol):
 
 
 class Similarity(Protocol):
-    async def __call__(self, claim: str, snippet: str) -> Awaitable[float] | float:
-        ...
+    async def __call__(self, claim: str, snippet: str) -> Awaitable[float] | float: ...

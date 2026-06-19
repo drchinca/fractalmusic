@@ -17,24 +17,24 @@ export function StepControls({
     variant === "footer"
       ? "step-controls step-controls-footer"
       : "step-controls";
-  const backLabel = variant === "footer" ? "◀ back" : "◀";
-  const fwdLabel = variant === "footer" ? "forward ▶" : "▶";
+  const backLabel = variant === "footer" ? "◀ atrás" : "◀";
+  const fwdLabel = variant === "footer" ? "adelante ▶" : "▶";
 
   return (
     <div className={className}>
       <button
         type="button"
-        aria-label="Step back one semitone"
+        aria-label="Bajar un semitono"
         onClick={onStepBack}
       >
         {backLabel}
       </button>
       <button type="button" onClick={onReset}>
-        Reset to A
+        Volver a A
       </button>
       <button
         type="button"
-        aria-label="Step forward one semitone"
+        aria-label="Subir un semitono"
         onClick={onStepForward}
       >
         {fwdLabel}

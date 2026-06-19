@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from chat_bff.routes import chat as chat_route
+from chat_bff.routes import generate as generate_route
 from chat_bff.routes import health as health_route
 from chat_bff.services import ChatServices
 
@@ -27,4 +28,5 @@ def create_app(*, services: ChatServices, cors_origins: tuple[str, ...] = ()) ->
 
     app.include_router(health_route.router)
     app.include_router(chat_route.router)
+    app.include_router(generate_route.router)
     return app

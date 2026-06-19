@@ -182,12 +182,16 @@ def test_repetition_gaming_caught_by_fidelity(
     async def low_sim(_claim: str, _snippet: str) -> float:
         return 0.3
 
+    from fractalmusic.generate import JsonCorpus, StubExpert
+
     services = ChatServices(
         retriever=fake_retriever,
         llm_claude=fake_claude,
         llm_ollama=fake_ollama,
         similarity=low_sim,
         settings=settings,
+        expert=StubExpert(),
+        corpus=JsonCorpus(root=settings.corpus_root),
     )
     fake_retriever.default = (CICLICA_CHUNK,)
     fake_claude.set_responses(
@@ -254,12 +258,16 @@ def test_hard_timeout_returns_504(
     """Slow LLM → 504. Settings cap timeout at 2s in test fixture."""
     fake_retriever.default = (DODECAMUNDO_CHUNK,)
     slow = FakeLLM(name="slow", sleep_s=3.0)
+    from fractalmusic.generate import JsonCorpus, StubExpert
+
     services = ChatServices(
         retriever=fake_retriever,
         llm_claude=slow,
         llm_ollama=fake_ollama,
         similarity=lambda _a, _b: _coro(0.9),
         settings=settings,
+        expert=StubExpert(),
+        corpus=JsonCorpus(root=settings.corpus_root),
     )
     client = TestClient(create_app(services=services))
     response = client.post("/api/chat", json={"question": "anything"})

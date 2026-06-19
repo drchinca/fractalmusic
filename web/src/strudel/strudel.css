@@ -1,0 +1,535 @@
+.strudel-panel {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 24px 0 32px;
+}
+
+.strudel-header {
+  margin: 0 0 14px;
+  text-align: left;
+  border-bottom: 1px solid rgba(23, 22, 21, 0.12);
+  padding-bottom: 10px;
+}
+
+.strudel-kicker {
+  margin: 0 0 4px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b5f4b;
+}
+
+.strudel-header h2,
+.strudel-panel > h2 {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+.strudel-status {
+  min-height: 1.2em;
+  margin: 0 0 10px;
+  color: var(--muted, #6b7280);
+  font-size: 0.9rem;
+}
+
+.strudel-error {
+  margin: 0 0 10px;
+  color: #b91c1c;
+}
+
+.strudel-studio {
+  display: grid;
+  grid-template-columns: minmax(300px, 390px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.pytheory-panel,
+.strudel-live-panel {
+  min-width: 0;
+  border: 1px solid var(--border, #d1d5db);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.pytheory-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px;
+}
+
+.strudel-live-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+}
+
+.surface-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(23, 22, 21, 0.1);
+  padding-bottom: 8px;
+}
+
+.surface-head p {
+  margin: 0;
+  color: #6b5f4b;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.surface-head h3 {
+  margin: 0;
+  color: var(--text, #111827);
+  font-size: 1.05rem;
+}
+
+.pytheory-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.strudel-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.84rem;
+}
+
+.strudel-field span {
+  color: var(--muted, #6b7280);
+}
+
+.strudel-field select,
+.strudel-field input:not([type="range"]) {
+  width: 100%;
+  min-height: 42px;
+  min-width: 0;
+  border: 1px solid var(--border, #d1d5db);
+  border-radius: 8px;
+  background: var(--surface, #fff);
+  color: var(--text, #111827);
+  font-size: 0.95rem;
+  padding: 0.48rem 0.55rem;
+}
+
+.strudel-field select:disabled,
+.strudel-field input:disabled {
+  cursor: progress;
+  opacity: 0.72;
+}
+
+.strudel-generate,
+.transport-button {
+  min-height: 42px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0.55rem 0.8rem;
+}
+
+.strudel-generate,
+.transport-button-primary {
+  border: 0;
+  background: var(--accent, #2563eb);
+  color: #fff;
+}
+
+.transport-button {
+  border: 1px solid var(--border, #d1d5db);
+  background: #fff;
+  color: var(--text, #111827);
+}
+
+.strudel-generate:disabled,
+.transport-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.pytheory-transport,
+.strudel-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-items: center;
+}
+
+.pytheory-transport span {
+  color: var(--muted, #6b7280);
+  font-size: 0.84rem;
+  text-align: right;
+}
+
+.strudel-actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.strudel-audio-hidden {
+  display: none;
+}
+
+.pytheory-context {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.strudel-empty h3,
+.strudel-result-head h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.strudel-empty p {
+  margin: 6px 0 0;
+  color: var(--muted, #6b7280);
+  font-size: 0.92rem;
+}
+
+.strudel-result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.strudel-result-head span {
+  border-radius: 8px;
+  background: #ecfdf5;
+  color: #065f46;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.18rem 0.45rem;
+  text-transform: uppercase;
+}
+
+.strudel-facts {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+}
+
+.strudel-facts div {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 8px;
+  align-items: baseline;
+}
+
+.strudel-facts dt {
+  color: var(--muted, #6b7280);
+  font-size: 0.78rem;
+}
+
+.strudel-facts dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.88rem;
+}
+
+.strudel-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+  gap: 6px;
+}
+
+.strudel-note {
+  display: grid;
+  min-height: 42px;
+  place-items: center;
+  border: 1px solid var(--border, #d1d5db);
+  border-radius: 8px;
+  background: #fffaf1;
+  color: var(--text, #111827);
+  font-size: 0.82rem;
+}
+
+.strudel-note-glyph {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.strudel-note sub {
+  margin-left: 1px;
+  font-size: 0.72em;
+}
+
+.strudel-prov {
+  border-top: 1px dashed var(--border, #d1d5db);
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--muted, #6b7280);
+  font-size: 0.84rem;
+}
+
+.strudel-book-guidance {
+  border-top: 1px dashed var(--border, #d1d5db);
+  padding-top: 10px;
+}
+
+.strudel-book-guidance h4 {
+  margin: 0 0 8px;
+  color: var(--text, #111827);
+  font-size: 0.9rem;
+}
+
+.strudel-book-guidance ol {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.strudel-book-guidance li {
+  display: grid;
+  gap: 4px;
+  border: 1px solid rgba(23, 22, 21, 0.1);
+  border-radius: 8px;
+  background: #fff;
+  padding: 8px;
+}
+
+.strudel-book-guidance strong {
+  color: var(--text, #111827);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.strudel-book-guidance span {
+  color: var(--muted, #6b7280);
+  font-size: 0.74rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.strudel-book-guidance p {
+  margin: 0;
+  color: #4b5563;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.strudel-warnings {
+  margin: 0;
+  padding-left: 18px;
+  color: #92400e;
+  font-size: 0.82rem;
+}
+
+.strudel-control-groups {
+  display: grid;
+  gap: 10px;
+}
+
+.control-group {
+  border: 1px solid rgba(23, 22, 21, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.56);
+  padding: 10px;
+}
+
+.control-group header {
+  margin: 0 0 8px;
+}
+
+.control-group h4 {
+  margin: 0;
+  color: var(--text, #111827);
+  font-size: 0.92rem;
+}
+
+.control-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 10px;
+  align-items: center;
+}
+
+.strudel-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  min-width: 0;
+  color: var(--text, #111827);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.strudel-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent, #2563eb);
+}
+
+.strudel-knob {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  min-width: 0;
+  color: var(--text, #111827);
+  font-size: 0.78rem;
+  user-select: none;
+}
+
+.strudel-knob > span {
+  color: var(--muted, #6b7280);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.strudel-knob output {
+  min-height: 1em;
+  color: var(--text, #111827);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.strudel-knob-face {
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(17, 24, 39, 0.18);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 52%, #fff 0 42%, transparent 43%),
+    conic-gradient(
+      from -135deg,
+      var(--accent, #2563eb) 0deg var(--knob-sweep),
+      #d1d5db var(--knob-sweep) 270deg,
+      transparent 270deg 360deg
+    );
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+  cursor: ns-resize;
+  position: relative;
+  touch-action: none;
+}
+
+.strudel-knob-face:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.28);
+  outline-offset: 3px;
+}
+
+.strudel-knob-marker {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 4px;
+  height: 19px;
+  border-radius: 999px;
+  background: #111827;
+  transform: translateX(-50%) rotate(var(--knob-rotation));
+  transform-origin: 50% 21px;
+}
+
+.strudel-knob.is-disabled {
+  opacity: 0.45;
+}
+
+.strudel-knob.is-disabled .strudel-knob-face {
+  cursor: not-allowed;
+}
+
+.strudel-editor-host {
+  width: 100%;
+  min-width: 0;
+  min-height: 620px;
+  height: calc(100vh - 244px);
+  overflow: hidden;
+  border: 1px solid rgba(23, 22, 21, 0.18);
+  border-radius: 8px;
+  background: #111;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.strudel-editor-host:empty::before {
+  content: "Loading Strudel...";
+  display: grid;
+  min-height: 620px;
+  place-items: center;
+  color: #fffaf1;
+  font-size: 0.92rem;
+}
+
+.strudel-editor {
+  display: none;
+}
+
+.strudel-editor + div {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 620px;
+}
+
+.strudel-editor + div .cm-editor {
+  min-height: 620px;
+  height: 100%;
+}
+
+.strudel-editor + div .cm-scroller {
+  min-height: 620px;
+}
+
+@media (max-width: 1020px) {
+  .strudel-studio {
+    grid-template-columns: 1fr;
+  }
+
+  .pytheory-panel {
+    order: 1;
+  }
+
+  .strudel-live-panel {
+    order: 2;
+  }
+
+  .strudel-editor-host {
+    height: 640px;
+  }
+}
+
+@media (max-width: 560px) {
+  .strudel-panel {
+    padding-top: 16px;
+  }
+
+  .pytheory-transport,
+  .strudel-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .pytheory-transport span {
+    text-align: left;
+  }
+
+  .control-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .strudel-editor-host,
+  .strudel-editor + div,
+  .strudel-editor + div .cm-editor,
+  .strudel-editor + div .cm-scroller,
+  .strudel-editor-host:empty::before {
+    min-height: 520px;
+  }
+}

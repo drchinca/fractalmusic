@@ -2,8 +2,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import "./chat/chat.css";
+import "./composer/composer.css";
 import "./gatople/gatople.css";
 import "./shell/shell.css";
+import "./strudel/strudel.css";
 import { AppShell } from "./shell/AppShell";
 
 const container = document.getElementById("root");

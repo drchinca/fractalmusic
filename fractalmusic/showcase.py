@@ -43,9 +43,7 @@ def show_heptatonic_modes() -> str:
         scale = mode_scale(w.note)
         notes = " ".join(f"{n:<2}" for n in scale.notes)
         glyphs = spell(list(scale.notes))
-        lines.append(
-            f"{w.glyph} {scale.name:<10} {w.mode.quality:<11} {notes}   {glyphs}"
-        )
+        lines.append(f"{w.glyph} {scale.name:<10} {w.mode.quality:<11} {notes}   {glyphs}")
     return "\n".join(lines)
 
 
@@ -88,8 +86,12 @@ def show_combinations() -> str:
 def show_stats() -> str:
     """The 5 + 7 = 12 → 60 microstructures summary."""
     lines = [_header("THE NUMBERS")]
-    lines.append(f"  {len(pentatonic_worlds())} penta + {len(heptatonic_worlds())} hepta = {len(DODECAMUNDO)} worlds")
-    lines.append(f"  {len(PENTA_MODES)} penta modes × 12 roots = {len(microstructures())} microstructures")
+    lines.append(
+        f"  {len(pentatonic_worlds())} penta + {len(heptatonic_worlds())} hepta = {len(DODECAMUNDO)} worlds"
+    )
+    lines.append(
+        f"  {len(PENTA_MODES)} penta modes × 12 roots = {len(microstructures())} microstructures"
+    )
     return "\n".join(lines)
 
 

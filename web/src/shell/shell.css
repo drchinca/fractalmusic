@@ -1,4 +1,4 @@
-/* Tab nav between Gátople and Chat. Sits above main, mobile-first. */
+/* Tab nav between Gátople, Componer y Pregunta. Sticky, mobile-first, accessible. */
 
 .app-nav {
   display: flex;
@@ -7,7 +7,15 @@
   max-width: 1100px;
   margin: 0 auto;
   border-bottom: 1px solid rgba(23, 22, 21, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #fffaf1;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+.app-nav::-webkit-scrollbar { display: none; }
 
 .app-nav-tab {
   appearance: none;
@@ -22,9 +30,19 @@
   border-radius: 8px 8px 0 0;
   margin-bottom: -1px;
   min-height: 44px;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }
 
 .app-nav-tab:hover { color: #1a1a1a; }
+
+.app-nav-tab:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
 
 .app-nav-tab.is-active {
   background: #fffaf1;
@@ -32,7 +50,21 @@
   border-color: rgba(23, 22, 21, 0.16) rgba(23, 22, 21, 0.16) transparent;
 }
 
+.app-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 8px 12px;
+  z-index: 10;
+}
+.app-skip-link:focus {
+  left: 8px;
+  top: 8px;
+}
+
 @media (max-width: 480px) {
   .app-nav { padding: 8px 12px 0; gap: 0; }
-  .app-nav-tab { padding: 10px 12px; font-size: 0.9rem; }
+  .app-nav-tab { padding: 10px 14px; font-size: 0.9rem; }
 }

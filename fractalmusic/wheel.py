@@ -160,16 +160,12 @@ class Wheel:
 
     def all_modes(self) -> tuple[WheelMode, ...]:
         """The 12 (note, role) bindings under this rotation."""
-        return tuple(
-            WheelMode(note=self.note_at_position(p), role=ROLES[p])
-            for p in range(12)
-        )
+        return tuple(WheelMode(note=self.note_at_position(p), role=ROLES[p]) for p in range(12))
 
     def penta(self, roman: str) -> tuple[str, ...]:
         """The Penta-mode (I..V) scale notes under this rotation."""
         roman_to_pos: Final[dict[str, int]] = {
-            r: _note_index(n) - _note_index(_DEFAULT_TONIC)
-            for r, n in PENTA_ROOTS
+            r: _note_index(n) - _note_index(_DEFAULT_TONIC) for r, n in PENTA_ROOTS
         }
         try:
             position = roman_to_pos[roman] % 12

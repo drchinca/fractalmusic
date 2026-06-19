@@ -5,6 +5,9 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react()],
   server: {
+    host: "127.0.0.1",
+    port: 5174,
+    strictPort: true,
     proxy: {
       // Dev: forward /api/* to the chat_bff process running on :8002.
       // In production the BFF and the static bundle ship together so

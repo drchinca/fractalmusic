@@ -62,7 +62,7 @@ export function Piano({
     <svg
       id="piano"
       viewBox={`0 0 ${PIANO_W} ${PIANO_H}`}
-      aria-label="Piano sticker overlay"
+      aria-label="Stickers sobre el piano"
     >
       {WHITE_INDICES.map((idx) => {
         const x = whiteCol[idx] * whiteW;

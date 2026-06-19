@@ -18,7 +18,7 @@ The two replies never blend in a single rendered answer. Either the user sees th
 
 ```mermaid
 sequenceDiagram
-    participant U as Browser (React :5173)
+    participant U as Browser (React :5174)
     participant B as BFF (FastAPI :8002)
     participant L as LLM (Anthropic | Ollama)
     U->>B: POST /api/chat {question, llm}

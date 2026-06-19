@@ -1,13 +1,17 @@
 import { type JSX, useEffect, useState } from "react";
 
 import { ChatPanel } from "../chat/ChatPanel";
+import { ComposerPanel } from "../composer/ComposerPanel";
 import { GatopleApp } from "../gatople/GatopleApp";
+import { StrudelPanel } from "../strudel/StrudelPanel";
 
-type View = "gatople" | "chat";
+type View = "gatople" | "chat" | "composer" | "strudel";
 
 const HASH_TO_VIEW: Record<string, View> = {
   "#gatople": "gatople",
   "#chat": "chat",
+  "#composer": "composer",
+  "#strudel": "strudel",
 };
 
 function readView(): View {
@@ -26,11 +30,23 @@ export function AppShell(): JSX.Element {
   }, []);
 
   function go(next: View): void {
-    window.location.hash = next === "gatople" ? "#gatople" : "#chat";
+    window.location.hash = `#${next}`;
+  }
+
+  let body;
+  if (view === "gatople") {
+    body = <GatopleApp />;
+  } else if (view === "chat") {
+    body = <ChatPanel />;
+  } else if (view === "strudel") {
+    body = <StrudelPanel />;
+  } else {
+    body = <ComposerPanel />;
   }
 
   return (
     <>
+      <a href="#content" className="app-skip-link">Saltar al contenido</a>
       <nav className="app-nav" aria-label="Vista principal">
         <button
           type="button"
@@ -38,7 +54,23 @@ export function AppShell(): JSX.Element {
           onClick={() => go("gatople")}
           aria-current={view === "gatople" ? "page" : undefined}
         >
-          El Gátople
+          La Rueda
+        </button>
+        <button
+          type="button"
+          className={`app-nav-tab ${view === "composer" ? "is-active" : ""}`}
+          onClick={() => go("composer")}
+          aria-current={view === "composer" ? "page" : undefined}
+        >
+          Componer
+        </button>
+        <button
+          type="button"
+          className={`app-nav-tab ${view === "strudel" ? "is-active" : ""}`}
+          onClick={() => go("strudel")}
+          aria-current={view === "strudel" ? "page" : undefined}
+        >
+          Patrón en vivo
         </button>
         <button
           type="button"
@@ -46,11 +78,11 @@ export function AppShell(): JSX.Element {
           onClick={() => go("chat")}
           aria-current={view === "chat" ? "page" : undefined}
         >
-          Pregunta a los libros
+          Preguntar a los libros
         </button>
       </nav>
 
-      {view === "gatople" ? <GatopleApp /> : <ChatPanel />}
+      <div id="content" className="app-content">{body}</div>
     </>
   );
 }

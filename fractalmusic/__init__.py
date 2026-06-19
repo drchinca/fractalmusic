@@ -32,6 +32,29 @@ from fractalmusic.gatople import (
     position,
     rotate,
 )
+from fractalmusic.generate import (
+    Event as GeneratedEvent,
+)
+from fractalmusic.generate import (
+    GenerationRequest,
+    GenerationResult,
+    JsonCorpus,
+    Provenance,
+    StubExpert,
+    realize,
+    research_loop,
+    to_midi,
+    to_web_payload,
+)
+from fractalmusic.generate import (
+    Pattern as GenerationPattern,
+)
+from fractalmusic.generate import (
+    Score as GenerationScore,
+)
+from fractalmusic.generate import (
+    score as score_generation,
+)
 from fractalmusic.modes import ALL_MODES, Mode, mode_for
 from fractalmusic.scales import (
     FractalScale,
@@ -103,4 +126,18 @@ __all__ = [
     "generate_twelve_outputs",
     "validate_pattern",
     "is_valid_pattern",  # alias retained for back-compat
+    # generate (research loop)
+    "GenerationRequest",
+    "GenerationResult",
+    "GenerationPattern",
+    "GenerationScore",
+    "GeneratedEvent",
+    "Provenance",
+    "JsonCorpus",
+    "StubExpert",
+    "realize",
+    "research_loop",
+    "score_generation",
+    "to_midi",
+    "to_web_payload",
 ]

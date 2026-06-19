@@ -1,4 +1,4 @@
-.PHONY: help install dev-install test test-quick check format clean lint type-check pre-commit build \
+.PHONY: help install dev-install test test-quick smoke check format clean lint type-check pre-commit build \
         bff bff-install bff-test web web-install web-build chat chat-stop
 
 UV_RUN := uv run --extra dev
@@ -11,6 +11,7 @@ help:
 	@echo "    make dev-install   Install development dependencies and hooks"
 	@echo "    make test          Run tests with coverage"
 	@echo "    make test-quick    Run tests without coverage"
+	@echo "    make smoke         Generate WAV + Strudel smoke artifacts"
 	@echo "    make check         Run lint, format, type, test, and security checks"
 	@echo "    make format        Format code with Ruff"
 	@echo "    make lint          Lint code with Ruff"
@@ -19,10 +20,10 @@ help:
 	@echo "    make clean         Remove generated artifacts"
 	@echo ""
 	@echo "  Chat — backend (chat_bff/) and frontend (web/):"
-	@echo "    make chat          Start BFF (:8002) AND web dev server (:5173)"
-	@echo "    make chat-stop     Kill anything bound to :8002 / :5173"
+	@echo "    make chat          Start BFF (:8002) AND web dev server (:5174)"
+	@echo "    make chat-stop     Kill anything bound to :8002 / :5174"
 	@echo "    make bff           Start the chat BFF on :8002 (foreground)"
-	@echo "    make web           Start the Vite dev server on :5173 (foreground)"
+	@echo "    make web           Start the Vite dev server on :5174 (foreground)"
 	@echo "    make bff-install   uv-install chat_bff in editable mode"
 	@echo "    make web-install   npm install in web/"
 	@echo "    make web-build     Build the web app for production"
@@ -41,6 +42,9 @@ test:
 
 test-quick:
 	$(UV_RUN) bash scripts/test.sh --no-cov
+
+smoke:
+	$(UV_RUN) pytest --no-cov -m smoke tests/smoke
 
 check:
 	$(UV_RUN) bash scripts/check_code.sh
@@ -77,7 +81,7 @@ clean:
 # ----- chat-v1 dev commands -----
 
 BFF_PORT ?= 8002
-WEB_PORT ?= 5173
+WEB_PORT ?= 5174
 CHAT_LOG_DIR := /tmp/fractalmusic-chat
 
 bff-install:
@@ -97,7 +101,7 @@ web-build:
 	cd web && npm run build
 
 web:
-	cd web && npm run dev -- --port $(WEB_PORT)
+	cd web && npm run dev -- --port $(WEB_PORT) --strictPort
 
 # Start both BFF and web in the background, tail their logs together.
 # The handler kills both on Ctrl-C. Logs persist at $(CHAT_LOG_DIR)/*.log.
@@ -111,7 +115,7 @@ chat:
 	(cd chat_bff && uv run uvicorn 'chat_bff.bootstrap:app_factory' --factory \
 	    --host 127.0.0.1 --port $(BFF_PORT) --reload \
 	    > $(CHAT_LOG_DIR)/bff.log 2>&1) & \
-	(cd web && npm run dev -- --port $(WEB_PORT) \
+	(cd web && npm run dev -- --port $(WEB_PORT) --strictPort \
 	    > $(CHAT_LOG_DIR)/web.log 2>&1) & \
 	tail -f $(CHAT_LOG_DIR)/bff.log $(CHAT_LOG_DIR)/web.log
 

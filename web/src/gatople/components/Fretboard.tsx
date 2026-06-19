@@ -32,7 +32,7 @@ export function Fretboard({
     <svg
       id="fretboard"
       viewBox={`0 0 ${totalW} ${totalH}`}
-      aria-label="Guitar fretboard sticker overlay"
+      aria-label="Stickers sobre el diapasón"
     >
       <rect x={0} y={0} width={totalW} height={totalH} fill="#f3e3c0" />
 

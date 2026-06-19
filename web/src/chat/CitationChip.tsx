@@ -16,7 +16,7 @@ export function CitationChip({ citation, index }: CitationChipProps): JSX.Elemen
         className="citation-chip-button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        aria-label={`Show citation ${index} from ${citation.book_title}, page ${citation.page_start}`}
+        aria-label={`Mostrar cita ${index} de ${citation.book_title}, página ${citation.page_start}`}
       >
         {label}
       </button>

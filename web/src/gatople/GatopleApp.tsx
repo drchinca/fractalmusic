@@ -45,10 +45,10 @@ function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
       <header>
         <h1>El Gátople</h1>
         <p className="subtitle">
-          The outer disc is fixed: each role keeps its glyph, color, and clock
-          position. The inner disc rotates — drag it, or click any note to set
-          it as the tonic. The whole scale system re-arranges with a single
-          rotation.
+          El disco exterior es fijo: cada rol conserva su glifo, color y
+          posición horaria. El disco interior rota — arrastralo, o tocá
+          cualquier nota para fijarla como tónica. Todo el sistema de escalas
+          se reordena con una sola rotación.
         </p>
       </header>
 
@@ -62,7 +62,7 @@ function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
             onStep={step}
           />
           <p className="tonic-readout">
-            Tonic: <strong>{displayNote(tonicNote)}</strong>{" "}
+            Tónica: <strong>{displayNote(tonicNote)}</strong>{" "}
             <span className="tonic-mode">({eolicoModeName})</span>
           </p>
           <StepControls
@@ -74,7 +74,7 @@ function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
         </div>
 
         <aside className="readout">
-          <h2>Current bindings</h2>
+          <h2>Asignaciones actuales</h2>
           <BindingsTable
             roles={roles}
             chromatic={chromatic}
@@ -88,8 +88,8 @@ function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
 
         <h2>Piano</h2>
         <p className="caption">
-          Each key wears the role currently bound to its physical note. Spin
-          the wheel and the keyboard repaints in lockstep.
+          Cada tecla lleva el rol actualmente vinculado a su nota física. Hacé
+          girar la rueda y el teclado se repinta al instante.
         </p>
         <Piano
           roles={roles}
@@ -98,10 +98,10 @@ function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
           palette={palette}
         />
 
-        <h2>Guitar fretboard (EADGBE)</h2>
+        <h2>Diapasón de guitarra (EADGBE)</h2>
         <p className="caption">
-          12 frets across all 6 strings, every position painted with its
-          current role. Same data model, same rotation.
+          12 trastes en las 6 cuerdas, cada posición pintada con su rol
+          actual. Mismo modelo, misma rotación.
         </p>
         <Fretboard
           roles={roles}
@@ -120,8 +120,8 @@ function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
 
       <footer>
         <p>
-          Data sourced from <code>fractalmusic.wheel.ROLES</code>. Glyphs and
-          colors come from the 12 hand-painted cartas of the{" "}
+          Datos tomados de <code>fractalmusic.wheel.ROLES</code>. Los glifos y
+          colores vienen de las 12 cartas pintadas a mano del{" "}
           <a href="https://github.com/drchinca/fractalmusic">
             Sistema Fractal
           </a>

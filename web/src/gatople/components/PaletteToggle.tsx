@@ -13,20 +13,20 @@ export function PaletteToggle({
 }: PaletteToggleProps): JSX.Element {
   return (
     <div className="palette-toggle">
-      <span>Sticker palette:</span>
+      <span>Paleta de stickers:</span>
       <button
         type="button"
         className={palette === "carta" ? "active" : undefined}
         onClick={() => onChange("carta")}
       >
-        Carta colors
+        Colores de carta
       </button>
       <button
         type="button"
         className={palette === "mono" ? "active" : undefined}
         onClick={() => onChange("mono")}
       >
-        Black &amp; white
+        Blanco y negro
       </button>
     </div>
   );

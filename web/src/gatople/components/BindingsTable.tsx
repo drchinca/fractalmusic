@@ -19,10 +19,10 @@ export function BindingsTable({
     <table id="bindings">
       <thead>
         <tr>
-          <th>Role</th>
-          <th>Glyph</th>
-          <th>Note</th>
-          <th>Hour</th>
+          <th>Rol</th>
+          <th>Glifo</th>
+          <th>Nota</th>
+          <th>Hora</th>
         </tr>
       </thead>
       <tbody>

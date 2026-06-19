@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from cemaf.llm.anthropic import AnthropicLLMClient
 from cemaf.llm.openai_compat import OpenAICompatClient
 from cemaf.llm.protocols import Message, MessageRole
+from fractalmusic.generate import JsonCorpus, StubExpert
 from meridian_library.embedders.ollama import OllamaEmbedder
 from meridian_library.embedders.protocol import EmbeddingClient
 from meridian_library.index.bm25_store import LibraryBM25Store
@@ -25,7 +26,6 @@ from chat_bff.models import in_scope, short_hash
 from chat_bff.protocols import LLM, RetrievedChunk
 from chat_bff.services import ChatServices
 from chat_bff.settings import ChatSettings
-
 
 # ---------- LLM adapters: cemaf protocol → our flat .complete() ----------
 
@@ -157,17 +157,22 @@ def build_services(settings: ChatSettings | None = None) -> ChatServices:
         llm_ollama=ollama_llm,
         similarity=make_similarity(embedder),
         settings=settings,
+        expert=StubExpert(),
+        corpus=JsonCorpus(root=settings.corpus_root),
     )
 
 
 # ---------- ASGI entry point for `uvicorn chat_bff.bootstrap:app_factory --factory` ----------
 
 
-def app_factory():  # noqa: ANN201 — uvicorn calls this; no annotation needed
+def app_factory():
     """Build a FastAPI app for `uvicorn chat_bff.bootstrap:app_factory --factory`."""
     from chat_bff.app import create_app
 
     return create_app(
         services=build_services(),
-        cors_origins=("http://localhost:5173",),  # vite dev server
+        cors_origins=(
+            "http://localhost:5174",
+            "http://127.0.0.1:5174",
+        ),  # vite dev server
     )
