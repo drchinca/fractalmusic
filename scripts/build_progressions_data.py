@@ -17,10 +17,10 @@ companion drift test in tests/integration/ guards staleness.
 
 import json
 from pathlib import Path
-from typing import TypedDict
+from typing import Final, TypedDict
 
-from fractalmusic.modes import ALL_MODES, CHROMATIC_ORDER
-from fractalmusic.wheel import Wheel  # noqa: F401 — re-exported for callers
+from fractalmusic.modes import CHROMATIC_ORDER
+from fractalmusic.wheel import Wheel
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PRESETS_PATH = REPO_ROOT / "docs" / "gatople" / "progressions.json"
@@ -61,73 +61,90 @@ class BakedProgressionsPayload(TypedDict):
     progressions: list[BakedProgression]
 
 
+class StepInput(TypedDict):
+    """The shape of a step entry in progressions.json (BE-side input)."""
+
+    role: str
+    glyph: str
+    improvise_in: str
+    bars: int
+    hint: str
+
+
 def _parse_improvise_in(text: str) -> tuple[str, str]:
     """Split 'A Eólico' / 'D# Penta 2' / 'C# Penta 1' into (note, mode_name)."""
     head, _, tail = text.partition(" ")
     return head, tail
 
 
-def _step_pattern(mode_name: str) -> list[int]:
-    """Semitone step pattern for a mode, derived from its canonical note_order.
-
-    e.g. Dórico note_order is ('D','E','F','G','A','B','C'); the chromatic
-    indices are (5,7,8,10,0,2,3); the steps are [2,1,2,2,2,1] (six gaps for
-    seven notes). The mode walks its own pattern from any root.
-    """
-    mode = next(m for m in ALL_MODES if m.mode_name == mode_name)
-    indices = [CHROMATIC_ORDER.index(n) for n in mode.note_order]
-    return [(indices[i + 1] - indices[i]) % 12 for i in range(len(indices) - 1)]
-
-
-def _walk_scale(mode_name: str, root_note: str) -> list[str]:
-    """Walk the scale of mode `mode_name` starting from `root_note`.
-
-    The mode supplies the step pattern (e.g. Dórico = [2,1,2,2,2,1]); the
-    root supplies the starting pitch. Together they produce the absolute
-    scale spelling at that key.
-    """
-    out = [root_note]
-    idx = CHROMATIC_ORDER.index(root_note)
-    for step in _step_pattern(mode_name):
-        idx = (idx + step) % 12
-        out.append(CHROMATIC_ORDER[idx])
-    return out
-
-
-def _role_position(mode_name: str) -> int:
-    """Default chromatic position of the role named `mode_name`."""
-    mode = next(m for m in ALL_MODES if m.mode_name == mode_name)
-    return CHROMATIC_ORDER.index(mode.note)
+# A-default wheel is the source of truth for `role_position` on the FE.
+# Build a name->position lookup once so we don't rescan ALL_MODES per step.
+_A_WHEEL: Final[Wheel] = Wheel(tonic="A")
+_ROLE_POSITION_BY_MODE: Final[dict[str, int]] = {
+    wm.role.mode_name: wm.role.position for wm in _A_WHEEL.all_modes()
+}
 
 
 def _resolve_step(
-    step: dict[str, object],
-    tonic_offset: int,
-    home_offset: int,
-    next_step: dict[str, object],
+    step: StepInput,
+    tonic_note: str,
+    next_step: StepInput,
 ) -> BakedStep:
-    """Expand one step at a given tonic offset."""
-    bundled_note, mode_name = _parse_improvise_in(str(step["improvise_in"]))
-    bundled_idx = CHROMATIC_ORDER.index(bundled_note)
-    # Transposition: wheel-spun by `tonic_offset` from the preset's home_offset
-    # means every step shifts by the same delta in semitones.
-    delta = (tonic_offset - home_offset + 12) % 12
-    tonic_note = CHROMATIC_ORDER[(bundled_idx + delta) % 12]
+    """Expand one step at `tonic_note` via the canonical Wheel.
 
-    next_bundled_note, next_mode_name = _parse_improvise_in(str(next_step["improvise_in"]))
+    `tonic_note` is the absolute pitch the step is rooted on — i.e. the
+    note that, when placed under ⋮, makes this step's mode the Eólico
+    relation of the wheel. The scale notes and the role identity come
+    straight from `Wheel(tonic_note).mode_for(tonic_note)`, eliminating
+    the hand-rolled transposition / step-pattern math.
+    """
+    _, mode_name = _parse_improvise_in(step["improvise_in"])
+    _, next_mode_name = _parse_improvise_in(next_step["improvise_in"])
+
+    # Spin the wheel so this step's tonic sits at Eólico. The role we
+    # asked for (mode_name) is then bound to that note.
+    wheel = Wheel(tonic=_step_root(step, tonic_note))
+    wheel_mode = wheel.mode_for(tonic_note)
+    if wheel_mode.mode_name != mode_name:
+        raise ValueError(
+            f"preset declares {mode_name!r} on {tonic_note!r}, "
+            f"but Wheel says {wheel_mode.mode_name!r} — preset/wheel disagree"
+        )
 
     return BakedStep(
         role_mode_name=mode_name,
-        role_position=_role_position(mode_name),
-        display_glyph=str(step["glyph"]),
+        role_position=_ROLE_POSITION_BY_MODE[mode_name],
+        display_glyph=step["glyph"],
         tonic_note=tonic_note,
-        scale_notes=_walk_scale(mode_name, tonic_note),
+        scale_notes=list(wheel_mode.scale_notes()),
         drone_octave=3,
-        bars=int(step["bars"]),  # type: ignore[call-overload]  # JSON value is int; mypy sees object
-        hint=str(step["hint"]),
+        bars=step["bars"],
+        hint=step["hint"],
         next_role_mode_name=next_mode_name,
-        next_role_position=_role_position(next_mode_name),
+        next_role_position=_ROLE_POSITION_BY_MODE[next_mode_name],
     )
+
+
+def _step_root(step: StepInput, tonic_note: str) -> str:
+    """The wheel-tonic that puts `tonic_note` under this step's mode.
+
+    For Eólico this is `tonic_note` itself; for Dórico it's tonic_note - 2
+    semitones (so D under +/Dórico means the wheel is tonic'd to C…
+    no wait, A — see Wheel docstring). We solve generally by walking
+    the role's offset back to position 0.
+    """
+    _, mode_name = _parse_improvise_in(step["improvise_in"])
+    role_offset = _ROLE_POSITION_BY_MODE[mode_name]
+    tonic_idx = CHROMATIC_ORDER.index(tonic_note)
+    wheel_root_idx = (tonic_idx - role_offset) % 12
+    return CHROMATIC_ORDER[wheel_root_idx]
+
+
+def _transpose_tonic(step: StepInput, delta_semitones: int) -> str:
+    """The step's tonic note, shifted by `delta_semitones` around the wheel."""
+    bundled_note, _ = _parse_improvise_in(step["improvise_in"])
+    bundled_idx = CHROMATIC_ORDER.index(bundled_note)
+    return CHROMATIC_ORDER[(bundled_idx + delta_semitones) % 12]
 
 
 def build_baked() -> BakedProgressionsPayload:
@@ -135,18 +152,23 @@ def build_baked() -> BakedProgressionsPayload:
     presets = json.loads(PRESETS_PATH.read_text())
     out_progs: list[BakedProgression] = []
     for prog in presets["progressions"]:
-        steps = list(prog["steps"])
+        steps: list[StepInput] = list(prog["steps"])
         # Preset's bundled home tonic = first step's tonic.
         home_note, _ = _parse_improvise_in(steps[0]["improvise_in"])
         home_offset = CHROMATIC_ORDER.index(home_note)
 
         keys: list[list[BakedStep]] = []
         for tonic_offset in range(12):
+            delta = (tonic_offset - home_offset + 12) % 12
             baked_steps: list[BakedStep] = []
             for i, step in enumerate(steps):
                 next_step = steps[(i + 1) % len(steps)]
                 baked_steps.append(
-                    _resolve_step(step, tonic_offset, home_offset, next_step)
+                    _resolve_step(
+                        step,
+                        tonic_note=_transpose_tonic(step, delta),
+                        next_step=next_step,
+                    )
                 )
             keys.append(baked_steps)
 
