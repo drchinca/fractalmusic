@@ -16,8 +16,8 @@ __all__ = [
     "CITATION_RE",
     "CitedClaim",
     "ParsedCitation",
-    "parse_answer",
     "ValidationOutcome",
     "ValidationVerdict",
+    "parse_answer",
     "validate_answer",
 ]

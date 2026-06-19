@@ -1,6 +1,5 @@
 """Validator tests. The similarity fn is injected; no patch() anywhere."""
 
-import pytest
 
 from chat_bff.citations.parser import parse_answer
 from chat_bff.citations.validator import (
