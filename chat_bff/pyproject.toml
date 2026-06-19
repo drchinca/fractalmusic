@@ -2,7 +2,7 @@
 name = "chat_bff"
 version = "0.1.0"
 description = "Single-turn citation-strict chat over the indexed fractal corpus"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 dependencies = [
     "fastapi>=0.115.0",
     "uvicorn>=0.30.0",
@@ -10,7 +10,15 @@ dependencies = [
     "pydantic-settings>=2.5.0",
     "structlog>=24.4.0",
     "httpx>=0.27.0",
+    "numpy>=2.0.0",
+    "anthropic>=0.40.0",
+    "cemaf",
+    "meridian-library",
 ]
+
+[tool.uv.sources]
+cemaf = { path = "../../iccha_context_multi_agent/cemaf", editable = true }
+meridian-library = { path = "../../iccha_context_multi_agent/meridian_library", editable = true }
 
 [project.optional-dependencies]
 dev = [
@@ -39,7 +47,7 @@ markers = [
 
 [tool.ruff]
 line-length = 110
-target-version = "py311"
+target-version = "py314"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]

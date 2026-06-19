@@ -5,8 +5,24 @@ from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, Field
 
-# The two indexed fractal books. Anything outside this set is out of scope.
-SCOPE: frozenset[str] = frozenset({"f39cb7c5", "b202598c"})
+# The two indexed fractal books, by short prefix.
+# Meridian stores full sha256 book hashes; we match by prefix so consumers
+# can keep using the friendly 8-char short form everywhere.
+SCOPE_PREFIXES: tuple[str, ...] = ("f39cb7c5", "b202598c")
+
+
+def in_scope(book_hash: str) -> bool:
+    """True iff ``book_hash`` starts with one of the SCOPE_PREFIXES."""
+    return any(book_hash.startswith(p) for p in SCOPE_PREFIXES)
+
+
+def short_hash(book_hash: str) -> str:
+    """Render the friendly 8-char prefix used in citations + UI."""
+    return book_hash[:8]
+
+
+# Backwards-compatible alias for tests / older imports.
+SCOPE = SCOPE_PREFIXES
 
 
 class LLMChoice(StrEnum):

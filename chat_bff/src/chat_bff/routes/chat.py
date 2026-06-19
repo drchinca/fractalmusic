@@ -16,7 +16,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from chat_bff import prompts
 from chat_bff.citations import parse_answer, validate_answer
 from chat_bff.citations.validator import ValidationOutcome, ValidationVerdict
-from chat_bff.models import SCOPE, ChatRequest, ChatResponse, Citation, LLMChoice
+from chat_bff.models import ChatRequest, ChatResponse, Citation, LLMChoice, in_scope, short_hash
 from chat_bff.protocols import LLM, RetrievedChunk
 from chat_bff.services import ChatServices
 
@@ -92,7 +92,7 @@ def _build_verified_citations(
 
 def _retrieved_in_scope(chunks: tuple[RetrievedChunk, ...]) -> tuple[RetrievedChunk, ...]:
     """I-1 enforcement at the boundary: drop anything outside the two books."""
-    return tuple(c for c in chunks if c.book_hash in SCOPE)
+    return tuple(c for c in chunks if in_scope(c.book_hash))
 
 
 async def _call_llm(llm: LLM, *, system: str, user: str, timeout_s: float) -> str:
