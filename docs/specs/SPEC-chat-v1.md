@@ -9,9 +9,12 @@ created: 2026-06-19
 
 ## 1. Context
 
-The wheel teaches the *shape* of the Sistema Fractal. The books explain it. Today the books are reachable only from a CLI. **chat-v1** adds a chat panel to the React app so a learner can ask questions and get answers grounded in the two indexed books, with every factual claim linked back to a specific chunk.
+The wheel teaches the *shape* of the Sistema Fractal. The books explain it. Today the books are reachable only from a CLI. **chat-v1** adds a chat panel to the React app so a learner can ask questions and get two complementary kinds of replies:
 
-Single-turn Q&A. No history. No streaming. Two services: BFF and web (meridian's index is imported in-process — no separate HTTP service).
+1. **Verified answer** — every factual sentence anchored to a specific chunk in the indexed corpus. The rigorous spine.
+2. **Model reading** — a generative answer that uses the retrieved passages as evidence and may bring in general music theory to bridge gaps. Returned ONLY when the verified path fails (no usable citations). Clearly labeled as interpretive, not verbatim.
+
+The two replies never blend in a single rendered answer. Either the user sees the verified answer, OR they see the model reading + the retrieved passages displayed side-by-side as `Pasajes encontrados`. Single-turn, no history, no streaming. Two services: BFF and web; meridian's index is imported in-process.
 
 ```mermaid
 sequenceDiagram
@@ -19,22 +22,16 @@ sequenceDiagram
     participant B as BFF (FastAPI :8002)
     participant L as LLM (Anthropic | Ollama)
     U->>B: POST /api/chat {question, llm}
-    B->>B: CemafBM25VectorStore.search(question, books=[f39cb7c5,b202598c], k=8)
-    B->>B: hydrate page numbers from the same index
+    B->>B: CemafBM25VectorStore.search → in-scope chunks
     B->>L: prompt(question, chunks, citation_strict.md)
-    L-->>B: answer with [book·ch§¶ p.X] markers
-    B->>B: validate (parse → membership → coverage → semantic-supports)
-    alt valid
-        B-->>U: {answer, citations[]}
-    else invalid
-        B->>L: regenerate (one retry)
-        L-->>B: answer'
-        B->>B: validate
-        alt valid
-            B-->>U: {answer', citations[]}
-        else still invalid
-            B-->>U: {answer: null, fallback_sources[], reason}
-        end
+    L-->>B: strict answer with [book·ch§¶ p.X] markers
+    B->>B: validate (membership → coverage → fidelity)
+    alt strict succeeded
+        B-->>U: {answer, citations[]}  // verified card only
+    else strict failed twice
+        B->>L: prompt(question, chunks, model_reading.md)
+        L-->>B: generative answer (no citation pressure)
+        B-->>U: {answer: null, model_reading, citations[] unverified}
     end
 ```
 
@@ -67,10 +64,7 @@ class ChatRequest(BaseModel):
     llm: LLMChoice = LLMChoice.CLAUDE
 
 class Citation(BaseModel):
-    """A retrieved chunk. `verified=True` means it survived the validator
-    and is supporting an inline claim in `answer`; `verified=False` means
-    it was retrieved but the answer didn't ground itself in it (returned
-    so the FE can show 'here's what I found, judge for yourself')."""
+    """A retrieved chunk; `verified` flips when the validator approved it."""
     model_config = ConfigDict(frozen=True)
     book_hash: str           # "f39cb7c5" | "b202598c"
     book_title: str
@@ -84,11 +78,10 @@ class Citation(BaseModel):
 class ChatResponse(BaseModel):
     model_config = ConfigDict(frozen=True)
     llm: LLMChoice
-    answer: str | None
-    citations: tuple[Citation, ...] = ()
-    reason: str | None = None  # free-form for now; FE renders the same empty
-                               # state for any null-answer case. Promote to a
-                               # Literal enum when the FE actually branches.
+    answer: str | None                       # verified answer; None when strict failed
+    citations: tuple[Citation, ...] = ()     # verified when answer != None; unverified retrieval otherwise
+    model_reading: str | None = None         # interpretive answer; populated when answer is None
+    reason: str | None = None
     elapsed_ms: Annotated[int, Field(ge=0)]
 ```
 
@@ -134,7 +127,9 @@ I-3 **Snippet supports the claim.** For every verified Citation, `semantic.score
 
 I-4 **No PII / no secrets in logs.** Structured logger never emits raw question body, raw LLM response, or any header containing `Authorization` / `x-api-key` / `cookie`. Tested via log-capture (see §4).
 
-> Note on claim coverage: "every fact-bearing sentence carries an inline citation" is enforced by the prompt and a single unit test on the validator, not by an invariant. It's a prompt rule, not a behavior of the system that other parts of the BFF need to honor.
+I-5 **Verified vs reading are mutually exclusive.** When `answer != None` (verified path succeeded) the response carries `model_reading=None`. When `answer == None`, `model_reading` MAY be populated (if the second LLM pass succeeded) or also None (if retrieval was empty, or the second pass itself failed — best-effort). The FE never has to decide which card to show: it picks whichever field is non-None and falls through to a generic empty state when both are None.
+
+> Note on claim coverage: "every fact-bearing sentence carries an inline citation" applies only to the verified path. The model-reading path explicitly does *not* require inline citations — it's labeled interpretive copy. That's the whole point of the second card.
 
 ## 4. Acceptance (max 8 Gherkin scenarios)
 
@@ -152,25 +147,22 @@ Feature: Pregunta a los libros
     And answer contains "Dodecamundo"
     And there is exactly 1 citation with book_hash "b202598c" and page_start 16
 
-  Scenario: Hash-fabrication — citation is in-scope but the chunk wasn't retrieved
-    Given the fake LLM returns "Frigio is dominant of Eólico [f39cb7c5 ch99§9¶999 p.999]."
-    When I POST /api/chat
-    Then the LLM was called twice (one regeneration)
-    And answer is null
-    And the response carries the retrieved chunks as unverified citations
+  Scenario: Strict fails → model_reading takes over
+    Given retrieval returns chunks the LLM can't ground in (hash-fabrication or low fidelity)
+    And the strict LLM call fails citation validation twice
+    When the BFF runs the second pass with the model_reading prompt
+    Then the response answer is null
+    And response.model_reading is the LLM's interpretive answer text
+    And response.citations carries the retrieved chunks as unverified
+    And the FE renders both side-by-side
 
-  Scenario: Repetition gaming — same citation reused for unrelated claims
-    Given the fake LLM returns a 4-sentence answer with the same citation appended to each
-    And only the first claim is semantically supported by that snippet
-    When I POST /api/chat
-    Then validation fails on snippet fidelity
-    And answer is null
-
-  Scenario: Out-of-corpus refusal — index returns 0 hits
-    Given the in-process index returns no chunks for "Bach counterpoint"
+  Scenario: Out-of-corpus — both answer and model_reading are null
+    Given the in-process index returns 0 chunks for the question
     When I POST /api/chat {"question": "what does Bach say about counterpoint?"}
     Then answer is null
+    And model_reading is null
     And citations is empty
+    And reason is "no_evidence_in_corpus"
 
   Scenario: LLM toggle routes correctly
     Given the LLM is set to "ollama"

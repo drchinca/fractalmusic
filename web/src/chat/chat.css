@@ -182,6 +182,25 @@
   padding: 16px;
 }
 
+.answer-reading {
+  background: #f7f3eb;
+  border-color: rgba(23, 22, 21, 0.18);
+  border-style: dashed;
+}
+
+.answer-reading-badge {
+  display: inline-block;
+  margin-bottom: 10px;
+  background: #1a1a1a;
+  color: #fffaf1;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
 .answer-prose {
   margin: 0 0 14px;
   line-height: 1.55;

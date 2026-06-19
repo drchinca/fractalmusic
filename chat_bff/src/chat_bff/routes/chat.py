@@ -182,17 +182,25 @@ async def chat(
         last_failure_reason = outcome.verdict.value
         log.info("chat.regenerating", attempt=attempt + 1, reason=last_failure_reason)
 
-    elapsed_ms = int((time.monotonic() - started) * 1000)
-
     if outcome is None or outcome.verdict != ValidationVerdict.OK:
-        # Validation never converged. Surface the retrieval as unverified
-        # citations so the FE can show "here's what I found".
+        # Strict pipeline didn't ground. Run a SECOND pass with the looser
+        # model_reading prompt — same passages, no citation requirement,
+        # general music theory allowed for bridging gaps. The user gets
+        # this interpretive answer + the retrieved chunks as unverified
+        # citations to inspect for themselves.
+        reading_text = await _run_model_reading(
+            llm=llm,
+            chunks=chunks,
+            question=request.question,
+            timeout_s=services.settings.request_timeout_s,
+        )
         return ChatResponse(
             llm=request.llm,
             answer=None,
             citations=_chunks_as_unverified_citations(chunks),
+            model_reading=reading_text,
             reason=last_failure_reason or "citation_validation_failed",
-            elapsed_ms=elapsed_ms,
+            elapsed_ms=int((time.monotonic() - started) * 1000),
         )
 
     return ChatResponse(
@@ -200,5 +208,37 @@ async def chat(
         answer=answer_text,
         citations=_build_verified_citations(outcome=outcome, chunks_by_key=chunks_by_key),
         reason=None,
-        elapsed_ms=elapsed_ms,
+        elapsed_ms=int((time.monotonic() - started) * 1000),
     )
+
+
+async def _run_model_reading(
+    *,
+    llm: LLM,
+    chunks: tuple[RetrievedChunk, ...],
+    question: str,
+    timeout_s: float,
+) -> str | None:
+    """Second-pass interpretive answer. Returns None if the LLM fails;
+    the caller still serves the retrieved chunks so the user has
+    something to read."""
+    prompt = prompts.load("model_reading")
+    payloads = [_chunk_to_payload(c) for c in chunks]
+    user_msg = prompts.render(
+        prompt.template,
+        passages=prompts.format_passages(payloads),
+        question=question,
+    )
+    try:
+        return await _call_llm(
+            llm,
+            system="You are a careful reader of music-theory books.",
+            user=user_msg,
+            timeout_s=timeout_s,
+        )
+    except Exception as e:
+        # Best-effort: if the second pass fails, the FE still gets the
+        # retrieved chunks. We don't want a model_reading failure to
+        # turn into a 502 — the user already lost the verified answer.
+        log.warning("chat.model_reading_failed", error=str(e))
+        return None
