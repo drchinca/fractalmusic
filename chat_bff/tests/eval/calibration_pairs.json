@@ -1,0 +1,206 @@
+{
+  "_about": "40 hand-labeled (claim, snippet) pairs for setting the chat_bff fidelity threshold (Spec I-3). 20 supporting + 20 non-supporting. Snippets are real text from chunks in ~/.meridian/library; claims are hand-written by drchinca to mirror what an LLM would write when grounded (positive) or when stretching/hallucinating (negative).",
+  "pairs": [
+    {
+      "claim": "El Dodecamundo es un conjunto de doce mundos sonoros donde ninguno es igual a otro, cada uno con su peso musical singular.",
+      "snippet": "El Dodecamundo  El Dodecamundo es un conjunto de elementos en el  que ninguno es igual, a pesar de tener los mismos  tamaños. Cada uno de ellos posee un peso molecular  singular. Este es el funcionamiento de un ecosistema,   donde si algo falta, todo lo demás se desequilibra.",
+      "supports": true
+    },
+    {
+      "claim": "Cada elemento del Dodecamundo tiene un peso molecular único.",
+      "snippet": "El Dodecamundo  El Dodecamundo es un conjunto de elementos en el  que ninguno es igual, a pesar de tener los mismos  tamaños. Cada uno de ellos posee un peso molecular  singular.",
+      "supports": true
+    },
+    {
+      "claim": "El Dodecamundo funciona como un ecosistema: si algo falta, todo lo demás se desequilibra.",
+      "snippet": "El Dodecamundo es un conjunto de elementos en el  que ninguno es igual. Este es el funcionamiento de un ecosistema, donde si algo falta, todo lo demás se desequilibra.",
+      "supports": true
+    },
+    {
+      "claim": "La escala pentatónica no tiene semitonos.",
+      "snippet": "La escala pentatónica tiene la capacidad  de NO tener semitonos, lo que la convierte es una  escala resistente a los errores o prueba de doomies. Durante miles de años, ha sido la base de la música folclórica.",
+      "supports": true
+    },
+    {
+      "claim": "La pentatónica ha sido la base de la música folclórica durante miles de años.",
+      "snippet": "La escala pentatónica tiene la capacidad de NO tener semitonos. Durante miles de años, ha sido la base de la música folclórica.",
+      "supports": true
+    },
+    {
+      "claim": "Aplicando el teorema de Pitágoras y la serie Fibonacci se experimentan los principios de la armonía musical.",
+      "snippet": "manera sorprendente, aplicando el teorema de  Pitágoras, además, mediante el juego con la serie  Fibonacci, experimentaras los principios de la armonía  musical, fortaleciendo así tu creatividad.",
+      "supports": true
+    },
+    {
+      "claim": "El Sistema Fractal incluye habilidades de autoconocimiento, empatía y pensamiento creativo aplicadas a la música.",
+      "snippet": "Ejes Educativos del Sistema Fractal   Musicalización del saber, es decir, potenciación de habilidades intelectuales, habilidades de aprendizaje, autoconocimiento, empatía, pensamiento creativo, manejo de tensiones, manejo de emociones y sentimientos aplicadas a la interpretación.",
+      "supports": true
+    },
+    {
+      "claim": "El libro propone descubrir la música mediante matrices, figuras geométricas y memoria.",
+      "snippet": "te invitamos a descubrir los secretos y la simbología ancestral. Mediante el uso de matrices, figuras geométricas, memoria y lógica, basada en ejes transversales, exploraremos el fascinante mundo de la música.",
+      "supports": true
+    },
+    {
+      "claim": "El Frigio es la base sonora del flamenco árabe-español, partiendo en semitono desde el Frigio al Lidio.",
+      "snippet": "Es la base sonora de la música Árabe-Española conocida como Flamenco. Tiene la particularidad de que empieza en un semitono, desde el Frigio al Lidio. Es un modo menor que trabaja como dominante del Eólico.",
+      "supports": true
+    },
+    {
+      "claim": "El Frigio funciona como dominante del Eólico.",
+      "snippet": "Es un modo menor que trabaja como dominante del Eólico. Tiene la particularidad de que empieza en un semitono, desde el Frigio al Lidio.",
+      "supports": true
+    },
+    {
+      "claim": "La Función Cíclica nos hace volver a la tonalidad de origen con cero alteraciones.",
+      "snippet": "Esta es una Función Cíclica por que volvemos a la tonalidad o escala de donde partimos, con CERO Alteraciones.",
+      "supports": true
+    },
+    {
+      "claim": "Los semitonos en el sistema son el Si y el Fa.",
+      "snippet": "Sabes por qué y para qué existen los semitonos díganse Si y Fa?",
+      "supports": true
+    },
+    {
+      "claim": "El Locrio es la sensible que siempre aparece junto al Jónico.",
+      "snippet": "Locrio y Jónico siempre aparecerán juntos en la tabla de sonidos (triángulo – cuadrado), pues el Locrio es la sensible del Jónico.",
+      "supports": true
+    },
+    {
+      "claim": "La pentatónica está libre de semitonos, lo que la hace resistente a errores.",
+      "snippet": "La escala pentatónica tiene la capacidad de NO tener semitonos, lo que la convierte en una escala resistente a los errores.",
+      "supports": true
+    },
+    {
+      "claim": "El Sistema Fractal explora la música desde la armonía, la melodía y el ritmo.",
+      "snippet": "Comprenderás la música desde sus diferentes ejes, como la armonía, la melodía, el ritmo, mediante una metodología fractal.",
+      "supports": true
+    },
+    {
+      "claim": "El Mixolidio es el dominante 7 del Jónico, el punto antes del cierre del mundo hepta mayor.",
+      "snippet": "Mixolidio es el dominante 7 del Jónico, el punto antes del cierre del mundo hepta mayor; cadencia auténtica.",
+      "supports": true
+    },
+    {
+      "claim": "El sistema utiliza simbología ancestral basada en ejes transversales.",
+      "snippet": "te invitamos a descubrir los secretos y la simbología ancestral, basada en ejes transversales, exploraremos el fascinante mundo de la música.",
+      "supports": true
+    },
+    {
+      "claim": "La pentatónica fue usada por tribus de todo el planeta, ancestralmente.",
+      "snippet": "Mundo de la Música Fractal propone un estudio de la música partiendo de las escalas ancestralmente utilizadas por las tribus de todo el planeta, las escalas pentatónicas.",
+      "supports": true
+    },
+    {
+      "claim": "La revisión del sistema parte desde la nota La menor, que produce la tonalidad mayor y no al revés.",
+      "snippet": "una revisión desde la nota La menor, siendo que ésta la que produce la tonalidad mayor y no al revés.",
+      "supports": true
+    },
+    {
+      "claim": "El Cero Pitágoras genera una semilla pentatónica de cinco notas sin semitonos.",
+      "snippet": "El Cero Pitágoras es la semilla pentatónica: cinco notas sobre las teclas negras del piano, sin un solo semitono entre ellas.",
+      "supports": true
+    },
+
+    {
+      "claim": "El Dodecamundo está formado por 7 notas heptatónicas y nada más.",
+      "snippet": "El Dodecamundo  El Dodecamundo es un conjunto de elementos en el  que ninguno es igual, a pesar de tener los mismos  tamaños. Cada uno de ellos posee un peso molecular  singular.",
+      "supports": false
+    },
+    {
+      "claim": "El Frigio es un modo mayor luminoso que se usa principalmente en el jazz bebop.",
+      "snippet": "Es la base sonora de la música Árabe-Española conocida como Flamenco. Es un modo menor que trabaja como dominante del Eólico.",
+      "supports": false
+    },
+    {
+      "claim": "La Función Cíclica añade siete alteraciones cromáticas a la escala original.",
+      "snippet": "Esta es una Función Cíclica por que volvemos a la tonalidad o escala de donde partimos, con CERO Alteraciones.",
+      "supports": false
+    },
+    {
+      "claim": "La pentatónica contiene semitonos como cualquier otra escala diatónica.",
+      "snippet": "La escala pentatónica tiene la capacidad de NO tener semitonos.",
+      "supports": false
+    },
+    {
+      "claim": "Bach inventó el contrapunto en el siglo XVIII basándose en estos principios.",
+      "snippet": "El Dodecamundo es un conjunto de elementos en el que ninguno es igual.",
+      "supports": false
+    },
+    {
+      "claim": "El Locrio es siempre tónico estable, nunca aparece junto al Jónico.",
+      "snippet": "Locrio y Jónico siempre aparecerán juntos en la tabla de sonidos, pues el Locrio es la sensible del Jónico.",
+      "supports": false
+    },
+    {
+      "claim": "El Mixolidio cierra el mundo hepta menor con tensión disminuida.",
+      "snippet": "Mixolidio es el dominante 7 del Jónico, el punto antes del cierre del mundo hepta mayor.",
+      "supports": false
+    },
+    {
+      "claim": "Los semitonos del sistema son el Do y el Sol.",
+      "snippet": "Sabes por qué y para qué existen los semitonos díganse Si y Fa?",
+      "supports": false
+    },
+    {
+      "claim": "El sistema rechaza explícitamente el uso de matrices y figuras geométricas en la enseñanza.",
+      "snippet": "Mediante el uso de matrices, figuras geométricas, memoria y lógica, exploraremos el fascinante mundo de la música.",
+      "supports": false
+    },
+    {
+      "claim": "El sistema parte desde la nota Do mayor como tonalidad matriarcal universal.",
+      "snippet": "una revisión desde la nota La menor, siendo que ésta la que produce la tonalidad mayor y no al revés.",
+      "supports": false
+    },
+    {
+      "claim": "El sistema solo enseña ritmo y deja de lado la armonía y la melodía.",
+      "snippet": "Comprenderás la música desde sus diferentes ejes, como la armonía, la melodía, el ritmo.",
+      "supports": false
+    },
+    {
+      "claim": "Los chacras se despiertan mediante prácticas de tantra y kundalini.",
+      "snippet": "El Frigio es un modo menor que trabaja como dominante del Eólico.",
+      "supports": false
+    },
+    {
+      "claim": "La función de Bessel modifica las series de Fourier en guías de onda.",
+      "snippet": "El Dodecamundo es un conjunto de elementos en el que ninguno es igual.",
+      "supports": false
+    },
+    {
+      "claim": "El swing y el bebop dependen de subdivisiones rítmicas extremas.",
+      "snippet": "La escala pentatónica tiene la capacidad de NO tener semitonos.",
+      "supports": false
+    },
+    {
+      "claim": "La luna en Capricornio favorece el control y la disciplina personal.",
+      "snippet": "Mediante el uso de matrices, figuras geométricas, memoria y lógica, exploraremos el fascinante mundo de la música.",
+      "supports": false
+    },
+    {
+      "claim": "Las mesas consagradas a Júpiter eran de oro mientras que las de Diana eran de plata.",
+      "snippet": "El Sistema Fractal propone una educación interactiva, visual y funcional de la música.",
+      "supports": false
+    },
+    {
+      "claim": "El Cero Pitágoras requiere ocho notas en orden cromático ascendente.",
+      "snippet": "El Cero Pitágoras es la semilla pentatónica: cinco notas sobre las teclas negras del piano, sin un solo semitono entre ellas.",
+      "supports": false
+    },
+    {
+      "claim": "El sistema desaconseja explícitamente el uso de simbología ancestral.",
+      "snippet": "te invitamos a descubrir los secretos y la simbología ancestral basada en ejes transversales.",
+      "supports": false
+    },
+    {
+      "claim": "El Frigio nunca se relaciona con el Lidio en ningún contexto musical.",
+      "snippet": "Tiene la particularidad de que empieza en un semitono, desde el Frigio al Lidio.",
+      "supports": false
+    },
+    {
+      "claim": "La pentatónica es exclusivamente una construcción del barroco europeo.",
+      "snippet": "Mundo de la Música Fractal propone un estudio partiendo de las escalas ancestralmente utilizadas por las tribus de todo el planeta, las escalas pentatónicas.",
+      "supports": false
+    }
+  ]
+}

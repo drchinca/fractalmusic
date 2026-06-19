@@ -1,0 +1,38 @@
+/* Tab nav between Gátople and Chat. Sits above main, mobile-first. */
+
+.app-nav {
+  display: flex;
+  gap: 4px;
+  padding: 8px 24px 0;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgba(23, 22, 21, 0.12);
+}
+
+.app-nav-tab {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 10px 16px;
+  cursor: pointer;
+  color: #555;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: -1px;
+  min-height: 44px;
+}
+
+.app-nav-tab:hover { color: #1a1a1a; }
+
+.app-nav-tab.is-active {
+  background: #fffaf1;
+  color: #1a1a1a;
+  border-color: rgba(23, 22, 21, 0.16) rgba(23, 22, 21, 0.16) transparent;
+}
+
+@media (max-width: 480px) {
+  .app-nav { padding: 8px 12px 0; gap: 0; }
+  .app-nav-tab { padding: 10px 12px; font-size: 0.9rem; }
+}
