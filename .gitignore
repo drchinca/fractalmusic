@@ -81,5 +81,9 @@ output/
 *.pickle
 *.joblib
 
+# Generated music/runtime artifacts
+patterns/
+web/public/generated/
+
 # Local working venvs
 .venv-*/
