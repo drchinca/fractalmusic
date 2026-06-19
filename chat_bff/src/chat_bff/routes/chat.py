@@ -16,7 +16,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from chat_bff import prompts
 from chat_bff.citations import parse_answer, validate_answer
 from chat_bff.citations.validator import ValidationOutcome, ValidationVerdict
-from chat_bff.models import ChatRequest, ChatResponse, Citation, LLMChoice, in_scope, short_hash
+from chat_bff.models import ChatRequest, ChatResponse, Citation, LLMChoice, in_scope
 from chat_bff.protocols import LLM, RetrievedChunk
 from chat_bff.services import ChatServices
 
@@ -99,6 +99,17 @@ async def _call_llm(llm: LLM, *, system: str, user: str, timeout_s: float) -> st
     return await asyncio.wait_for(llm.complete(system=system, user=user), timeout=timeout_s)
 
 
+# Single regen tail — the four failure modes ultimately collapse into:
+# "cite only what's listed; if it doesn't answer, say so plainly". The bug
+# we fix is qwen2.5 panicking when the original system prompt was echoed
+# verbatim on the second turn — the *short* tail prevents that.
+_REGEN_TAIL: str = (
+    "Intento anterior rechazado. Cita SOLO los pasajes listados arriba. "
+    "Si no responden la pregunta, escribí únicamente: "
+    "'No tengo evidencia suficiente en estos libros para responder.'"
+)
+
+
 @router.post("/api/chat", response_model=ChatResponse)
 async def chat(
     request: ChatRequest,
@@ -148,11 +159,7 @@ async def chat(
             answer_text = await _call_llm(
                 llm,
                 system="You are a careful reader of music-theory books.",
-                user=user_msg if attempt == 0 else (
-                    user_msg + "\n\nYour previous answer was rejected. "
-                    "Cite ONLY the passages above, by their exact book_hash and tuple, "
-                    "and ground every fact-bearing sentence in a passage that actually supports it."
-                ),
+                user=user_msg if attempt == 0 else f"{user_msg}\n\n---\n{_REGEN_TAIL}",
                 timeout_s=services.settings.request_timeout_s,
             )
         except TimeoutError as e:
