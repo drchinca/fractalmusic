@@ -405,12 +405,14 @@ async function main() {
     // Instruments — paint with this step's pre-baked scale_notes set.
     repaintInstruments(piano, fretboard, roles, chromatic, step.scale_notes);
 
-    // Drone — soft sine on the step's tonic.
+    // Drone — soft sine on the step's tonic. The single near-silent
+    // probe-note both bootstraps the AudioContext (after user gesture)
+    // and gives us a context handle to start the drone with.
     if (droneOn) {
+      let probe = null;
       try {
-        engine.playNote(step.tonic_note, 4, { durationMs: 1, gain: 0.001 });
-      } catch { /* user hasn't interacted yet */ }
-      const probe = engine.playNote(step.tonic_note, 4, { durationMs: 1, gain: 0.001 });
+        probe = engine.playNote(step.tonic_note, 4, { durationMs: 1, gain: 0.001 });
+      } catch { /* user hasn't interacted yet — drone will start on next paint */ }
       drone.start(step.tonic_note, step.drone_octave, probe?.context ?? null);
     } else {
       drone.stop();
@@ -536,6 +538,31 @@ async function main() {
     droneOn = droneEl.checked;
     if (!droneOn) drone.stop();
     else paintStep();
+  });
+
+  // Pause everything when the tab is hidden — no zombie drone, no
+  // throttled-setTimeout drift on return. Resume from the current step
+  // when the user comes back.
+  let resumeOnVisible = false;
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      resumeOnVisible = playing;
+      if (playing) {
+        playing = false;
+        if (intervalId !== null) {
+          window.clearTimeout(intervalId);
+          intervalId = null;
+        }
+        if (playBtn) {
+          playBtn.setAttribute("aria-pressed", "false");
+          playBtn.textContent = "▶ Play";
+        }
+      }
+      drone.stop();
+    } else if (resumeOnVisible) {
+      resumeOnVisible = false;
+      playBtn?.click();
+    }
   });
 
   document.addEventListener("keydown", (event) => {
