@@ -1,5 +1,5 @@
 {
-  "_provenance": "Each progression's steps come from cadences explicitly described in El Sistema Fractal (Torres, 2024). The book_ref field cites the source line in /tmp/fractal_libro.txt for re-verification.",
+  "_provenance": "Each progression's steps come from cadences explicitly described by Patricio Torres in El Sistema Fractal (2024) and El Lujo de la Disonancia. The book_ref field uses <source>:<line-number> into the plaintext export of each book. See docs/sources/PROGRESSION_SOURCES.md for the format, the indexed book hashes, and how to verify a ref against ~/.meridian/library.",
   "progressions": [
     {
       "id": "matriarchal-cycle",
