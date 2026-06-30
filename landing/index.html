@@ -116,6 +116,16 @@
     }
     .nav-links a:hover { color: var(--gold-soft); }
 
+    .nav-links a.nav-gatople {
+      color: var(--gold-soft);
+      font-weight: 700;
+    }
+    .nav-links a.nav-gatople::after {
+      content: "↻";
+      margin-left: 5px;
+      font-size: .9em;
+    }
+
     .menu-btn {
       display: none;
       border: 0;
@@ -218,70 +228,26 @@
       isolation: isolate;
     }
 
-    .halo {
-      width: min(480px, 82vw);
+    .orbit-stage { cursor: pointer; }
+
+    .gatople-halo {
+      width: min(460px, 80vw);
       aspect-ratio: 1;
-      border-radius: 50%;
       position: relative;
       display: grid;
       place-items: center;
-      border: 1px solid rgba(217,180,91,.34);
-      background:
-        radial-gradient(circle, rgba(217,180,91,.18) 0 2%, transparent 2.5%),
-        repeating-radial-gradient(circle, transparent 0 45px, rgba(217,180,91,.09) 46px 47px);
-      box-shadow: inset 0 0 70px rgba(111,24,56,.32), 0 0 90px rgba(111,24,56,.16);
+      padding: 14px;
+      filter: drop-shadow(0 26px 60px rgba(0,0,0,.5));
       animation: float 6s ease-in-out infinite;
+      transition: transform .4s ease;
     }
 
-    .halo::before,
-    .halo::after {
-      content: "";
-      position: absolute;
-      inset: 14%;
-      border: 1px solid rgba(217,180,91,.24);
-      transform: rotate(30deg);
-      border-radius: 22%;
-    }
-    .halo::after { transform: rotate(75deg); inset: 26%; }
+    .orbit-stage:hover .gatople-halo { transform: scale(1.03) rotate(-1.5deg); }
 
-    .core {
-      width: 145px;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      font-weight: 800;
-      letter-spacing: .12em;
-      font-size: .75rem;
-      color: var(--gold-soft);
-      background: linear-gradient(145deg, rgba(111,24,56,.95), rgba(16,18,29,.9));
-      border: 1px solid var(--gold);
-      box-shadow: 0 0 45px rgba(217,180,91,.18);
+    .gatople-logo {
+      width: 100%;
+      height: auto;
     }
-
-    .note {
-      position: absolute;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(217,180,91,.45);
-      background: rgba(9,11,18,.88);
-      color: var(--gold-soft);
-      font-weight: 800;
-      font-size: .78rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-    }
-    .note:nth-child(2) { top: 4%; left: 45%; }
-    .note:nth-child(3) { top: 18%; right: 8%; }
-    .note:nth-child(4) { top: 46%; right: -1%; }
-    .note:nth-child(5) { bottom: 16%; right: 12%; }
-    .note:nth-child(6) { bottom: 3%; left: 45%; }
-    .note:nth-child(7) { bottom: 17%; left: 10%; }
-    .note:nth-child(8) { top: 46%; left: -1%; }
-    .note:nth-child(9) { top: 18%; left: 8%; }
 
     @keyframes float {
       0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -513,6 +479,27 @@
       flex-wrap: wrap;
     }
 
+    .colophon {
+      margin-top: 14px;
+      font-size: .66rem;
+      letter-spacing: .04em;
+      color: rgba(170,169,179,.42);
+    }
+    .colophon a {
+      color: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color .25s ease;
+    }
+    .colophon a:hover { color: var(--gold-soft); }
+    .colophon img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      opacity: .7;
+    }
+
     .reveal {
       opacity: 0;
       transform: translateY(18px);
@@ -584,6 +571,7 @@
       <div class="nav-links">
         <a href="#manifiesto">Manifiesto</a>
         <a href="#sistema">Sistema Fractal</a>
+        <a href="gatople.html" class="nav-gatople">Gátople</a>
         <a href="#universo">DoDecaMundo</a>
         <a href="#creadores">Creadores</a>
         <a href="#contacto">Contacto</a>
@@ -608,19 +596,17 @@
           </div>
         </div>
 
-        <div class="orbit-stage reveal" aria-label="Representación geométrica del DoDecaMundo">
-          <div class="halo">
-            <div class="core">GÁTOPLE<br>12</div>
-            <span class="note">01</span>
-            <span class="note">02</span>
-            <span class="note">03</span>
-            <span class="note">04</span>
-            <span class="note">05</span>
-            <span class="note">06</span>
-            <span class="note">07</span>
-            <span class="note">08</span>
+        <a class="orbit-stage reveal" href="gatople.html" aria-label="Abrir el Gátople interactivo">
+          <div class="gatople-halo">
+            <img
+              class="gatople-logo"
+              src="gatople-logo.png"
+              alt="El Gátople: la rueda de dos discos del Sistema Fractal, con su rostro felino y los 12 símbolos"
+              width="571"
+              height="620"
+            />
           </div>
-        </div>
+        </a>
       </div>
     </section>
 
@@ -778,6 +764,14 @@
     <div class="wrap footer-row">
       <span>© 2026 Patricio Torres Rivera · Fractal Music World®</span>
       <span>Costa Rica · Música, geometría y conocimiento ancestral</span>
+    </div>
+    <div class="wrap colophon">
+      <span>Maintained &amp; powered by
+        <a href="https://www.iccha-technologies.com/" target="_blank" rel="noopener noreferrer">
+          ICCHA Technologies
+          <img src="iccha-main-no-bg.png" alt="ICCHA Technologies" width="20" height="20" />
+        </a>
+      </span>
     </div>
   </footer>
 

@@ -1,0 +1,421 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  color: #1a1a1a;
+  background: #faf6ee;
+  padding: 24px;
+}
+
+header {
+  max-width: 880px;
+  margin: 0 auto 24px;
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 0 auto;
+  max-width: 640px;
+  color: #555;
+}
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  main { grid-template-columns: 1fr; }
+}
+
+/* Phone breakpoint — keep the layout breathable down to 320px. */
+@media (max-width: 480px) {
+  body { padding: 12px; }
+  h1 { font-size: 1.5rem; }
+  header { margin-bottom: 16px; }
+  main { gap: 20px; }
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+#wheel {
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 1;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+#wheel.dragging { cursor: grabbing; }
+
+#inner-disc {
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+#inner-disc.dragging { transition: none; }
+
+.note-item {
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+#inner-disc.dragging .note-item { transition: none; }
+
+.role-segment {
+  cursor: default;
+  stroke: #1a1a1a;
+  stroke-width: 1;
+}
+
+.role-glyph {
+  font-size: 26px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.note-label {
+  font-size: 17px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+  cursor: pointer;
+  fill: #111;
+}
+
+.note-label:hover { fill: #c0392b; }
+
+.note-disc {
+  fill: #faf6ee;
+  stroke: #1a1a1a;
+  stroke-width: 1;
+  cursor: pointer;
+}
+
+.note-disc:hover { fill: #ffeec7; }
+
+.tonic-readout {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.tonic-readout strong {
+  font-size: 1.4rem;
+  color: #c0392b;
+}
+
+.tonic-mode { color: #555; font-weight: 400; }
+
+.step-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-controls button {
+  appearance: none;
+  border: 1px solid #1a1a1a;
+  background: #fff;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font: inherit;
+  cursor: pointer;
+  min-width: 44px;
+}
+
+.step-controls button:hover { background: #1a1a1a; color: #fff; }
+
+#step-back, #step-fwd {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+aside.readout h2 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #555;
+}
+
+#bindings {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+#bindings th, #bindings td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+#bindings th {
+  background: #f0ece2;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #555;
+}
+
+#bindings .glyph-cell {
+  font-size: 18px;
+  text-align: center;
+  width: 36px;
+}
+
+#bindings .swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  margin-right: 6px;
+  vertical-align: middle;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.instruments {
+  max-width: 1100px;
+  margin: 32px auto 0;
+}
+
+.palette-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.palette-toggle button {
+  appearance: none;
+  border: 1px solid #1a1a1a;
+  background: #fff;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.palette-toggle button.active {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.step-controls-footer {
+  margin-top: 20px;
+}
+
+.step-controls.step-controls-footer button {
+  padding: 10px 20px;
+  font-size: 1rem;
+}
+
+.instruments h2 {
+  margin: 24px 0 4px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #555;
+}
+
+.instruments .caption {
+  margin: 0 0 12px;
+  color: #555;
+  font-size: 14px;
+}
+
+#piano, #fretboard {
+  width: 100%;
+  height: auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+footer {
+  max-width: 880px;
+  margin: 32px auto 0;
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.2;
+  border: 1px solid #b8b1a3;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: inset 0 -1px 0 #d9d2c3;
+  color: #1a1a1a;
+}
+
+#octave-readout {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: #f0e9d8;
+}
+
+/* --- Geometry overlay layer --- */
+
+.geom-heptagon, .geom-pentagram {
+  fill: rgba(255, 250, 234, 0.18);
+  stroke: #1a1a1a;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+.geom-heptagon {
+  stroke: #2BA39A;        /* teal — the A Eólico hue */
+  stroke-width: 2.5;
+}
+
+.geom-pentagram {
+  stroke: #B687C6;        /* violet — the F# Penta-III hue (casa de Gátople) */
+  stroke-width: 2;
+  fill: rgba(182, 135, 198, 0.12);
+}
+
+.zona-arc {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.geometry-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e6dfd0;
+}
+
+.geometry-controls button {
+  appearance: none;
+  border: 1px solid #1a1a1a;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font: 13px/1 inherit;
+  background: #fff;
+  cursor: pointer;
+}
+
+.geometry-controls button.active,
+.geometry-controls button[aria-pressed="true"] {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+/* Penta-BW sliding animation: when the tonic changes, the role bound to
+   each fixed sticker changes, and the carta_color/fill swaps. A short
+   transition makes the ★ pattern visibly slide across the neck. */
+.piano-tint, .fret-tint {
+  transition: fill 200ms ease-out;
+}
+
+/* --- Carta card (hover the wheel segments to reveal the painted carta) --- */
+
+.carta-card {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 220px;
+  background: #fffaf1;
+  border: 1px solid rgba(23, 22, 21, 0.16);
+  border-radius: 10px;
+  box-shadow: 0 18px 44px rgba(42, 32, 20, 0.18);
+  padding: 10px;
+  z-index: 30;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 180ms ease-out, transform 180ms ease-out;
+  pointer-events: none;
+}
+
+.carta-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.carta-card img {
+  display: block;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #f0ece2;
+  margin-bottom: 8px;
+}
+
+.carta-card-meta h3 {
+  margin: 0 0 2px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.carta-card-meta p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+@media (max-width: 760px) {
+  .carta-card {
+    position: static;
+    width: 100%;
+    margin: 16px 0;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.page-tabs {
+  margin: 4px 0 12px;
+  font-size: 14px;
+  color: #555;
+}
+.page-tabs a {
+  color: #c0392b;
+  text-decoration: none;
+  border-bottom: 1px solid #c0392b;
+  margin-left: 6px;
+}
+.page-tabs a:hover { color: #1a1a1a; border-color: #1a1a1a; }

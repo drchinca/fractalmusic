@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>El Gátople — la rueda que gira · Fractal Music World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="El Gátople interactivo: dos discos que giran, piano y diapasón que se repintan, y las 12 cartas del Sistema Fractal." />
+  <link rel="stylesheet" href="gatople-page.css">
+  <style>
+    /* Slim bar tying the prior Gátople page back into the landing site. */
+    .site-bar {
+      max-width: 1100px;
+      margin: 0 auto 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 14px;
+    }
+    .site-bar a { color: #c0392b; text-decoration: none; }
+    .site-bar a:hover { color: #1a1a1a; }
+    .site-bar .home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .site-colophon {
+      max-width: 880px;
+      margin: 8px auto 0;
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: .04em;
+      color: rgba(120, 120, 120, .5);
+    }
+    .site-colophon a {
+      color: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+    }
+    .site-colophon a:hover { color: #c0392b; }
+    .site-colophon img {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+      opacity: .65;
+    }
+  </style>
+</head>
+<body>
+  <div class="site-bar">
+    <a class="home" href="index.html">← Fractal Music World</a>
+    <span>El Gátople</span>
+  </div>
+
+  <header>
+    <h1>El Gátople</h1>
+    <p class="page-tabs"><strong>Teoría</strong> · <a href="compose.html">Componer / Improvisar →</a></p>
+    <p class="subtitle">
+      Spinner de dos discos. El rostro felino exterior sostiene los 12 símbolos
+      en posiciones fijas de reloj; el anillo interior lleva las notas y gira por
+      debajo (arrastra, o toca una nota para volverla tónica). Bajo la rueda, el
+      piano y el diapasón muestran la vista inversa — las <em>notas</em> están
+      fijas (un instrumento real no puede moverlas) mientras que los
+      <em>símbolos/funciones</em> en cada posición cambian cada vez que giras.
+    </p>
+  </header>
+
+  <main>
+    <div class="stage">
+      <svg id="wheel" viewBox="-260 -260 520 520" aria-label="Rueda del Gátople">
+        <!-- Outer disc: fixed roles. Inner disc: rotating notes + geometry overlays. -->
+        <g id="outer-disc"></g>
+        <g id="zonas-layer" aria-hidden="true"></g>
+        <g id="inner-disc"></g>
+        <g id="geometry-layer" aria-hidden="true"></g>
+        <g id="cyclops-eye">
+          <circle r="36" fill="#fff" stroke="#000" stroke-width="3"/>
+          <ellipse cx="0" cy="0" rx="14" ry="32" fill="#0a3d2e"/>
+          <ellipse cx="0" cy="-6" rx="4" ry="6" fill="#fff" opacity="0.5"/>
+        </g>
+      </svg>
+      <p class="tonic-readout">Tónica: <strong id="tonic-label">A</strong>
+        <span class="tonic-mode">(<span id="tonic-mode">Eólico</span>)</span></p>
+      <div class="step-controls">
+        <button data-action="step-back" type="button" aria-label="Bajar un semitono">◀</button>
+        <button data-action="reset" type="button">Volver a A</button>
+        <button data-action="step-fwd" type="button" aria-label="Subir un semitono">▶</button>
+      </div>
+      <div class="geometry-controls" role="group" aria-label="Capas geométricas">
+        <button data-shape="heptagon" type="button" aria-pressed="false">7-gono (hepta)</button>
+        <button data-shape="pentagram" type="button" aria-pressed="false">★ pentagrama (penta)</button>
+        <button data-shape="zonas" type="button" aria-pressed="false">4 zonas</button>
+        <button data-action="cero-pitagoras" type="button" title="Los cinco dedos sobre las cinco teclas negras (Cap. 4)">Tocar Cero Pitágoras</button>
+      </div>
+    </div>
+
+    <aside class="carta-card" id="carta-card" aria-live="polite" aria-label="Carta resaltada">
+      <img id="carta-card-img" alt="" />
+      <div class="carta-card-meta">
+        <h3 id="carta-card-title">Pasa el cursor por un segmento</h3>
+        <p id="carta-card-sub">para ver la carta pintada</p>
+      </div>
+    </aside>
+
+    <aside class="readout">
+      <h2>Vínculos actuales</h2>
+      <table id="bindings">
+        <thead><tr><th>Función</th><th>Glifo</th><th>Nota</th><th>Hora</th></tr></thead>
+        <tbody></tbody>
+      </table>
+
+      <h2 style="margin-top:18px">Toca con tu teclado</h2>
+      <p class="caption" style="font-size:13px; line-height:1.5">
+        Teclas blancas: <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> <kbd>F</kbd>
+        <kbd>G</kbd> <kbd>H</kbd> <kbd>J</kbd> <kbd>K</kbd>
+        (= C D E F G A B C — digitación estándar de piano).<br>
+        Teclas negras: <kbd>W</kbd> <kbd>E</kbd> <kbd>T</kbd> <kbd>Y</kbd>
+        <kbd>U</kbd> (= C♯ D♯ F♯ G♯ A♯).<br>
+        Octava: <kbd>Z</kbd> baja · <kbd>X</kbd> sube.
+        <span id="octave-readout" style="font-weight:700">Octava 4</span>.<br>
+        Fijar tónica (mover el glifo ⋮): <kbd>Shift</kbd>+letra.
+      </p>
+    </aside>
+  </main>
+
+  <section class="instruments">
+    <div class="palette-toggle">
+      <span>Paleta de stickers:</span>
+      <button data-palette="carta" type="button" class="active">Colores de carta</button>
+      <button data-palette="mono" type="button" title="Penta en B&amp;N: las ★ se pintan negras sólidas, las celdas hepta blancas. El patrón se desliza al girar.">Penta B&amp;N</button>
+    </div>
+
+    <h2>Piano</h2>
+    <p class="caption">Cada tecla lleva la función ligada en este momento a su
+      nota física. Gira la rueda y el teclado se repinta al unísono.</p>
+    <svg id="piano" viewBox="0 0 560 180" aria-label="Stickers sobre el piano"></svg>
+
+    <h2>Diapasón de guitarra (EADGBE)</h2>
+    <p class="caption">12 trastes en las 6 cuerdas, cada posición pintada con su
+      función actual. Mismo modelo de datos, misma rotación.</p>
+    <svg id="fretboard" viewBox="0 0 776 238" aria-label="Stickers sobre el diapasón"></svg>
+
+    <div class="step-controls step-controls-footer">
+      <button data-action="step-back" type="button" aria-label="Bajar un semitono">◀ atrás</button>
+      <button data-action="reset" type="button">Volver a A</button>
+      <button data-action="step-fwd" type="button" aria-label="Subir un semitono">adelante ▶</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      Datos tomados de <code>fractalmusic.wheel.ROLES</code>. Glifos y colores
+      provienen de las 12 cartas pintadas a mano del
+      <a href="index.html">Sistema Fractal</a>.
+    </p>
+    <p class="site-colophon">
+      Maintained &amp; powered by
+      <a href="https://www.iccha-technologies.com/" target="_blank" rel="noopener noreferrer">
+        ICCHA Technologies
+        <img src="iccha-main-no-bg.png" alt="ICCHA Technologies" width="16" height="16" />
+      </a>
+    </p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
