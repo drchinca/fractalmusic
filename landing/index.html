@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Fractal Music World: música, geometría, ciencia, conocimiento ancestral y nuevas formas de aprendizaje." />
+  <title>Fractal Music World</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #090b12;
+      --bg-soft: #111522;
+      --wine: #6f1838;
+      --wine-2: #9a2950;
+      --gold: #d9b45b;
+      --gold-soft: #f1d891;
+      --cream: #f4efe4;
+      --muted: #aaa9b3;
+      --line: rgba(217, 180, 91, .25);
+      --glass: rgba(255,255,255,.055);
+      --shadow: 0 28px 70px rgba(0,0,0,.38);
+      --radius: 24px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--cream);
+      background:
+        radial-gradient(circle at 85% 12%, rgba(111,24,56,.32), transparent 28%),
+        radial-gradient(circle at 12% 30%, rgba(217,180,91,.10), transparent 30%),
+        linear-gradient(180deg, #080a10 0%, #0b0d15 52%, #090b12 100%);
+      font-family: "Montserrat", system-ui, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    img, svg { max-width: 100%; display: block; }
+
+    .wrap {
+      width: min(calc(100% - 36px), var(--max));
+      margin-inline: auto;
+    }
+
+    .nav-shell {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: min(calc(100% - 28px), var(--max));
+      background: rgba(9,11,18,.76);
+      border: 1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(18px);
+      border-radius: 999px;
+      box-shadow: 0 12px 36px rgba(0,0,0,.28);
+    }
+
+    nav {
+      min-height: 66px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      display: grid;
+      place-items: center;
+      position: relative;
+      box-shadow: inset 0 0 20px rgba(217,180,91,.14);
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      background: var(--gold);
+      opacity: .85;
+    }
+    .brand-mark::before { width: 18px; height: 1px; transform: rotate(30deg); }
+    .brand-mark::after  { width: 1px; height: 18px; transform: rotate(30deg); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: .84rem;
+      color: #d9d6cf;
+    }
+
+    .nav-links a {
+      transition: .25s ease;
+    }
+    .nav-links a:hover { color: var(--gold-soft); }
+
+    .menu-btn {
+      display: none;
+      border: 0;
+      background: transparent;
+      color: var(--cream);
+      font-size: 1.35rem;
+      cursor: pointer;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      padding: 140px 0 80px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 58px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold-soft);
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .22em;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      font-size: clamp(3rem, 7vw, 6.8rem);
+      line-height: .94;
+      letter-spacing: -.055em;
+      margin-bottom: 26px;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--gold);
+      text-shadow: 0 0 28px rgba(217,180,91,.08);
+    }
+
+    .hero-copy {
+      max-width: 680px;
+      color: #c6c3c6;
+      font-size: clamp(1rem, 1.8vw, 1.18rem);
+      margin-bottom: 34px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      min-height: 50px;
+      padding: 0 22px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .9rem;
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      color: #17120a;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      box-shadow: 0 15px 35px rgba(217,180,91,.18);
+    }
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.04);
+    }
+
+    .orbit-stage {
+      min-height: 540px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .halo {
+      width: min(480px, 82vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      position: relative;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(217,180,91,.34);
+      background:
+        radial-gradient(circle, rgba(217,180,91,.18) 0 2%, transparent 2.5%),
+        repeating-radial-gradient(circle, transparent 0 45px, rgba(217,180,91,.09) 46px 47px);
+      box-shadow: inset 0 0 70px rgba(111,24,56,.32), 0 0 90px rgba(111,24,56,.16);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .halo::before,
+    .halo::after {
+      content: "";
+      position: absolute;
+      inset: 14%;
+      border: 1px solid rgba(217,180,91,.24);
+      transform: rotate(30deg);
+      border-radius: 22%;
+    }
+    .halo::after { transform: rotate(75deg); inset: 26%; }
+
+    .core {
+      width: 145px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-weight: 800;
+      letter-spacing: .12em;
+      font-size: .75rem;
+      color: var(--gold-soft);
+      background: linear-gradient(145deg, rgba(111,24,56,.95), rgba(16,18,29,.9));
+      border: 1px solid var(--gold);
+      box-shadow: 0 0 45px rgba(217,180,91,.18);
+    }
+
+    .note {
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(217,180,91,.45);
+      background: rgba(9,11,18,.88);
+      color: var(--gold-soft);
+      font-weight: 800;
+      font-size: .78rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .note:nth-child(2) { top: 4%; left: 45%; }
+    .note:nth-child(3) { top: 18%; right: 8%; }
+    .note:nth-child(4) { top: 46%; right: -1%; }
+    .note:nth-child(5) { bottom: 16%; right: 12%; }
+    .note:nth-child(6) { bottom: 3%; left: 45%; }
+    .note:nth-child(7) { bottom: 17%; left: 10%; }
+    .note:nth-child(8) { top: 46%; left: -1%; }
+    .note:nth-child(9) { top: 18%; left: 8%; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1.2deg); }
+    }
+
+    section { padding: 105px 0; }
+
+    .section-head {
+      max-width: 780px;
+      margin-bottom: 44px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2.1rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+      margin-bottom: 18px;
+    }
+
+    .section-head p { color: var(--muted); }
+
+    .manifesto {
+      position: relative;
+      background:
+        linear-gradient(90deg, rgba(111,24,56,.18), transparent 35%),
+        rgba(255,255,255,.015);
+      border-block: 1px solid rgba(255,255,255,.06);
+    }
+
+    .manifesto-grid {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 70px;
+      align-items: start;
+    }
+
+    .big-number {
+      font-size: clamp(8rem, 20vw, 16rem);
+      font-weight: 800;
+      line-height: .75;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(217,180,91,.55);
+      opacity: .7;
+    }
+
+    .manifesto-text {
+      font-size: clamp(1.4rem, 2.8vw, 2.4rem);
+      line-height: 1.35;
+      letter-spacing: -.025em;
+      margin-bottom: 24px;
+    }
+
+    .manifesto-text strong { color: var(--gold-soft); }
+    .muted { color: var(--muted); }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      padding: 30px;
+      min-height: 270px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.018));
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      right: -80px;
+      bottom: -80px;
+      border: 1px solid var(--line);
+    }
+
+    .card-index {
+      color: var(--gold);
+      font-size: .75rem;
+      letter-spacing: .18em;
+      font-weight: 700;
+      margin-bottom: 54px;
+    }
+
+    .card h3 {
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+    }
+    .card p { color: var(--muted); margin-bottom: 0; }
+
+    .universe {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .feature {
+      border-radius: 32px;
+      padding: 42px;
+      min-height: 410px;
+      border: 1px solid rgba(255,255,255,.08);
+      background:
+        radial-gradient(circle at 80% 20%, rgba(217,180,91,.14), transparent 24%),
+        linear-gradient(145deg, rgba(111,24,56,.32), rgba(17,21,34,.82));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature h3 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1;
+      letter-spacing: -.04em;
+      margin-bottom: 18px;
+      max-width: 520px;
+    }
+
+    .feature p {
+      color: #c9c5c8;
+      max-width: 570px;
+    }
+
+    .feature-label {
+      position: absolute;
+      left: 42px;
+      bottom: 34px;
+      color: var(--gold-soft);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: .72rem;
+      font-weight: 700;
+    }
+
+    .feature.alt {
+      background:
+        radial-gradient(circle at 15% 70%, rgba(111,24,56,.24), transparent 30%),
+        linear-gradient(145deg, rgba(217,180,91,.10), rgba(17,21,34,.84));
+    }
+
+    .founders {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 26px;
+    }
+
+    .profile {
+      min-height: 360px;
+      padding: 38px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: var(--glass);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, transparent 25%, rgba(9,11,18,.92) 84%),
+        radial-gradient(circle at 50% 15%, rgba(217,180,91,.14), transparent 27%);
+      z-index: 0;
+    }
+
+    .profile > * { position: relative; z-index: 1; }
+    .profile .role {
+      color: var(--gold-soft);
+      font-size: .75rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .profile h3 { font-size: 2rem; margin: 8px 0 10px; }
+    .profile p { color: var(--muted); margin-bottom: 0; }
+
+    .cta {
+      padding-top: 45px;
+      padding-bottom: 120px;
+    }
+
+    .cta-box {
+      border-radius: 36px;
+      padding: clamp(36px, 7vw, 78px);
+      background:
+        radial-gradient(circle at 90% 10%, rgba(217,180,91,.18), transparent 28%),
+        linear-gradient(135deg, #6f1838, #311126 55%, #111522);
+      border: 1px solid rgba(217,180,91,.34);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .cta-box h2 {
+      font-size: clamp(2.4rem, 6vw, 5.2rem);
+      line-height: .98;
+      letter-spacing: -.05em;
+      margin-bottom: 20px;
+    }
+
+    .cta-box p {
+      max-width: 740px;
+      margin: 0 auto 30px;
+      color: #e0dadd;
+    }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,.07);
+      padding: 34px 0 46px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .manifesto-grid,
+      .universe,
+      .founders {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-grid { gap: 25px; }
+      .orbit-stage { min-height: 470px; }
+      .cards { grid-template-columns: 1fr; }
+      .manifesto-grid { gap: 25px; }
+      .big-number { font-size: 9rem; }
+    }
+
+    @media (max-width: 760px) {
+      .menu-btn { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        padding: 18px;
+        flex-direction: column;
+        align-items: stretch;
+        border-radius: 24px;
+        background: rgba(9,11,18,.97);
+        border: 1px solid rgba(255,255,255,.08);
+      }
+      .nav-links.open { display: flex; }
+      section { padding: 78px 0; }
+      .feature, .profile { padding: 30px; }
+      .feature-label { left: 30px; }
+      .brand span:last-child { font-size: .84rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="nav-shell">
+    <nav aria-label="Navegación principal">
+      <a class="brand" href="#inicio" aria-label="Fractal Music World, inicio">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>FRACTAL MUSIC WORLD</span>
+      </a>
+
+      <button class="menu-btn" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+      <div class="nav-links">
+        <a href="#manifiesto">Manifiesto</a>
+        <a href="#sistema">Sistema Fractal</a>
+        <a href="#universo">DoDecaMundo</a>
+        <a href="#creadores">Creadores</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="wrap hero-grid">
+        <div class="reveal">
+          <div class="eyebrow">Música · Geometría · Conocimiento ancestral</div>
+          <h1>El sonido también <span>piensa.</span></h1>
+          <p class="hero-copy">
+            Fractal Music World es un universo educativo y creativo nacido del Sistema Fractal:
+            una forma de comprender la música desde el cuerpo, la naturaleza, el número,
+            la memoria y la imaginación.
+          </p>
+          <div class="actions">
+            <a class="btn btn-primary" href="#sistema">Entrar al sistema</a>
+            <a class="btn btn-secondary" href="#contacto">Conocer el proyecto</a>
+          </div>
+        </div>
+
+        <div class="orbit-stage reveal" aria-label="Representación geométrica del DoDecaMundo">
+          <div class="halo">
+            <div class="core">GÁTOPLE<br>12</div>
+            <span class="note">01</span>
+            <span class="note">02</span>
+            <span class="note">03</span>
+            <span class="note">04</span>
+            <span class="note">05</span>
+            <span class="note">06</span>
+            <span class="note">07</span>
+            <span class="note">08</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="manifesto" id="manifiesto">
+      <div class="wrap manifesto-grid">
+        <div class="big-number reveal">12</div>
+        <div class="reveal">
+          <div class="eyebrow">Portal madre</div>
+          <p class="manifesto-text">
+            No enseñamos música como una fila de datos.
+            La volvemos <strong>experiencia, arquitectura, juego y lenguaje vivo.</strong>
+          </p>
+          <p class="muted">
+            Fractal Music World une educación artística, ciencia, filosofía,
+            etnomatemática y tradición musical para acompañar a cada persona
+            en el descubrimiento de su propio sonido.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sistema">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">Sistema Fractal</div>
+          <h2>Aprender música desde múltiples puertas.</h2>
+          <p>
+            El método transforma conceptos abstractos en relaciones visibles,
+            audibles y corporales.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card reveal">
+            <div class="card-index">01 / ESCUCHA</div>
+            <h3>El oído como centro</h3>
+            <p>Antes de explicar, escuchamos. Antes de repetir, comprendemos el pulso y la relación.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-index">02 / GEOMETRÍA</div>
+            <h3>La música se vuelve espacio</h3>
+            <p>Intervalos, proporciones y estructuras aparecen como formas que pueden recorrerse.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="card-index">03 / CREACIÓN</div>
+            <h3>Aprender haciendo mundo</h3>
+            <p>Cartas, juegos, personajes y composición convierten el conocimiento en experiencia activa.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="universo">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">DoDecaMundo</div>
+          <h2>Un universo de personajes, objetos y nuevas formas de aprendizaje.</h2>
+        </div>
+
+        <div class="universe">
+          <article class="feature reveal">
+            <h3>Gátople</h3>
+            <p>
+              Astrolabio musical y puerta geométrica del Sistema Fractal.
+              Organiza relaciones, proporciones y recorridos del lenguaje musical.
+            </p>
+            <div class="feature-label">Objeto pedagógico</div>
+          </article>
+
+          <article class="feature alt reveal">
+            <h3>Las 12 cartas</h3>
+            <p>
+              Un sistema narrativo y musical donde cada carta activa una función,
+              una escucha y una forma distinta de comprender.
+            </p>
+            <div class="feature-label">Juego de ingenio musical</div>
+          </article>
+
+          <article class="feature alt reveal">
+            <h3>El lujo de la disonancia</h3>
+            <p>
+              Música, geometría y ficción en una fuga narrativa.
+              La obra literaria que abre las puertas del universo Fractal Music World.
+            </p>
+            <div class="feature-label">Libro</div>
+          </article>
+
+          <article class="feature reveal">
+            <h3>Suite Fractal</h3>
+            <p>
+              El universo convertido en sonido: composición, personajes,
+              memoria latinoamericana y arquitectura musical.
+            </p>
+            <div class="feature-label">Experiencia artística</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="creadores">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="eyebrow">Dirección</div>
+          <h2>Una visión artística con arquitectura humana.</h2>
+        </div>
+
+        <div class="founders">
+          <article class="profile reveal">
+            <div class="role">Fundador · Músico · Compositor</div>
+            <h3>Patricio Torres Rivera</h3>
+            <p>
+              Creador del Sistema Fractal y del universo Fractal Music World.
+              Su trabajo integra música, pedagogía, geometría, narración y experiencia escénica.
+            </p>
+          </article>
+
+          <article class="profile reveal">
+            <div class="role">Cofundadora · Kipu Kamayuc</div>
+            <h3>Katherina Castor</h3>
+            <p>
+              Estructura, gestión y sostén estratégico del proyecto.
+              Traduce la visión creativa en organización, continuidad y desarrollo.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="contacto">
+      <div class="wrap">
+        <div class="cta-box reveal">
+          <div class="eyebrow">Entrar en contacto</div>
+          <h2>La disonancia también puede abrir una puerta.</h2>
+          <p>
+            Fractal Music World desarrolla experiencias educativas, artísticas,
+            editoriales y musicales para personas, instituciones y aliados.
+          </p>
+          <div class="actions" style="justify-content:center">
+            <a
+              class="btn btn-primary"
+              href="https://wa.me/50689246856"
+              target="_blank"
+              rel="noopener noreferrer"
+            >WhatsApp</a>
+            <a class="btn btn-secondary" href="#inicio">Volver al inicio</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-row">
+      <span>© 2026 Patricio Torres Rivera · Fractal Music World®</span>
+      <span>Costa Rica · Música, geometría y conocimiento ancestral</span>
+    </div>
+  </footer>
+
+  <script>
+    const menuButton = document.querySelector(".menu-btn");
+    const navLinks = document.querySelector(".nav-links");
+
+    menuButton.addEventListener("click", () => {
+      const open = navLinks.classList.toggle("open");
+      menuButton.setAttribute("aria-expanded", String(open));
+      menuButton.textContent = open ? "×" : "☰";
+    });
+
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.textContent = "☰";
+      });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
