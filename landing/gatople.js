@@ -16,13 +16,13 @@
 
   function polar(cx,cy,r,a){const rad=(a-90)*Math.PI/180;return{x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)}}
   function wedgePath(angle,outer=230,inner=135){const a0=angle-15,a1=angle+15;const p1=polar(300,300,outer,a0),p2=polar(300,300,outer,a1),q2=polar(300,300,inner,a1),q1=polar(300,300,inner,a0);return `M ${p1.x} ${p1.y} A ${outer} ${outer} 0 0 1 ${p2.x} ${p2.y} L ${q2.x} ${q2.y} A ${inner} ${inner} 0 0 0 ${q1.x} ${q1.y} Z`}
-  function polygonPoints(indices,r){return indices.map(i=>{const hour=CHROMATIC_HOURS[i]%12;const p=polar(300,300,r,hour*30+15);return `${p.x},${p.y}`}).join(' ')}
+  function polygonPoints(indices,r){return indices.map(i=>{const hour=CHROMATIC_HOURS[i]%12;const p=polar(300,300,r,hour*30);return `${p.x},${p.y}`}).join(' ')}
 
   function buildWheel(){
     noteRing.innerHTML='';fixedRing.innerHTML='';
     for(let pos=0;pos<12;pos++){
       const hour=CHROMATIC_HOURS[pos];
-      const angle=(hour%12)*30+15;
+      const angle=(hour%12)*30;
 
       const fixed=document.createElementNS('http://www.w3.org/2000/svg','g');
       const sector=document.createElementNS(fixed.namespaceURI,'path');sector.setAttribute('d',wedgePath(angle,255,232));sector.setAttribute('class','fixed-sector');sector.style.fill=COLORS[pos];
