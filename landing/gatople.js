@@ -47,6 +47,15 @@
     });
     $('tonicLabel').textContent=NOTES[state.tonic];$('modeLabel').textContent=Core.MODALITY;$('octaveLabel').textContent=`Octava ${state.octave}`;
     renderTable();renderPiano();renderFretboard();showRole(Core.ORIGIN_POSITION);
+
+    console.log(`=== Gátople Transpuesto a: ${NOTES[state.tonic]} (${Core.MODALITY}) ===`);
+    const logs = [];
+    for (let h = 1; h <= 12; h++) {
+      const pos = CHROMATIC_HOURS.indexOf(h);
+      const note = Core.noteAtPosition(state.tonic, pos);
+      logs.push(`${h} h: ${NOTES[note]} (${GLYPHS[pos]})`);
+    }
+    console.log("Distribución horaria (sentido horario):", logs.join(" ➔ "));
   }
 
   const CARTAS=['04-casita.jpg','05-estrella-i.jpg','06-mas.jpg','07-estrella-ii.jpg','08-llave.jpg','09-flecha-arriba.jpg','10-estrella-iii.jpg','11-flecha-abajo.jpg','12-estrella-iv.jpg','01-dos-puntos.jpg','02-estrella-v.jpg','03-triangulo.jpg'];
