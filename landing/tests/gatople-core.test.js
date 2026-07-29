@@ -49,3 +49,15 @@ test('Cero Pitágoras sigue la cadena H+ desde la tónica',()=>{
 test('la modalidad no cambia arbitrariamente al transponer',()=>{
   assert.equal(Core.MODALITY,'Eólico');
 });
+
+test('los saltos del círculo de cuartas en sentido horario son correctos (A ➔ D ➔ G ➔ C ➔ F)',()=>{
+  const expectedHours = [9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8];
+  const expectedNotes = [9, 2, 7, 0, 5, 10, 3, 8, 1, 6, 11, 4];
+  const CHROMATIC_HOURS = [12, 5, 10, 3, 8, 1, 6, 11, 4, 9, 2, 7];
+  
+  expectedHours.forEach((hour, idx) => {
+    const pos = CHROMATIC_HOURS.indexOf(hour);
+    const note = Core.noteAtPosition(Core.A_INDEX, pos);
+    assert.equal(note, expectedNotes[idx], `El salto de cuartas en hora ${hour} es incorrecto: se esperaba ${expectedNotes[idx]} pero se obtuvo ${note}`);
+  });
+});
