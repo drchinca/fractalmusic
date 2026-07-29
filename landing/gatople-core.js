@@ -11,7 +11,7 @@
   const ORIGIN_POSITION=A_INDEX; // 9 h: horizontal de origen
   const noteAtPosition=(tonic,position)=>mod(tonic+position-ORIGIN_POSITION);
   const positionForNote=(tonic,note)=>mod(note-tonic+ORIGIN_POSITION);
-  const CHROMATIC_HOURS=[3,8,1,6,11,4,9,2,7,12,5,10];
+  const CHROMATIC_HOURS=[12,5,10,3,8,1,6,11,4,9,2,7];
   const hourForPosition=position=>CHROMATIC_HOURS[position];
   const normalizeAngleDelta=delta=>((delta+180)%360+360)%360-180;
   const semitoneStepsFromDrag=(startAngle,currentAngle)=>Math.round(normalizeAngleDelta(currentAngle-startAngle)/30);

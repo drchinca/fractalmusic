@@ -9,12 +9,12 @@ vm.createContext(context);
 vm.runInContext(source,context);
 const Core=context.globalThis.GatopleCore;
 
-test('orientación constitucional inicial: A a las 12 h y C a las 3 h',()=>{
+test('orientación constitucional inicial: C a las 12 h y A a las 9 h',()=>{
   assert.equal(Core.ORIGIN_POSITION,9);
   assert.equal(Core.noteAtPosition(Core.A_INDEX,0),0);
   assert.equal(Core.noteAtPosition(Core.A_INDEX,9),Core.A_INDEX);
-  assert.equal(Core.hourForPosition(0),3);
-  assert.equal(Core.hourForPosition(9),12);
+  assert.equal(Core.hourForPosition(0),12);
+  assert.equal(Core.hourForPosition(9),9);
 });
 
 test('las doce posiciones forman una vuelta cromática sin duplicados',()=>{
@@ -51,9 +51,9 @@ test('la modalidad no cambia arbitrariamente al transponer',()=>{
 });
 
 test('los saltos del círculo de cuartas en sentido horario son correctos (A ➔ D ➔ G ➔ C ➔ F)',()=>{
-  const expectedHours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  const expectedHours = [9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8];
   const expectedNotes = [9, 2, 7, 0, 5, 10, 3, 8, 1, 6, 11, 4];
-  const CHROMATIC_HOURS = [3, 8, 1, 6, 11, 4, 9, 2, 7, 12, 5, 10];
+  const CHROMATIC_HOURS = [12, 5, 10, 3, 8, 1, 6, 11, 4, 9, 2, 7];
   
   expectedHours.forEach((hour, idx) => {
     const pos = CHROMATIC_HOURS.indexOf(hour);

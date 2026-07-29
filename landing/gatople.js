@@ -3,7 +3,7 @@
   const Core=window.GatopleCore;
   if(!Core) throw new Error('GatopleCore no fue cargado.');
 
-  const NOTES=['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
+  const NOTES=['C','C♯/D♭','D','D♯/E♭','E','F','F♯/G♭','G','G♯/A♭','A','A♯/B♭','B'];
   const ROLES=['Centro','Umbral','Impulso','Fricción','Color','Puente','Abismo','Dirección','Espejo','Memoria','Expansión','Retorno'];
   const GLYPHS=['□','★I','+','★II','♀','↑','★III','↓','★IV','⋮','★V','△'];
   const COLORS=['#2BA39A','#F15A24','#39B54A','#0071BC','#FFCC00','#ED1C24','#9E1F63','#00A99D','#ED1E79','#2E3192','#15D49E','#FF931E'];
@@ -12,7 +12,7 @@
   const svg=$('wheelSvg'),noteRing=$('noteRing'),fixedRing=$('fixedRing');
   let audioCtx=null;
 
-  const CHROMATIC_HOURS=[3,8,1,6,11,4,9,2,7,12,5,10];
+  const CHROMATIC_HOURS=[12,5,10,3,8,1,6,11,4,9,2,7];
 
   function polar(cx,cy,r,a){const rad=(a-90)*Math.PI/180;return{x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)}}
   function wedgePath(angle,outer=230,inner=135){const a0=angle-15,a1=angle+15;const p1=polar(300,300,outer,a0),p2=polar(300,300,outer,a1),q2=polar(300,300,inner,a1),q1=polar(300,300,inner,a0);return `M ${p1.x} ${p1.y} A ${outer} ${outer} 0 0 1 ${p2.x} ${p2.y} L ${q2.x} ${q2.y} A ${inner} ${inner} 0 0 0 ${q1.x} ${q1.y} Z`}
