@@ -6,7 +6,7 @@
   const NOTES=['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
   const ROLES=['Centro','Umbral','Impulso','Fricción','Color','Puente','Abismo','Dirección','Espejo','Memoria','Expansión','Retorno'];
   const GLYPHS=['□','★I','+','★II','♀','↑','★III','↓','★IV','⋮','★V','△'];
-  const COLORS=['#e4aa24','#12b75a','#1d5ee7','#842fc1','#d51c2e','#e06c22','#d8c94a','#38a7a0','#5a79df','#af4db6','#e45a7d','#c79335'];
+  const COLORS=['#2BA39A','#F15A24','#39B54A','#0071BC','#FFCC00','#ED1C24','#9E1F63','#00A99D','#ED1E79','#2E3192','#15D49E','#FF931E'];
   const state={tonic:Core.A_INDEX,octave:4,dragging:false,startAngle:0,startTonic:Core.A_INDEX,moved:false,pointerId:null,palette:'carta'};
   const $=id=>document.getElementById(id);
   const svg=$('wheelSvg'),noteRing=$('noteRing'),fixedRing=$('fixedRing');
@@ -20,6 +20,7 @@
 
   function buildWheel(){
     noteRing.innerHTML='';fixedRing.innerHTML='';
+    fixedRing.style.display='none'; // Hide redundant SVG outer ring to let high-fidelity PNG hand-painted sectors and glyphs shine through
     for(let pos=0;pos<12;pos++){
       const hour=CHROMATIC_HOURS[pos];
       const angle=(hour%12)*30;
