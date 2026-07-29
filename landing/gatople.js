@@ -12,7 +12,7 @@
   const svg=$('wheelSvg'),noteRing=$('noteRing'),fixedRing=$('fixedRing');
   let audioCtx=null;
 
-  const CHROMATIC_HOURS=[12,5,10,3,8,1,6,11,4,9,2,7];
+  const CHROMATIC_HOURS=[3,8,1,6,11,4,9,2,7,12,5,10];
 
   function polar(cx,cy,r,a){const rad=(a-90)*Math.PI/180;return{x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)}}
   function wedgePath(angle,outer=230,inner=135){const a0=angle-15,a1=angle+15;const p1=polar(300,300,outer,a0),p2=polar(300,300,outer,a1),q2=polar(300,300,inner,a1),q1=polar(300,300,inner,a0);return `M ${p1.x} ${p1.y} A ${outer} ${outer} 0 0 1 ${p2.x} ${p2.y} L ${q2.x} ${q2.y} A ${inner} ${inner} 0 0 0 ${q1.x} ${q1.y} Z`}
