@@ -5,7 +5,7 @@
 
   const NOTES=['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
   const ROLES=['Centro','Umbral','Impulso','Fricción','Color','Puente','Abismo','Dirección','Espejo','Memoria','Expansión','Retorno'];
-  const GLYPHS=['●','◐','△','✕','◇','⌁','⬡','→','◈','∞','✦','↺'];
+  const GLYPHS=['□','★I','+','★II','♀','↑','★III','↓','★IV','⋮','★V','△'];
   const COLORS=['#e4aa24','#12b75a','#1d5ee7','#842fc1','#d51c2e','#e06c22','#d8c94a','#38a7a0','#5a79df','#af4db6','#e45a7d','#c79335'];
   const state={tonic:Core.A_INDEX,octave:4,dragging:false,startAngle:0,startTonic:Core.A_INDEX,moved:false,pointerId:null,palette:'carta'};
   const $=id=>document.getElementById(id);
