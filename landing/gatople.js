@@ -86,7 +86,7 @@
   $('zeroButton').addEventListener('click',()=>Core.zeroPythagoras(state.tonic).forEach((n,i)=>setTimeout(()=>playNote(n,3+(i>1?1:0),.9),i*280)));
   $('polygonToggle').addEventListener('change',e=>$('heptagon').classList.toggle('hidden',!e.target.checked));$('starToggle').addEventListener('change',e=>$('pentagram').classList.toggle('hidden',!e.target.checked));$('zonesToggle').addEventListener('change',e=>$('zoneGuides').classList.toggle('hidden',!e.target.checked));
   $('paletteToggle').addEventListener('change',e=>{state.palette=e.target.checked?'mono':'carta';update()});
-  const keyMap={a:{note:0,off:0},w:{note:1,off:0},s:{note:2,off:0},e:{note:3,off:0},d:{note:4,off:0},f:{note:5,off:0},t:{note:6,off:0},g:{note:7,off:0},y:{note:8,off:0},h:{note:9,off:0},u:{note:10,off:0},j:{note:11,off:0},k:{note:0,off:1}};
+  const keyMap={a:{note:9,off:0},w:{note:10,off:0},s:{note:11,off:0},d:{note:0,off:1},e:{note:1,off:1},f:{note:2,off:1},t:{note:3,off:1},g:{note:4,off:1},h:{note:5,off:1},y:{note:6,off:1},j:{note:7,off:1},u:{note:8,off:1},k:{note:9,off:1}};
   document.addEventListener('keydown',e=>{
     if(e.repeat)return;
     const key=e.key;
