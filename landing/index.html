@@ -1,806 +1,207 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <script src="gate.js"></script>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Fractal Music World: música, geometría, ciencia, conocimiento ancestral y nuevas formas de aprendizaje." />
-  <title>Fractal Music World</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #090b12;
-      --bg-soft: #111522;
-      --wine: #6f1838;
-      --wine-2: #9a2950;
-      --gold: #d9b45b;
-      --gold-soft: #f1d891;
-      --cream: #f4efe4;
-      --muted: #aaa9b3;
-      --line: rgba(217, 180, 91, .25);
-      --glass: rgba(255,255,255,.055);
-      --shadow: 0 28px 70px rgba(0,0,0,.38);
-      --radius: 24px;
-      --max: 1180px;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      color: var(--cream);
-      background:
-        radial-gradient(circle at 85% 12%, rgba(111,24,56,.32), transparent 28%),
-        radial-gradient(circle at 12% 30%, rgba(217,180,91,.10), transparent 30%),
-        linear-gradient(180deg, #080a10 0%, #0b0d15 52%, #090b12 100%);
-      font-family: "Montserrat", system-ui, sans-serif;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    button, a { -webkit-tap-highlight-color: transparent; }
-    img, svg { max-width: 100%; display: block; }
-
-    .wrap {
-      width: min(calc(100% - 36px), var(--max));
-      margin-inline: auto;
-    }
-
-    .nav-shell {
-      position: fixed;
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
-      width: min(calc(100% - 28px), var(--max));
-      background: rgba(9,11,18,.76);
-      border: 1px solid rgba(255,255,255,.08);
-      backdrop-filter: blur(18px);
-      border-radius: 999px;
-      box-shadow: 0 12px 36px rgba(0,0,0,.28);
-    }
-
-    nav {
-      min-height: 66px;
-      padding: 0 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      font-weight: 800;
-      letter-spacing: .04em;
-      white-space: nowrap;
-    }
-
-    .brand-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: 1px solid var(--gold);
-      display: grid;
-      place-items: center;
-      position: relative;
-      box-shadow: inset 0 0 20px rgba(217,180,91,.14);
-    }
-
-    .brand-mark::before,
-    .brand-mark::after {
-      content: "";
-      position: absolute;
-      background: var(--gold);
-      opacity: .85;
-    }
-    .brand-mark::before { width: 18px; height: 1px; transform: rotate(30deg); }
-    .brand-mark::after  { width: 1px; height: 18px; transform: rotate(30deg); }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      font-size: .84rem;
-      color: #d9d6cf;
-    }
-
-    .nav-links a {
-      transition: .25s ease;
-    }
-    .nav-links a:hover { color: var(--gold-soft); }
-
-    .nav-links a.nav-gatople {
-      color: var(--gold-soft);
-      font-weight: 700;
-    }
-    .nav-links a.nav-gatople::after {
-      content: "↻";
-      margin-left: 5px;
-      font-size: .9em;
-    }
-
-    .menu-btn {
-      display: none;
-      border: 0;
-      background: transparent;
-      color: var(--cream);
-      font-size: 1.35rem;
-      cursor: pointer;
-    }
-
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      align-items: center;
-      padding: 140px 0 80px;
-      position: relative;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.08fr .92fr;
-      gap: 58px;
-      align-items: center;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--gold-soft);
-      font-size: .78rem;
-      text-transform: uppercase;
-      letter-spacing: .22em;
-      font-weight: 700;
-      margin-bottom: 22px;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 34px;
-      height: 1px;
-      background: var(--gold);
-    }
-
-    h1, h2, h3, p { margin-top: 0; }
-    h1 {
-      font-size: clamp(3rem, 7vw, 6.8rem);
-      line-height: .94;
-      letter-spacing: -.055em;
-      margin-bottom: 26px;
-    }
-
-    .hero h1 span {
-      display: block;
-      color: transparent;
-      -webkit-text-stroke: 1px var(--gold);
-      text-shadow: 0 0 28px rgba(217,180,91,.08);
-    }
-
-    .hero-copy {
-      max-width: 680px;
-      color: #c6c3c6;
-      font-size: clamp(1rem, 1.8vw, 1.18rem);
-      margin-bottom: 34px;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-
-    .btn {
-      min-height: 50px;
-      padding: 0 22px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: .9rem;
-      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
-    }
-
-    .btn:hover { transform: translateY(-2px); }
-    .btn-primary {
-      color: #17120a;
-      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
-      box-shadow: 0 15px 35px rgba(217,180,91,.18);
-    }
-    .btn-secondary {
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.04);
-    }
-
-    .orbit-stage {
-      min-height: 540px;
-      position: relative;
-      display: grid;
-      place-items: center;
-      isolation: isolate;
-    }
-
-    .orbit-stage { cursor: pointer; }
-
-    .gatople-halo {
-      width: min(460px, 80vw);
-      aspect-ratio: 1;
-      position: relative;
-      display: grid;
-      place-items: center;
-      padding: 14px;
-      filter: drop-shadow(0 26px 60px rgba(0,0,0,.5));
-      animation: float 6s ease-in-out infinite;
-      transition: transform .4s ease;
-    }
-
-    .orbit-stage:hover .gatople-halo { transform: scale(1.03) rotate(-1.5deg); }
-
-    .gatople-logo {
-      width: 100%;
-      height: auto;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-10px) rotate(1.2deg); }
-    }
-
-    section { padding: 105px 0; }
-
-    .section-head {
-      max-width: 780px;
-      margin-bottom: 44px;
-    }
-
-    .section-head h2 {
-      font-size: clamp(2.1rem, 5vw, 4.2rem);
-      line-height: 1.02;
-      letter-spacing: -.045em;
-      margin-bottom: 18px;
-    }
-
-    .section-head p { color: var(--muted); }
-
-    .manifesto {
-      position: relative;
-      background:
-        linear-gradient(90deg, rgba(111,24,56,.18), transparent 35%),
-        rgba(255,255,255,.015);
-      border-block: 1px solid rgba(255,255,255,.06);
-    }
-
-    .manifesto-grid {
-      display: grid;
-      grid-template-columns: .8fr 1.2fr;
-      gap: 70px;
-      align-items: start;
-    }
-
-    .big-number {
-      font-size: clamp(8rem, 20vw, 16rem);
-      font-weight: 800;
-      line-height: .75;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(217,180,91,.55);
-      opacity: .7;
-    }
-
-    .manifesto-text {
-      font-size: clamp(1.4rem, 2.8vw, 2.4rem);
-      line-height: 1.35;
-      letter-spacing: -.025em;
-      margin-bottom: 24px;
-    }
-
-    .manifesto-text strong { color: var(--gold-soft); }
-    .muted { color: var(--muted); }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .card {
-      padding: 30px;
-      min-height: 270px;
-      border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,.08);
-      background:
-        linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.018));
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::after {
-      content: "";
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      right: -80px;
-      bottom: -80px;
-      border: 1px solid var(--line);
-    }
-
-    .card-index {
-      color: var(--gold);
-      font-size: .75rem;
-      letter-spacing: .18em;
-      font-weight: 700;
-      margin-bottom: 54px;
-    }
-
-    .card h3 {
-      font-size: 1.35rem;
-      margin-bottom: 12px;
-    }
-    .card p { color: var(--muted); margin-bottom: 0; }
-
-    .universe {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      align-items: stretch;
-    }
-
-    .feature {
-      border-radius: 32px;
-      padding: 42px;
-      min-height: 410px;
-      border: 1px solid rgba(255,255,255,.08);
-      background:
-        radial-gradient(circle at 80% 20%, rgba(217,180,91,.14), transparent 24%),
-        linear-gradient(145deg, rgba(111,24,56,.32), rgba(17,21,34,.82));
-      position: relative;
-      overflow: hidden;
-    }
-
-    .feature h3 {
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      line-height: 1;
-      letter-spacing: -.04em;
-      margin-bottom: 18px;
-      max-width: 520px;
-    }
-
-    .feature p {
-      color: #c9c5c8;
-      max-width: 570px;
-    }
-
-    .feature-label {
-      position: absolute;
-      left: 42px;
-      bottom: 34px;
-      color: var(--gold-soft);
-      text-transform: uppercase;
-      letter-spacing: .18em;
-      font-size: .72rem;
-      font-weight: 700;
-    }
-
-    .feature.alt {
-      background:
-        radial-gradient(circle at 15% 70%, rgba(111,24,56,.24), transparent 30%),
-        linear-gradient(145deg, rgba(217,180,91,.10), rgba(17,21,34,.84));
-    }
-
-    .founders {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 26px;
-    }
-
-    .profile {
-      min-height: 360px;
-      padding: 38px;
-      border-radius: 30px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: var(--glass);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .profile::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(180deg, transparent 25%, rgba(9,11,18,.92) 84%),
-        radial-gradient(circle at 50% 15%, rgba(217,180,91,.14), transparent 27%);
-      z-index: 0;
-    }
-
-    .profile > * { position: relative; z-index: 1; }
-    .profile .role {
-      color: var(--gold-soft);
-      font-size: .75rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-    .profile h3 { font-size: 2rem; margin: 8px 0 10px; }
-    .profile p { color: var(--muted); margin-bottom: 0; }
-
-    .cta {
-      padding-top: 45px;
-      padding-bottom: 120px;
-    }
-
-    .cta-box {
-      border-radius: 36px;
-      padding: clamp(36px, 7vw, 78px);
-      background:
-        radial-gradient(circle at 90% 10%, rgba(217,180,91,.18), transparent 28%),
-        linear-gradient(135deg, #6f1838, #311126 55%, #111522);
-      border: 1px solid rgba(217,180,91,.34);
-      box-shadow: var(--shadow);
-      text-align: center;
-    }
-
-    .cta-box h2 {
-      font-size: clamp(2.4rem, 6vw, 5.2rem);
-      line-height: .98;
-      letter-spacing: -.05em;
-      margin-bottom: 20px;
-    }
-
-    .cta-box p {
-      max-width: 740px;
-      margin: 0 auto 30px;
-      color: #e0dadd;
-    }
-
-    footer {
-      border-top: 1px solid rgba(255,255,255,.07);
-      padding: 34px 0 46px;
-      color: var(--muted);
-      font-size: .82rem;
-    }
-
-    .footer-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .colophon {
-      margin-top: 14px;
-      font-size: .66rem;
-      letter-spacing: .04em;
-      color: rgba(170,169,179,.42);
-    }
-    .colophon a {
-      color: inherit;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: color .25s ease;
-    }
-    .colophon a:hover { color: var(--gold-soft); }
-    .colophon img {
-      width: 18px;
-      height: 18px;
-      object-fit: contain;
-      opacity: .7;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity .7s ease, transform .7s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 900px) {
-      .hero-grid,
-      .manifesto-grid,
-      .universe,
-      .founders {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-grid { gap: 25px; }
-      .orbit-stage { min-height: 470px; }
-      .cards { grid-template-columns: 1fr; }
-      .manifesto-grid { gap: 25px; }
-      .big-number { font-size: 9rem; }
-    }
-
-    @media (max-width: 760px) {
-      .menu-btn { display: block; }
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 72px;
-        left: 0;
-        right: 0;
-        padding: 18px;
-        flex-direction: column;
-        align-items: stretch;
-        border-radius: 24px;
-        background: rgba(9,11,18,.97);
-        border: 1px solid rgba(255,255,255,.08);
-      }
-      .nav-links.open { display: flex; }
-      section { padding: 78px 0; }
-      .feature, .profile { padding: 30px; }
-      .feature-label { left: 30px; }
-      .brand span:last-child { font-size: .84rem; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
-      }
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Fractal Music World | El sonido también piensa</title>
+<meta content="Fractal Music World: un universo educativo y artístico de raíz latinoamericana y proyección internacional." name="description"/>
+<meta content="#030303" name="theme-color"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
 </head>
+<body class="fmw-score" data-fauna-score="ensemble" data-score-state="prelude">
+<header class="site-header" data-home="HOME-001" data-movement="Umbral">
+<a aria-label="Fractal Music World" class="brand" href="#inicio">
+<span class="brand-mark">
+<img alt="" src="assets/gatople-luminoso.png"/>
+</span>
+<span class="brand-copy">
+<strong>FMW</strong>
+<small>Fractal Music World · Fauna viva</small>
+</span>
+</a>
+<button aria-controls="main-nav" aria-expanded="false" class="nav-toggle" type="button">
+    Menú
+  </button>
+<nav aria-label="Navegación principal" class="main-nav" id="main-nav">
+<a href="#inicio">Inicio</a>
+<a href="test.html">The Dissonance Test</a>
+<a href="#sistema-fractal">Sistema Fractal</a>
+<a href="gatople.html">Gátople</a>
+<a href="#obras">Obras</a>
+<a href="#experiencias">Experiencias</a>
+<a href="comprar.html">Comprar</a>
+<a href="#contacto">Contacto</a>
+</nav>
+<a class="btn btn-primary header-cta" href="test.html">Hacer el Test</a><div aria-label="Elenco de la Fauna Fractal" class="fauna-cast-mini"><span aria-hidden="true" title="Musicalia"></span><span aria-hidden="true" title="Juglar"></span><span aria-hidden="true" title="Trilobites"></span><span aria-hidden="true" title="Vesica Piscis"></span><span aria-hidden="true" title="Lute"></span></div>
+</header>
+<main>
+<section aria-labelledby="home-002-title" class="hero score-movement" data-home="HOME-002" data-movement="La Obertura" id="inicio">
+<div class="hero-copy">
+<p class="eyebrow">Educación · Arte · Consciencia</p>
+<h1 id="home-002-title">El sonido también piensa.</h1>
+<h2>Un universo donde la música aprende a tener cuerpo.</h2>
+<p class="hero-intro">
+        Fractal Music World convierte la música en experiencia viva: una forma de aprender,
+        crear y comprender el sonido desde la geometría, el cuerpo, la naturaleza,
+        la memoria y la imaginación.
+      </p>
+<p class="hero-statement">
+        No enseñamos música como una fila de datos.<br/>
+        La volvemos experiencia, arquitectura, juego y lenguaje vivo.
+      </p>
+<div class="button-group">
+<a class="btn btn-primary" href="test.html">Descubrir mi arquetipo</a>
+<a class="btn btn-secondary" href="#sistema-fractal">Explorar el Sistema Fractal</a>
+<a class="btn btn-outline" href="#contacto">Propuesta institucional</a>
+</div>
+</div>
+<div aria-label="Gátople, emblema principal de Fractal Music World" class="hero-emblem">
+<span aria-hidden="true" class="orbit-note orbit-note-a"></span>
+<span aria-hidden="true" class="orbit-note orbit-note-b"></span>
+<span aria-hidden="true" class="orbit-note orbit-note-c"></span>
+<div class="emblem-halo"></div>
+<img alt="Gátople luminoso con orejas, ojo central y sistema cromático" src="assets/gatople-luminoso.png"/>
+</div>
+<div aria-label="La Fauna Fractal afina la obertura" class="fauna-constellation"><figure class="fauna-cameo fauna-musicalia" data-fauna="Musicalia"><img alt="Musicalia: Imaginación y ligereza" decoding="async" loading="lazy" src="assets/fauna-musicalia.png"/><figcaption>Musicalia</figcaption></figure><figure class="fauna-cameo fauna-juglar" data-fauna="Juglar"><img alt="Juglar: Inspiración y movimiento" decoding="async" loading="lazy" src="assets/fauna-juglar.jpeg"/><figcaption>Juglar</figcaption></figure><figure class="fauna-cameo fauna-trilobites" data-fauna="Trilobites"><img alt="Trilobites: Memoria geológica" decoding="async" loading="lazy" src="assets/fauna-trilobites.jpeg"/><figcaption>Trilobites</figcaption></figure><figure class="fauna-cameo fauna-vesica" data-fauna="Vesica Piscis"><img alt="Vesica Piscis: Proporción y vínculo" decoding="async" loading="lazy" src="assets/fauna-vesica-piscis.jpeg"/><figcaption>Vesica Piscis</figcaption></figure><figure class="fauna-cameo fauna-lute" data-fauna="Lute"><img alt="Lute: Geometría viva" decoding="async" loading="lazy" src="assets/fauna-lute.jpeg"/><figcaption>Lute</figcaption></figure></div></section>
+<section aria-labelledby="home-003-title" class="portal-strip score-movement" data-home="HOME-003" data-movement="El Llamado">
+<div class="portal-conductor">
+<p class="eyebrow">Movimiento II · El llamado</p>
+<h2 id="home-003-title">El universo comienza a responder.</h2>
+<p>No entras a un catálogo. Entras a un biosistema donde cada ruta escucha, transforma y devuelve una posibilidad.</p>
+</div>
+<div aria-label="Áreas de Fractal Music World" class="portal-voices">
+<a data-guide="Juglar" href="#obras"><img alt="" decoding="async" loading="lazy" src="assets/fauna-juglar.jpeg"/><strong>Libros</strong><small>Historias que caminan</small><em>Juglar</em></a>
+<a data-guide="Musicalia" href="#experiencias"><img alt="" decoding="async" loading="lazy" src="assets/fauna-musicalia.png"/><strong>Música</strong><small>Imaginación que toma cuerpo</small><em>Musicalia</em></a>
+<a data-guide="Gátople" href="#gatople"><img alt="" decoding="async" loading="lazy" src="assets/gatople-luminoso.png"/><strong>Juegos</strong><small>Relaciones que responden</small><em>Gátople</em></a>
+<a data-guide="Trilobites" href="#personajes"><img alt="" decoding="async" loading="lazy" src="assets/fauna-trilobites.jpeg"/><strong>Personajes</strong><small>Memoria convertida en símbolo</small><em>Trilobites</em></a>
+<a data-guide="Lute" href="#sistema-fractal"><img alt="" decoding="async" loading="lazy" src="assets/fauna-lute.jpeg"/><strong>Geometría</strong><small>Forma, eje y equilibrio</small><em>Lute</em></a>
+<a data-guide="Vesica Piscis" href="#experiencias"><img alt="" decoding="async" loading="lazy" src="assets/fauna-vesica-piscis.jpeg"/><strong>Academia</strong><small>Proporción para aprender</small><em>Vesica Piscis</em></a>
+</div>
+</section>
+<section aria-labelledby="home-004-title" class="section discovery score-movement" data-home="HOME-004" data-movement="El Descubrimiento" id="que-es">
+<div class="discovery-intro">
+<p class="eyebrow">Movimiento IV · El Descubrimiento</p>
+<h2 id="home-004-title">El sonido también piensa.</h2>
+<p>Una nota no vive sola. Busca otra. Forma una relación. La relación crea tensión. La tensión crea movimiento. El movimiento crea música.</p>
+</div>
+<div aria-label="Nacimiento de una red musical" class="relation-field"><figure class="fauna-relation fauna-rel-a" data-fauna="Juglar"><img alt="Juglar, Inspiración" decoding="async" loading="lazy" src="assets/fauna-juglar.jpeg"/><figcaption>Inspiración</figcaption></figure><figure class="fauna-relation fauna-rel-b" data-fauna="Vesica Piscis"><img alt="Vesica Piscis, Proporción" decoding="async" loading="lazy" src="assets/fauna-vesica-piscis.jpeg"/><figcaption>Proporción</figcaption></figure><figure class="fauna-relation fauna-rel-c" data-fauna="Lute"><img alt="Lute, Geometría" decoding="async" loading="lazy" src="assets/fauna-lute.jpeg"/><figcaption>Geometría</figcaption></figure><figure class="fauna-relation fauna-rel-d" data-fauna="Trilobites"><img alt="Trilobites, Memoria" decoding="async" loading="lazy" src="assets/fauna-trilobites.jpeg"/><figcaption>Memoria</figcaption></figure><figure class="fauna-relation fauna-rel-e" data-fauna="Musicalia"><img alt="Musicalia, Imaginación" decoding="async" loading="lazy" src="assets/fauna-musicalia.png"/><figcaption>Imaginación</figcaption></figure><span aria-hidden="true" class="relation-bridge bridge-a"></span><span aria-hidden="true" class="relation-bridge bridge-b"></span><span aria-hidden="true" class="relation-bridge bridge-c"></span><span aria-hidden="true" class="relation-bridge bridge-d"></span><span aria-hidden="true" class="relation-bridge bridge-e"></span><div class="relation-core"><img alt="Gátople articula las relaciones de la Fauna Fractal" src="assets/gatople-luminoso.png"/><strong>Relación viva</strong></div></div>
+<div class="discovery-coda">
+<p>Fractal Music World no sustituye la educación musical: la expande hacia la geometría, el cuerpo, el símbolo, el movimiento y la creación.</p>
+<strong>Si esto es posible… ¿qué puedes hacer dentro de este universo?</strong>
+</div>
+</section>
+<section aria-labelledby="home-005-title" class="section participation score-movement" data-home="HOME-005" data-movement="La Participación" id="participacion">
+<div class="section-heading center participation-heading">
+<p class="eyebrow">Movimiento V · La Participación</p>
+<h2 id="home-005-title">No existe una sola manera de entrar a la música.</h2>
+<p>Elige la puerta que corresponde a tu forma actual de escuchar.</p>
+</div>
+<div class="participation-orbit">
+<a class="entry-gate entry-primary" data-guide="Gátople" href="test.html">
+<span class="entry-guide"><img alt="" decoding="async" loading="lazy" src="assets/gatople-luminoso.png"/><b>Gátople</b></span><span class="entry-index">01</span>
+<strong>The Dissonance Test</strong>
+<small>Descubre tu configuración creativa y tu arquetipo dominante.</small>
+<em>Descubre tu forma de escuchar</em>
+</a>
+<a class="entry-gate" data-guide="Vesica Piscis" href="gatople.html"><span class="entry-index">02</span><span class="entry-guide"><img alt="" decoding="async" loading="lazy" src="assets/fauna-vesica-piscis.jpeg"/><b>Vesica Piscis</b></span><strong>Gátople</strong><small>Explora relaciones sonoras en un organismo visual.</small></a>
+<a class="entry-gate" data-guide="Lute" href="#sistema-fractal"><span class="entry-index">03</span><span class="entry-guide"><img alt="" decoding="async" loading="lazy" src="assets/fauna-lute.jpeg"/><b>Lute</b></span><strong>Sistema Fractal</strong><small>Comprende la arquitectura pedagógica.</small></a>
+<a class="entry-gate" data-guide="Trilobites" href="#obras"><span class="entry-index">04</span><span class="entry-guide"><img alt="" decoding="async" loading="lazy" src="assets/fauna-trilobites.jpeg"/><b>Trilobites</b></span><strong>Obras</strong><small>Entra por la literatura, la música y la memoria.</small></a>
+<a class="entry-gate" data-guide="Juglar" href="#experiencias"><span class="entry-index">05</span><span class="entry-guide"><img alt="" decoding="async" loading="lazy" src="assets/fauna-juglar.jpeg"/><b>Juglar</b></span><strong>Experiencias</strong><small>Lleva la música al cuerpo y a la comunidad.</small></a>
+<a class="entry-gate" data-guide="Musicalia" href="comprar.html"><span class="entry-index">06</span><span class="entry-guide"><img alt="" decoding="async" loading="lazy" src="assets/fauna-musicalia.png"/><b>Musicalia</b></span><strong>Adquirir</strong><small>Accede a obras y materiales FMW.</small></a>
+</div>
+</section>
+<section aria-labelledby="home-006-title" class="section direction score-movement" data-home="HOME-006" data-movement="La Dirección" id="sistema-fractal">
+<div class="direction-copy">
+<p class="eyebrow">Movimiento VI · La Dirección</p>
+<h2 id="home-006-title">No todos comienzan en el mismo lugar.</h2>
+<p>Cada puerta abre una trayectoria distinta. FMW no entrega una ruta única: organiza caminos para escuchar, comprender, crear y compartir.</p>
+</div>
+<div class="route-score">
+<article class="route-card"><figure class="route-guide" data-fauna="Musicalia"><img alt="" decoding="async" loading="lazy" src="assets/fauna-musicalia.png"/><figcaption>Musicalia · Reconoce lo que todavía no tiene nombre.</figcaption></figure><span>Escuchar</span><h3>Reconoce</h3><p>Tensiones, pulsos, colores, silencios y direcciones.</p></article>
+<article class="route-card"><figure class="route-guide" data-fauna="Trilobites"><img alt="" decoding="async" loading="lazy" src="assets/fauna-trilobites.jpeg"/><figcaption>Trilobites · Relaciona el presente con la memoria.</figcaption></figure><span>Comprender</span><h3>Relaciona</h3><p>Sonido, geometría, memoria, símbolo y movimiento.</p></article>
+<article class="route-card"><figure class="route-guide" data-fauna="Juglar"><img alt="" decoding="async" loading="lazy" src="assets/fauna-juglar.jpeg"/><figcaption>Juglar · Convierte la comprensión en movimiento.</figcaption></figure><span>Crear</span><h3>Transforma</h3><p>Conocimiento en composición, improvisación y experiencia.</p></article>
+</div>
+<div class="direction-gatople" id="gatople">
+<div class="gatople-stage"><img alt="Gátople luminoso oficial" src="assets/gatople-luminoso.png"/></div>
+<div>
+<p class="eyebrow">Guía del territorio</p>
+<h3>El Gátople orienta sin imponer.</h3>
+<p>Funciona como astrolabio musical para recorrer notas, funciones, intervalos, rutas armónicas, símbolos y relaciones.</p>
+<a class="btn btn-primary" href="gatople.html">Abrir el Gátople interactivo</a>
+</div>
+</div>
+</section>
+<section aria-labelledby="home-007-title" class="action score-movement" data-home="HOME-007" data-movement="La Acción" id="accion">
+<div class="section action-inner">
+<div class="action-conductor">
+<p class="eyebrow">Movimiento VII · La Acción</p>
+<h2 id="home-007-title">Descubre tu próximo movimiento.</h2>
+<p>No hay urgencia artificial. Hay una decisión que nace de lo que acabas de comprender.</p>
+<a class="btn btn-primary btn-large" href="test.html">Comenzar The Dissonance Test</a>
+</div>
+<div class="action-voices">
+<section class="action-voice" id="obras"><figure class="action-guide" data-fauna="Trilobites"><img alt="" decoding="async" loading="lazy" src="assets/fauna-trilobites.jpeg"/><figcaption>Trilobites</figcaption></figure>
+<span>Obras</span><h3>Lee y escucha</h3>
+<p>El lujo de la disonancia y La antena vegetal abren el universo editorial de FMW.</p>
+<a href="comprar.html">Ver obras y materiales →</a>
+</section>
+<section class="action-voice" id="experiencias"><figure class="action-guide" data-fauna="Juglar"><img alt="" decoding="async" loading="lazy" src="assets/fauna-juglar.jpeg"/><figcaption>Juglar</figcaption></figure>
+<span>Experiencias</span><h3>Lleva la música al cuerpo</h3>
+<p>Talleres, Suite Fractal y programas para instituciones, festivales y comunidades.</p>
+<a href="#contacto">Solicitar una experiencia →</a>
+</section>
+<section class="action-voice" id="personajes"><figure class="action-guide" data-fauna="Musicalia"><img alt="" decoding="async" loading="lazy" src="assets/fauna-musicalia.png"/><figcaption>Musicalia</figcaption></figure>
+<span>Símbolos vivos</span><h3>Explora los personajes</h3>
+<p>Criaturas que encarnan principios, emociones, aprendizajes y rutas de escucha.</p>
+<a href="gatople.html">Entrar por Gátople →</a>
+</section>
+<section class="action-voice" id="comprar"><figure class="action-guide" data-fauna="Vesica Piscis"><img alt="" decoding="async" loading="lazy" src="assets/fauna-vesica-piscis.jpeg"/><figcaption>Vesica Piscis</figcaption></figure>
+<span>Adquirir</span><h3>Continúa con una obra</h3>
+<p>Libros, música, juegos, geometría y materiales del Sistema Fractal.</p>
+<a href="comprar.html">Abrir catálogo →</a>
+</section>
+</div>
+</div>
+</section>
+<section aria-labelledby="home-008-title" class="resonance score-movement" data-home="HOME-008" data-movement="La Resonancia" id="contacto">
+<div aria-hidden="true" class="resonance-halo"></div>
+<div class="resonance-content">
+<p class="eyebrow">Movimiento VIII · La Resonancia</p><figure aria-label="La Fauna Fractal permanece viva después del último movimiento" class="fauna-ensemble"><img alt="Musicalia, Gátople, Trilobites, Juglar y Lute reunidos en Fractal Music World" decoding="async" loading="lazy" src="assets/fauna-ensemble.png"/><figcaption>La historia continúa entre quienes la habitan.</figcaption></figure>
+<h2 id="home-008-title">La música nunca fue solamente sonido.</h2>
+<p class="resonance-thanks">Gracias por escuchar.</p>
+<div class="resonance-links">
+<a href="mailto:fractalmusicworld@gmail.com">fractalmusicworld@gmail.com</a>
+<a href="https://wa.me/50663058177">WhatsApp Patricio</a>
+<a href="https://wa.me/50689246856">WhatsApp Katherina</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer resonance-footer">
+<p>© 2026 Patricio Torres Rivera · Fractal Music World™</p>
+<p>fractalmusicworld.com</p>
+</footer>
+<script>
+  const toggle = document.querySelector(".nav-toggle");
+  const nav = document.querySelector(".main-nav");
 
-<body>
-  <header class="nav-shell">
-    <nav aria-label="Navegación principal">
-      <a class="brand" href="#inicio" aria-label="Fractal Music World, inicio">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span>FRACTAL MUSIC WORLD</span>
-      </a>
+  toggle?.addEventListener("click", () => {
+    const open = toggle.getAttribute("aria-expanded") === "true";
+    toggle.setAttribute("aria-expanded", String(!open));
+    nav.classList.toggle("is-open", !open);
+  });
 
-      <button class="menu-btn" aria-label="Abrir menú" aria-expanded="false">☰</button>
-
-      <div class="nav-links">
-        <a href="#manifiesto">Manifiesto</a>
-        <a href="#sistema">Sistema Fractal</a>
-        <a href="gatople.html" class="nav-gatople">Gátople</a>
-        <a href="#universo">DoDecaMundo</a>
-        <a href="#creadores">Creadores</a>
-        <a href="#contacto">Contacto</a>
-      </div>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero" id="inicio">
-      <div class="wrap hero-grid">
-        <div class="reveal">
-          <div class="eyebrow">Música · Geometría · Conocimiento ancestral</div>
-          <h1>El sonido también <span>piensa.</span></h1>
-          <p class="hero-copy">
-            Fractal Music World es un universo educativo y creativo nacido del Sistema Fractal:
-            una forma de comprender la música desde el cuerpo, la naturaleza, el número,
-            la memoria y la imaginación.
-          </p>
-          <div class="actions">
-            <a class="btn btn-primary" href="#sistema">Entrar al sistema</a>
-            <a class="btn btn-secondary" href="#contacto">Conocer el proyecto</a>
-          </div>
-        </div>
-
-        <a class="orbit-stage reveal" href="gatople.html" aria-label="Abrir el Gátople interactivo">
-          <div class="gatople-halo">
-            <img
-              class="gatople-logo"
-              src="gatople-logo.png"
-              alt="El Gátople: la rueda de dos discos del Sistema Fractal, con su rostro felino y los 12 símbolos"
-              width="571"
-              height="620"
-            />
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <section class="manifesto" id="manifiesto">
-      <div class="wrap manifesto-grid">
-        <div class="big-number reveal">12</div>
-        <div class="reveal">
-          <div class="eyebrow">Portal madre</div>
-          <p class="manifesto-text">
-            No enseñamos música como una fila de datos.
-            La volvemos <strong>experiencia, arquitectura, juego y lenguaje vivo.</strong>
-          </p>
-          <p class="muted">
-            Fractal Music World une educación artística, ciencia, filosofía,
-            etnomatemática y tradición musical para acompañar a cada persona
-            en el descubrimiento de su propio sonido.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="sistema">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <div class="eyebrow">Sistema Fractal</div>
-          <h2>Aprender música desde múltiples puertas.</h2>
-          <p>
-            El método transforma conceptos abstractos en relaciones visibles,
-            audibles y corporales.
-          </p>
-        </div>
-
-        <div class="cards">
-          <article class="card reveal">
-            <div class="card-index">01 / ESCUCHA</div>
-            <h3>El oído como centro</h3>
-            <p>Antes de explicar, escuchamos. Antes de repetir, comprendemos el pulso y la relación.</p>
-          </article>
-
-          <article class="card reveal">
-            <div class="card-index">02 / GEOMETRÍA</div>
-            <h3>La música se vuelve espacio</h3>
-            <p>Intervalos, proporciones y estructuras aparecen como formas que pueden recorrerse.</p>
-          </article>
-
-          <article class="card reveal">
-            <div class="card-index">03 / CREACIÓN</div>
-            <h3>Aprender haciendo mundo</h3>
-            <p>Cartas, juegos, personajes y composición convierten el conocimiento en experiencia activa.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="universo">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <div class="eyebrow">DoDecaMundo</div>
-          <h2>Un universo de personajes, objetos y nuevas formas de aprendizaje.</h2>
-        </div>
-
-        <div class="universe">
-          <article class="feature reveal">
-            <h3>Gátople</h3>
-            <p>
-              Astrolabio musical y puerta geométrica del Sistema Fractal.
-              Organiza relaciones, proporciones y recorridos del lenguaje musical.
-            </p>
-            <div class="feature-label">Objeto pedagógico</div>
-          </article>
-
-          <article class="feature alt reveal">
-            <h3>Las 12 cartas</h3>
-            <p>
-              Un sistema narrativo y musical donde cada carta activa una función,
-              una escucha y una forma distinta de comprender.
-            </p>
-            <div class="feature-label">Juego de ingenio musical</div>
-          </article>
-
-          <article class="feature alt reveal">
-            <h3>El lujo de la disonancia</h3>
-            <p>
-              Música, geometría y ficción en una fuga narrativa.
-              La obra literaria que abre las puertas del universo Fractal Music World.
-            </p>
-            <div class="feature-label">Libro</div>
-          </article>
-
-          <article class="feature reveal">
-            <h3>Suite Fractal</h3>
-            <p>
-              El universo convertido en sonido: composición, personajes,
-              memoria latinoamericana y arquitectura musical.
-            </p>
-            <div class="feature-label">Experiencia artística</div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="creadores">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <div class="eyebrow">Dirección</div>
-          <h2>Una visión artística con arquitectura humana.</h2>
-        </div>
-
-        <div class="founders">
-          <article class="profile reveal">
-            <div class="role">Fundador · Músico · Compositor</div>
-            <h3>Patricio Torres Rivera</h3>
-            <p>
-              Creador del Sistema Fractal y del universo Fractal Music World.
-              Su trabajo integra música, pedagogía, geometría, narración y experiencia escénica.
-            </p>
-          </article>
-
-          <article class="profile reveal">
-            <div class="role">Cofundadora · Kipu Kamayuc</div>
-            <h3>Katherina Castor</h3>
-            <p>
-              Estructura, gestión y sostén estratégico del proyecto.
-              Traduce la visión creativa en organización, continuidad y desarrollo.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="cta" id="contacto">
-      <div class="wrap">
-        <div class="cta-box reveal">
-          <div class="eyebrow">Entrar en contacto</div>
-          <h2>La disonancia también puede abrir una puerta.</h2>
-          <p>
-            Fractal Music World desarrolla experiencias educativas, artísticas,
-            editoriales y musicales para personas, instituciones y aliados.
-          </p>
-          <div class="actions" style="justify-content:center">
-            <a
-              class="btn btn-primary"
-              href="https://wa.me/50689246856"
-              target="_blank"
-              rel="noopener noreferrer"
-            >WhatsApp</a>
-            <a class="btn btn-secondary" href="#inicio">Volver al inicio</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="wrap footer-row">
-      <span>© 2026 Patricio Torres Rivera · Fractal Music World®</span>
-      <span>Costa Rica · Música, geometría y conocimiento ancestral</span>
-    </div>
-    <div class="wrap colophon">
-      <span>Maintained &amp; powered by
-        <a href="https://www.iccha-technologies.com/" target="_blank" rel="noopener noreferrer">
-          ICCHA Technologies
-          <img src="iccha-main-no-bg.png" alt="ICCHA Technologies" width="20" height="20" />
-        </a>
-      </span>
-    </div>
-  </footer>
-
-  <script>
-    const menuButton = document.querySelector(".menu-btn");
-    const navLinks = document.querySelector(".nav-links");
-
-    menuButton.addEventListener("click", () => {
-      const open = navLinks.classList.toggle("open");
-      menuButton.setAttribute("aria-expanded", String(open));
-      menuButton.textContent = open ? "×" : "☰";
+  nav?.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("is-open");
+      toggle?.setAttribute("aria-expanded", "false");
     });
-
-    navLinks.querySelectorAll("a").forEach(link => {
-      link.addEventListener("click", () => {
-        navLinks.classList.remove("open");
-        menuButton.setAttribute("aria-expanded", "false");
-        menuButton.textContent = "☰";
-      });
-    });
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add("visible");
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
-  </script>
+  });
+</script>
+<script defer="" src="home-score.js"></script>
 </body>
 </html>

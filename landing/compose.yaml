@@ -1,0 +1,20 @@
+services:
+  fmw-web:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - fmw-data:/app/data
+      - ${FMW_PRODUCT_HOST_PATH:?Configure FMW_PRODUCT_HOST_PATH}:/secure/product.pdf:ro
+    environment:
+      FMW_PRODUCT_FILE: /secure/product.pdf
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  fmw-data:

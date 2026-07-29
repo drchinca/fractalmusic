@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Administración · Fractal Music World</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header"><a class="brand" href="index.html">FMW</a><span>Panel administrativo</span></header>
+<main class="section admin-shell">
+  <section class="question-card admin-login">
+    <h1>Control del Test y ventas</h1>
+    <form id="admin-form" class="lead-form">
+      <label>Token administrativo<input id="admin-token" type="password" autocomplete="current-password" required></label>
+      <button class="btn btn-primary" type="submit">Abrir panel</button>
+      <p id="admin-status" role="status"></p>
+    </form>
+  </section>
+  <section id="dashboard" hidden>
+    <div class="result-grid admin-metrics">
+      <article class="result-card"><h2 id="lead-count">0</h2><p>Leads</p></article>
+      <article class="result-card"><h2 id="assessment-count">0</h2><p>Mediciones</p></article>
+      <article class="result-card"><h2 id="buyer-count">0</h2><p>Compradores</p></article>
+      <article class="result-card"><h2 id="conversion-rate">0%</h2><p>Conversión</p></article>
+      <article class="result-card"><h2 id="paid-count">0</h2><p>Pagos confirmados</p></article>
+      <article class="result-card"><h2 id="email-count">0</h2><p>Correos enviados</p></article>
+      <article class="result-card"><h2 id="pending-count">0</h2><p>Integraciones pendientes</p></article>
+    </div>
+    <div class="button-group admin-actions">
+      <button id="export-csv" class="btn btn-secondary" type="button">Exportar leads CSV</button>
+      <button id="retry-integrations" class="btn btn-outline" type="button">Reintentar integraciones</button>
+    </div>
+    <article class="question-card">
+      <h2>Distribución por arquetipo</h2>
+      <div id="archetype-summary" class="admin-list"></div>
+    </article>
+    <article class="question-card">
+      <h2>Transacciones recientes</h2>
+      <div class="table-wrap"><table class="admin-table"><thead><tr><th>Fecha</th><th>Referencia</th><th>Correo</th><th>Producto</th><th>Estado</th><th>Descarga</th></tr></thead><tbody id="transaction-rows"></tbody></table></div>
+    </article>
+    <article class="question-card">
+      <h2>Leads recientes</h2>
+      <div class="table-wrap"><table class="admin-table"><thead><tr><th>Fecha</th><th>Nombre</th><th>Correo</th><th>Dominante</th><th>Secundario</th><th>Compra</th></tr></thead><tbody id="lead-rows"></tbody></table></div>
+    </article>
+  </section>
+</main>
+<script type="module" src="admin.js"></script>
+</body>
+</html>

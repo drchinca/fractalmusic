@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Dissonance Test | Fractal Music World</title>
+  <meta name="description" content="Descubre tu configuración creativa actual y tu arquetipo Fractal Music World mediante 12 preguntas de alto impacto.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="test-page">
+<header class="site-header">
+  <a class="logo" href="index.html">Fractal Music World</a>
+  <nav class="main-nav" aria-label="Navegación principal">
+    <a href="index.html">Inicio</a>
+    <a aria-current="page" href="test.html">The Dissonance Test</a>
+    <a href="comprar.html">Comprar</a>
+  </nav>
+  <a class="btn btn-secondary header-cta" href="index.html#contacto">Contacto</a>
+</header>
+
+<main>
+  <section class="test-hero">
+    <div class="test-hero-copy">
+      <p class="eyebrow">Primer Pipeline Cognitivo FMW</p>
+      <h1>The Dissonance Test</h1>
+      <p class="test-intro">Doce preguntas de alto impacto para leer tu estado creativo actual, revelar tus operadores dominantes y abrir una ruta personalizada dentro del universo Fractal Music World.</p>
+      <ul class="test-facts" aria-label="Características del test">
+        <li>12 preguntas</li>
+        <li>4 rutas por pregunta</li>
+        <li>12 arquetipos</li>
+        <li>Resultado inmediato</li>
+      </ul>
+    </div>
+    <div class="image-card test-hero-image">
+      <img src="assets/arquetipos-fmw.jpeg" alt="Los doce arquetipos de Fractal Music World">
+    </div>
+  </section>
+
+  <section id="test-view" class="test-shell" aria-live="polite">
+    <div class="test-progress-wrap">
+      <div id="progress-text">0 de 12 respondidas</div>
+      <progress id="test-progress" value="0" max="12">0%</progress>
+    </div>
+    <article class="question-card">
+      <p id="question-number" class="eyebrow">Pregunta 1 de 12</p>
+      <h2 id="question-text"></h2>
+      <div id="options" class="test-options"></div>
+      <div class="test-controls">
+        <button id="previous-question" class="btn btn-outline" type="button">Anterior</button>
+        <p>Elige la respuesta que aparece primero, antes de explicarla.</p>
+      </div>
+    </article>
+  </section>
+
+  <section id="result-view" class="result-shell" hidden>
+    <div class="result-heading">
+      <p id="result-type" class="eyebrow">Tu lectura FMW</p>
+      <h2 id="dominant-name"></h2>
+      <p id="dominant-family" class="result-family"></p>
+      <p id="dominant-description" class="result-description"></p>
+    </div>
+
+    <div class="result-grid">
+      <article class="result-card">
+        <h3>Arquetipo secundario</h3>
+        <p id="secondary-name"></p>
+      </article>
+      <article class="result-card">
+        <h3>Zona coclear dominante</h3>
+        <p id="zone-text"></p>
+      </article>
+      <article class="result-card">
+        <h3>Punto ciego</h3>
+        <p id="blind-spot-text"></p>
+      </article>
+      <article class="result-card">
+        <h3>Frase identitaria</h3>
+        <p id="identity-phrase"></p>
+      </article>
+      <article class="result-card result-route">
+        <h3>Ruta sugerida</h3>
+        <p id="route-text"></p>
+        <a id="result-cta" class="btn btn-primary" href="comprar.html">Entrar al universo FMW</a>
+      </article>
+    </div>
+
+    <div class="result-actions">
+      <form id="lead-form" class="lead-form">
+        <h3>Guardar mi resultado</h3>
+        <label>Nombre<input name="name" type="text" autocomplete="name" required></label>
+        <label>Correo electrónico<input name="email" type="email" autocomplete="email" required></label>
+        <label class="consent"><input name="consent" type="checkbox" required> Autorizo guardar este resultado para recibir mi ruta personalizada.</label>
+        <button class="btn btn-primary" type="submit">Guardar resultado</button>
+        <p id="save-status" role="status"></p>
+      </form>
+      <div class="result-tools">
+        <button id="export-result" class="btn btn-secondary" type="button">Exportar resultado</button>
+        <button id="restart-test" class="btn btn-outline" type="button">Realizar de nuevo</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="como-funciona" class="section test-method">
+    <div class="section-heading center">
+      <p class="eyebrow">Cómo funciona</p>
+      <h2>Respuestas → puntuación bruta → normalización → desempate → resultado</h2>
+      <p>El resultado no define una identidad permanente. Registra una configuración creativa actual que puede evolucionar en futuros ciclos.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>Fractal Music World · El sonido también piensa.</p>
+</footer>
+<script type="module" src="test-app.js"></script>
+</body>
+</html>

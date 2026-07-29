@@ -1,31 +1,31 @@
 .strudel-panel {
   width: 100%;
-  max-width: 1320px;
+  max-width: 1480px;
   margin: 0 auto;
-  padding: 24px 0 32px;
+  padding: 22px 24px 36px;
 }
 
 .strudel-header {
   margin: 0 0 14px;
-  text-align: left;
-  border-bottom: 1px solid rgba(23, 22, 21, 0.12);
-  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(23, 22, 21, 0.14);
+  padding-bottom: 12px;
 }
 
 .strudel-kicker {
   margin: 0 0 4px;
-  font-size: 0.78rem;
-  font-weight: 700;
+  color: #5f6f52;
+  font-size: 0.74rem;
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #6b5f4b;
 }
 
 .strudel-header h2,
 .strudel-panel > h2 {
   margin: 0;
-  font-size: 1.45rem;
-  line-height: 1.2;
+  color: #171615;
+  font-size: 1.5rem;
+  line-height: 1.18;
 }
 
 .strudel-status {
@@ -37,12 +37,16 @@
 
 .strudel-error {
   margin: 0 0 10px;
+  border: 1px solid rgba(185, 28, 28, 0.2);
+  border-radius: 8px;
+  background: #fff1f2;
   color: #b91c1c;
+  padding: 10px 12px;
 }
 
 .strudel-studio {
   display: grid;
-  grid-template-columns: minmax(300px, 390px) minmax(0, 1fr);
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
   gap: 16px;
   align-items: start;
 }
@@ -50,12 +54,15 @@
 .pytheory-panel,
 .strudel-live-panel {
   min-width: 0;
-  border: 1px solid var(--border, #d1d5db);
+  border: 1px solid rgba(23, 22, 21, 0.14);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 1px 2px rgba(23, 22, 21, 0.04);
 }
 
 .pytheory-panel {
+  position: sticky;
+  top: 64px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -71,26 +78,56 @@
 
 .surface-head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
   border-bottom: 1px solid rgba(23, 22, 21, 0.1);
-  padding-bottom: 8px;
+  padding-bottom: 10px;
 }
 
-.surface-head p {
+.surface-head p,
+.editor-shell-head p {
   margin: 0;
-  color: #6b5f4b;
-  font-size: 0.76rem;
+  color: #5f6f52;
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.surface-head h3 {
-  margin: 0;
+.surface-head h3,
+.editor-shell-head h4 {
+  margin: 2px 0 0;
   color: var(--text, #111827);
-  font-size: 1.05rem;
+  font-size: 1.02rem;
+  line-height: 1.2;
+}
+
+.surface-head-live {
+  align-items: center;
+}
+
+.play-state {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  border: 1px solid rgba(17, 24, 39, 0.14);
+  border-radius: 999px;
+  background: #f6f7f2;
+  color: #4b5563;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 0 10px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.play-state.is-playing {
+  border-color: rgba(22, 101, 52, 0.28);
+  background: #dcfce7;
+  color: #166534;
 }
 
 .pytheory-form {
@@ -105,6 +142,7 @@
   flex-direction: column;
   gap: 4px;
   font-size: 0.84rem;
+  font-weight: 650;
 }
 
 .strudel-field span {
@@ -126,16 +164,20 @@
 
 .strudel-field select:disabled,
 .strudel-field input:disabled {
-  cursor: progress;
-  opacity: 0.72;
+  cursor: not-allowed;
+  opacity: 0.62;
 }
 
 .strudel-generate,
-.transport-button {
+.transport-button,
+.preset-button,
+.surface-tab {
   min-height: 42px;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 700;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 750;
   padding: 0.55rem 0.8rem;
 }
 
@@ -152,16 +194,22 @@
   color: var(--text, #111827);
 }
 
+.transport-button:hover,
+.preset-button:hover,
+.surface-tab:hover {
+  border-color: rgba(37, 99, 235, 0.42);
+}
+
 .strudel-generate:disabled,
 .transport-button:disabled {
   cursor: not-allowed;
-  opacity: 0.58;
+  opacity: 0.55;
 }
 
 .pytheory-transport,
 .strudel-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px;
   align-items: center;
 }
@@ -170,10 +218,11 @@
   color: var(--muted, #6b7280);
   font-size: 0.84rem;
   text-align: right;
+  white-space: nowrap;
 }
 
 .strudel-actions {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(160px, 1.1fr) repeat(2, minmax(130px, 0.7fr));
 }
 
 .strudel-audio-hidden {
@@ -184,6 +233,13 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.strudel-empty {
+  border: 1px dashed rgba(23, 22, 21, 0.18);
+  border-radius: 8px;
+  background: #f8fafc;
+  padding: 12px;
 }
 
 .strudel-empty h3,
@@ -209,9 +265,9 @@
   border-radius: 8px;
   background: #ecfdf5;
   color: #065f46;
-  font-size: 0.76rem;
-  font-weight: 700;
-  padding: 0.18rem 0.45rem;
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 0.2rem 0.46rem;
   text-transform: uppercase;
 }
 
@@ -242,13 +298,13 @@
 
 .strudel-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
   gap: 6px;
 }
 
 .strudel-note {
   display: grid;
-  min-height: 42px;
+  min-height: 44px;
   place-items: center;
   border: 1px solid var(--border, #d1d5db);
   border-radius: 8px;
@@ -299,10 +355,9 @@
 .strudel-book-guidance li {
   display: grid;
   gap: 4px;
-  border: 1px solid rgba(23, 22, 21, 0.1);
-  border-radius: 8px;
-  background: #fff;
-  padding: 8px;
+  border-left: 3px solid #8aa174;
+  background: #f8fafc;
+  padding: 8px 8px 8px 10px;
 }
 
 .strudel-book-guidance strong {
@@ -331,33 +386,174 @@
   font-size: 0.82rem;
 }
 
+.surface-readout {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: 8px;
+  background: #161b22;
+  color: #f8fafc;
+}
+
+.surface-readout div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 12px;
+}
+
+.surface-readout div:last-child {
+  border-right: 0;
+}
+
+.surface-readout span {
+  color: #aab6c3;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.surface-readout strong {
+  min-width: 0;
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preset-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.preset-button {
+  border: 1px solid rgba(23, 22, 21, 0.14);
+  background: #f8fafc;
+  color: #1f2937;
+}
+
+.preset-button.is-active {
+  border-color: rgba(37, 99, 235, 0.48);
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.surface-feedback {
+  min-height: 1.2em;
+  margin: -2px 0 0;
+  color: #4b5563;
+  font-size: 0.84rem;
+}
+
+.pattern-preview {
+  display: grid;
+  gap: 6px;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: 8px;
+  background: #f5f7f4;
+  padding: 10px;
+}
+
+.pattern-lane {
+  display: grid;
+  grid-template-columns: minmax(86px, 116px) minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+
+.pattern-lane.is-muted {
+  opacity: 0.46;
+}
+
+.pattern-lane-label {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pattern-lane-label strong {
+  color: #171615;
+  font-size: 0.82rem;
+}
+
+.pattern-lane-label span {
+  overflow: hidden;
+  color: #6b7280;
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pattern-lane-steps {
+  display: grid;
+  grid-auto-columns: minmax(34px, 1fr);
+  grid-auto-flow: column;
+  gap: 4px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.pattern-lane-steps span {
+  display: grid;
+  min-height: 28px;
+  min-width: 0;
+  place-items: center;
+  border: 1px solid rgba(23, 22, 21, 0.1);
+  border-radius: 6px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 0.72rem;
+  font-weight: 750;
+  overflow: hidden;
+  padding: 0 4px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.surface-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.surface-tab {
+  border: 1px solid rgba(23, 22, 21, 0.14);
+  background: #fff;
+  color: #374151;
+}
+
+.surface-tab.is-active {
+  border-color: rgba(37, 99, 235, 0.45);
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
 .strudel-control-groups {
   display: grid;
   gap: 10px;
 }
 
 .control-group {
-  border: 1px solid rgba(23, 22, 21, 0.12);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.56);
-  padding: 10px;
-}
-
-.control-group header {
-  margin: 0 0 8px;
-}
-
-.control-group h4 {
-  margin: 0;
-  color: var(--text, #111827);
-  font-size: 0.92rem;
+  border-top: 1px solid rgba(23, 22, 21, 0.12);
+  padding-top: 12px;
 }
 
 .control-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+  gap: 12px 10px;
   align-items: center;
+}
+
+.control-grid-drums {
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
 }
 
 .strudel-check {
@@ -368,13 +564,18 @@
   min-width: 0;
   color: var(--text, #111827);
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 750;
 }
 
 .strudel-check input {
   width: 18px;
   height: 18px;
+  flex: 0 0 auto;
   accent-color: var(--accent, #2563eb);
+}
+
+.strudel-check input:disabled {
+  cursor: not-allowed;
 }
 
 .strudel-knob {
@@ -383,14 +584,15 @@
   gap: 5px;
   min-width: 0;
   color: var(--text, #111827);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   user-select: none;
 }
 
 .strudel-knob > span {
+  width: 100%;
   color: var(--muted, #6b7280);
-  max-width: 100%;
   overflow: hidden;
+  text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -399,20 +601,20 @@
   min-height: 1em;
   color: var(--text, #111827);
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .strudel-knob-face {
-  width: 58px;
-  height: 58px;
+  width: 60px;
+  height: 60px;
   border: 1px solid rgba(17, 24, 39, 0.18);
   border-radius: 999px;
   background:
-    radial-gradient(circle at 50% 52%, #fff 0 42%, transparent 43%),
+    radial-gradient(circle at 50% 52%, #fff 0 41%, transparent 42%),
     conic-gradient(
       from -135deg,
-      var(--accent, #2563eb) 0deg var(--knob-sweep),
-      #d1d5db var(--knob-sweep) 270deg,
+      #2563eb 0deg var(--knob-sweep),
+      #c7d2fe var(--knob-sweep) 270deg,
       transparent 270deg 360deg
     );
   box-shadow:
@@ -423,9 +625,12 @@
   touch-action: none;
 }
 
-.strudel-knob-face:focus-visible {
+.strudel-knob-face:focus-visible,
+.transport-button:focus-visible,
+.preset-button:focus-visible,
+.surface-tab:focus-visible {
   outline: 3px solid rgba(37, 99, 235, 0.28);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
 .strudel-knob-marker {
@@ -433,95 +638,141 @@
   left: 50%;
   top: 8px;
   width: 4px;
-  height: 19px;
+  height: 20px;
   border-radius: 999px;
   background: #111827;
   transform: translateX(-50%) rotate(var(--knob-rotation));
-  transform-origin: 50% 21px;
+  transform-origin: 50% 22px;
 }
 
 .strudel-knob.is-disabled {
-  opacity: 0.45;
+  opacity: 0.42;
 }
 
 .strudel-knob.is-disabled .strudel-knob-face {
   cursor: not-allowed;
 }
 
+.editor-shell {
+  display: grid;
+  gap: 8px;
+}
+
+.editor-shell-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid rgba(23, 22, 21, 0.12);
+  padding-top: 12px;
+}
+
+.editor-shell-head .transport-button {
+  min-height: 36px;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.65rem;
+}
+
 .strudel-editor-host {
   width: 100%;
   min-width: 0;
-  min-height: 620px;
-  height: calc(100vh - 244px);
+  min-height: 420px;
+  height: min(54vh, 560px);
   overflow: hidden;
-  border: 1px solid rgba(23, 22, 21, 0.18);
+  border: 1px solid rgba(23, 22, 21, 0.2);
   border-radius: 8px;
-  background: #111;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  background: #0d1117;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
 }
 
 .strudel-editor-host:empty::before {
   content: "Loading Strudel...";
   display: grid;
-  min-height: 620px;
+  min-height: 420px;
   place-items: center;
-  color: #fffaf1;
+  color: #f8fafc;
   font-size: 0.92rem;
 }
 
 .strudel-editor {
-  display: none;
+  display: block;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 
 .strudel-editor + div {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 620px;
+  min-height: 420px;
 }
 
 .strudel-editor + div .cm-editor {
-  min-height: 620px;
+  min-height: 420px;
   height: 100%;
+  background: #0d1117;
 }
 
 .strudel-editor + div .cm-scroller {
-  min-height: 620px;
+  min-height: 420px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
-@media (max-width: 1020px) {
+.strudel-editor + div .cm-content {
+  padding: 14px 0;
+}
+
+@media (max-width: 1120px) {
   .strudel-studio {
     grid-template-columns: 1fr;
   }
 
   .pytheory-panel {
+    position: static;
     order: 1;
   }
 
   .strudel-live-panel {
     order: 2;
   }
-
-  .strudel-editor-host {
-    height: 640px;
-  }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 760px) {
   .strudel-panel {
-    padding-top: 16px;
+    padding: 16px 12px 28px;
+  }
+
+  .strudel-header,
+  .surface-head,
+  .editor-shell-head {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .pytheory-transport,
-  .strudel-actions {
+  .strudel-actions,
+  .surface-readout,
+  .preset-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .strudel-actions .transport-button-primary {
+    grid-column: 1 / -1;
+  }
+
+  .pattern-lane {
     grid-template-columns: 1fr;
   }
 
-  .pytheory-transport span {
-    text-align: left;
+  .pattern-lane-steps {
+    grid-auto-columns: minmax(44px, 1fr);
+    overflow-x: auto;
+    padding-bottom: 2px;
   }
 
-  .control-grid {
+  .control-grid,
+  .control-grid-drums {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -530,6 +781,21 @@
   .strudel-editor + div .cm-editor,
   .strudel-editor + div .cm-scroller,
   .strudel-editor-host:empty::before {
-    min-height: 520px;
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 460px) {
+  .pytheory-transport,
+  .strudel-actions,
+  .surface-readout,
+  .preset-row,
+  .surface-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .control-grid,
+  .control-grid-drums {
+    grid-template-columns: 1fr 1fr;
   }
 }

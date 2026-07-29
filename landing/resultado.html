@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Informe relacional | Fractal Music World</title>
+  <meta name="description" content="Informe personalizado e historial evolutivo de The Dissonance Test.">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="test-page">
+<header class="site-header"><a class="logo" href="index.html">Fractal Music World</a><nav class="main-nav"><a href="index.html">Inicio</a><a href="test.html">Test</a><a href="comprar.html">Comprar</a></nav></header>
+<main class="delivery-shell">
+  <section class="delivery-card" id="delivery-card">
+    <p class="eyebrow">Informe relacional registrado</p>
+    <h1 id="delivery-title">Tu resultado FMW</h1>
+    <p id="delivery-date" class="muted"></p>
+    <div class="delivery-grid">
+      <article><span>Dominante</span><h2 id="delivery-dominant">—</h2><p id="delivery-score1"></p></article>
+      <article><span>Secundario</span><h2 id="delivery-secondary">—</h2><p id="delivery-score2"></p></article>
+    </div>
+    <p id="delivery-diagnosis" class="lead-copy"></p>
+    <div class="result-actions"><a id="sample-link" class="btn btn-primary" href="muestra.html">Abrir mi muestra</a><a class="btn btn-secondary" href="comprar.html">Comprar la obra</a></div>
+  </section>
+  <section class="history-card">
+    <p class="eyebrow">Memoria evolutiva</p><h2>Tu recorrido en el tiempo</h2>
+    <p id="history-summary" class="muted">Cargando historial…</p>
+    <div id="history-list" class="history-list"></div>
+  </section>
+</main>
+<script type="module" src="resultado.js"></script>
+</body></html>

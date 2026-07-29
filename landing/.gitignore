@@ -1,2 +1,4 @@
-.vercel
-.env*
+node_modules/
+.env
+data/store.json.*.tmp
+.DS_Store

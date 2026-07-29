@@ -87,3 +87,7 @@ web/public/generated/
 
 # Local working venvs
 .venv-*/
+
+# Deliveries and backup snapshots
+FMW_ENTREGA_BADO_2026-07-28/
+

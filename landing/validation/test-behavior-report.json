@@ -1,0 +1,135 @@
+{
+  "generatedAt": "2026-07-29T00:32:15.519Z",
+  "engine": "normalized_raw_adjusted_hybrid",
+  "matrix": {
+    "questions": 12,
+    "options": 48,
+    "archetypes": 12,
+    "uniqueTechnicalIds": 48,
+    "opportunities": {
+      "El Oído Fractal": {
+        "declared": 4,
+        "actual": 4
+      },
+      "El Colorista Armónico": {
+        "declared": 4,
+        "actual": 4
+      },
+      "El Arquitecto de la Disonancia": {
+        "declared": 5,
+        "actual": 5
+      },
+      "El Juglar Transmedia": {
+        "declared": 4,
+        "actual": 4
+      },
+      "El Guardián del Ritmo": {
+        "declared": 5,
+        "actual": 5
+      },
+      "El Vegetal Antena": {
+        "declared": 4,
+        "actual": 4
+      },
+      "El Navegante Dodecasólido": {
+        "declared": 6,
+        "actual": 6
+      },
+      "El Alquimista del Silencio": {
+        "declared": 3,
+        "actual": 3
+      },
+      "El Espejo Fractal": {
+        "declared": 4,
+        "actual": 4
+      },
+      "El Crononauta Sonoro": {
+        "declared": 3,
+        "actual": 3
+      },
+      "El Sintetizador de Vacíos": {
+        "declared": 3,
+        "actual": 3
+      },
+      "La Entropía Consciente": {
+        "declared": 3,
+        "actual": 3
+      }
+    }
+  },
+  "simulation": {
+    "seed": "0x0D1550A7",
+    "sampleSize": 250000,
+    "uniformRandomResponses": true,
+    "dominantCounts": {
+      "El Oído Fractal": 16872,
+      "El Colorista Armónico": 25891,
+      "El Arquitecto de la Disonancia": 15465,
+      "El Juglar Transmedia": 17769,
+      "El Guardián del Ritmo": 13285,
+      "El Vegetal Antena": 13395,
+      "El Navegante Dodecasólido": 21587,
+      "El Alquimista del Silencio": 31411,
+      "El Espejo Fractal": 22523,
+      "El Crononauta Sonoro": 26959,
+      "El Sintetizador de Vacíos": 23373,
+      "La Entropía Consciente": 21470
+    },
+    "dominantPercentages": {
+      "El Oído Fractal": 6.7488,
+      "El Colorista Armónico": 10.3564,
+      "El Arquitecto de la Disonancia": 6.186,
+      "El Juglar Transmedia": 7.1076,
+      "El Guardián del Ritmo": 5.314,
+      "El Vegetal Antena": 5.358,
+      "El Navegante Dodecasólido": 8.6348,
+      "El Alquimista del Silencio": 12.5644,
+      "El Espejo Fractal": 9.0092,
+      "El Crononauta Sonoro": 10.7836,
+      "El Sintetizador de Vacíos": 9.3492,
+      "La Entropía Consciente": 8.588
+    },
+    "secondaryCounts": {
+      "El Oído Fractal": 23110,
+      "El Colorista Armónico": 27947,
+      "El Arquitecto de la Disonancia": 27485,
+      "El Juglar Transmedia": 25278,
+      "El Guardián del Ritmo": 22227,
+      "El Vegetal Antena": 20431,
+      "El Navegante Dodecasólido": 24599,
+      "El Alquimista del Silencio": 11166,
+      "El Espejo Fractal": 26892,
+      "El Crononauta Sonoro": 11946,
+      "El Sintetizador de Vacíos": 14096,
+      "La Entropía Consciente": 14823
+    },
+    "secondaryPercentages": {
+      "El Oído Fractal": 9.244,
+      "El Colorista Armónico": 11.1788,
+      "El Arquitecto de la Disonancia": 10.994,
+      "El Juglar Transmedia": 10.1112,
+      "El Guardián del Ritmo": 8.8908,
+      "El Vegetal Antena": 8.1724,
+      "El Navegante Dodecasólido": 9.8396,
+      "El Alquimista del Silencio": 4.4664,
+      "El Espejo Fractal": 10.7568,
+      "El Crononauta Sonoro": 4.7784,
+      "El Sintetizador de Vacíos": 5.6384,
+      "La Entropía Consciente": 5.9292
+    },
+    "hybridCount": 46743,
+    "hybridRatePercent": 18.6972,
+    "hybridSizes": {
+      "2": 38467,
+      "3": 7602,
+      "4": 662,
+      "5": 12
+    },
+    "maxTieSize": 5,
+    "dominantSpreadPercentagePoints": 7.2504
+  },
+  "interpretation": {
+    "status": "TECHNICALLY_VALID_FOR_CONTROLLED_BETA",
+    "note": "La simulación comprueba el comportamiento matemático del motor bajo respuestas uniformes. No sustituye la validación con participantes reales ni demuestra validez psicométrica."
+  }
+}

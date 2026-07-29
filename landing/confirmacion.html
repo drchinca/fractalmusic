@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Confirmación de compra · Fractal Music World</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header"><a class="brand" href="index.html">FMW</a><span>Confirmación de compra</span></header>
+<main class="section delivery-shell">
+  <article class="question-card">
+    <p class="eyebrow">CompraClick BAC</p>
+    <h1 id="confirmation-title">Verificando la transacción…</h1>
+    <p id="confirmation-status" role="status" aria-live="polite">Estamos consultando la confirmación segura del pago.</p>
+    <div id="confirmation-detail" hidden>
+      <dl class="purchase-detail">
+        <div><dt>Referencia</dt><dd id="purchase-reference"></dd></div>
+        <div><dt>Producto</dt><dd id="purchase-product"></dd></div>
+        <div><dt>Correo</dt><dd id="purchase-email"></dd></div>
+        <div><dt>Fecha</dt><dd id="purchase-date"></dd></div>
+      </dl>
+      <div id="delivery-actions" class="button-group"></div>
+    </div>
+    <div class="button-group"><a class="btn btn-outline" href="recuperar.html">Recuperar enlace</a><a class="btn btn-outline" href="index.html">Volver al inicio</a></div>
+  </article>
+</main>
+<script type="module" src="confirmacion.js"></script>
+</body>
+</html>

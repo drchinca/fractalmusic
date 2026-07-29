@@ -1,0 +1,18 @@
+{
+  "name": "fmw-web-dissonance-test",
+  "version": "0.9.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "check": "node --check server.js && node --check integrations.js && node --check email.js && node --check logger.js && node --check checkout.js && node --check recovery.js && node --check test-app.js && node --check scoring-engine.js && node --check test-data.js && node --check admin.js && node --check confirmacion.js && node --check gatople-core.js && node --check gatople.js && node --check scripts/preflight.js && node --check tests/e2e.test.js && node --check tests/test-behavior.test.js && node --check scripts/validate-test-behavior.js",
+    "test": "node --test --test-concurrency=1 tests/*.test.js",
+    "preflight": "node scripts/preflight.js",
+    "qa": "npm run check && npm test && npm run validate:test",
+    "validate:test": "node scripts/validate-test-behavior.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
