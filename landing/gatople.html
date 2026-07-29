@@ -63,6 +63,7 @@
           <label><input id="polygonToggle" type="checkbox" checked> Heptágono</label>
           <label><input id="starToggle" type="checkbox"> Pentagrama</label>
           <label><input id="zonesToggle" type="checkbox" checked> 4 zonas</label>
+          <label><input id="paletteToggle" type="checkbox"> Diapasón B&N</label>
           <button id="zeroButton" type="button">Tocar Cero Pitágoras</button>
         </div>
       </div>
@@ -73,6 +74,9 @@
           <h2 id="activeRole">Centro tonal</h2>
           <p id="activeDescription">Pasa el cursor o toca un segmento para escuchar su nota y consultar su función actual.</p>
           <div class="role-swatch" id="roleSwatch" aria-hidden="true"></div>
+          <div style="text-align: center; margin-top: 15px;">
+            <img id="cartaImage" style="max-width: 140px; height: auto; border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.5); transition: transform 0.2s;" src="cartas/00-portada.jpg" alt="Carta">
+          </div>
         </div>
 
         <div class="card table-card">

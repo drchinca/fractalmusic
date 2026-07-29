@@ -7,7 +7,7 @@
   const ROLES=['Centro','Umbral','Impulso','Fricción','Color','Puente','Abismo','Dirección','Espejo','Memoria','Expansión','Retorno'];
   const GLYPHS=['●','◐','△','✕','◇','⌁','⬡','→','◈','∞','✦','↺'];
   const COLORS=['#e4aa24','#12b75a','#1d5ee7','#842fc1','#d51c2e','#e06c22','#d8c94a','#38a7a0','#5a79df','#af4db6','#e45a7d','#c79335'];
-  const state={tonic:Core.A_INDEX,octave:4,dragging:false,startAngle:0,startTonic:Core.A_INDEX,moved:false,pointerId:null};
+  const state={tonic:Core.A_INDEX,octave:4,dragging:false,startAngle:0,startTonic:Core.A_INDEX,moved:false,pointerId:null,palette:'carta'};
   const $=id=>document.getElementById(id);
   const svg=$('wheelSvg'),noteRing=$('noteRing'),fixedRing=$('fixedRing');
   let audioCtx=null;
@@ -44,11 +44,14 @@
     renderTable();renderPiano();renderFretboard();showRole(Core.ORIGIN_POSITION);
   }
 
+  const CARTAS=['04-casita.jpg','05-estrella-i.jpg','06-mas.jpg','07-estrella-ii.jpg','08-llave.jpg','09-flecha-arriba.jpg','10-estrella-iii.jpg','11-flecha-abajo.jpg','12-estrella-iv.jpg','01-dos-puntos.jpg','02-estrella-v.jpg','03-triangulo.jpg'];
   function showRole(position){
     const note=Core.noteAtPosition(state.tonic,position);
     $('activeRole').textContent=`${ROLES[position]} · ${NOTES[note]}`;
     $('activeDescription').textContent=`Posición ${Core.hourForPosition(position)} h · función fija ${position+1}/12. La nota cambia al girar; el glifo permanece en su estación.`;
     $('roleSwatch').style.background=COLORS[position];
+    $('cartaImage').src=`cartas/${CARTAS[position]}`;
+    $('cartaImage').alt=`Carta ${ROLES[position]}`;
   }
   function setTonic(index){state.tonic=Core.mod(index);update()}
   function renderTable(){const body=$('linksTable');body.innerHTML='';for(let pos=0;pos<12;pos++){const note=Core.noteAtPosition(state.tonic,pos),tr=document.createElement('tr');tr.innerHTML=`<td>${ROLES[pos]}</td><td>${GLYPHS[pos]}</td><td>${NOTES[note]}</td><td>${Core.hourForPosition(pos)}</td>`;body.appendChild(tr)}}
@@ -56,7 +59,7 @@
   function playNote(note,oct=4,duration=.75){audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.type='sine';osc.frequency.value=440*Math.pow(2,(midi(note,oct)-69)/12);gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.22,now+.02);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);osc.connect(gain).connect(audioCtx.destination);osc.start(now);osc.stop(now+duration+.02)}
   function renderPiano(){const piano=$('piano');piano.innerHTML='';const white=[0,2,4,5,7,9,11,0],black=[1,3,null,6,8,10,null];white.forEach((n,i)=>{const actual=n,octaveOffset=i===7?1:0,pos=Core.positionForNote(state.tonic,actual),b=document.createElement('button');b.type='button';b.className='key white';b.dataset.note=actual;b.dataset.octaveOffset=octaveOffset;b.innerHTML=`<span class="key-label"><span class="key-role" style="color:${COLORS[pos]}">${GLYPHS[pos]}</span>${NOTES[actual]}${octaveOffset?'<sup>+1</sup>':''}</span>`;b.addEventListener('click',e=>triggerKey(e.currentTarget,actual,false,octaveOffset));piano.appendChild(b)});black.forEach((n,i)=>{if(n==null)return;const pos=Core.positionForNote(state.tonic,n),b=document.createElement('button');b.type='button';b.className='key black';b.style.left=`${(i+1)*12.5}%`;b.dataset.note=n;b.dataset.octaveOffset=0;b.innerHTML=`<span class="key-label"><span class="key-role" style="color:${COLORS[pos]}">${GLYPHS[pos]}</span>${NOTES[n]}</span>`;b.addEventListener('click',e=>triggerKey(e.currentTarget,n,false,0));piano.appendChild(b)})}
   function triggerKey(el,note,shift,octaveOffset=0){playNote(note,state.octave+octaveOffset);if(el){el.classList.add('active');setTimeout(()=>el.classList.remove('active'),160)}if(shift)setTonic(note)}
-  function renderFretboard(){const board=$('fretboard');board.innerHTML='';const tuning=[4,11,7,2,9,4];['E','B','G','D','A','E'].forEach((name,row)=>{const label=document.createElement('div');label.className='fret string-name';label.textContent=name;board.appendChild(label);for(let f=0;f<=12;f++){const note=(tuning[row]+f)%12,pos=Core.positionForNote(state.tonic,note),cell=document.createElement('button');cell.type='button';cell.className='fret';cell.title=`${name}${f}: ${NOTES[note]} · ${ROLES[pos]}`;cell.innerHTML=`<span class="note-dot" style="background:${COLORS[pos]}; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; font-size: 10px; padding: 2px 0;"><span style="font-weight: 800; font-size: 11px; display: block; margin-bottom: -1px;">${GLYPHS[pos]}</span><span style="font-size: 8px; font-weight: 500; display: block; opacity: 0.95;">${NOTES[note]}</span></span>`;cell.addEventListener('click',()=>playNote(note,state.octave+(row===0?1:0)));board.appendChild(cell)}})}
+  function renderFretboard(){const board=$('fretboard');board.innerHTML='';const tuning=[4,11,7,2,9,4];['E','B','G','D','A','E'].forEach((name,row)=>{const label=document.createElement('div');label.className='fret string-name';label.textContent=name;board.appendChild(label);for(let f=0;f<=12;f++){const note=(tuning[row]+f)%12,pos=Core.positionForNote(state.tonic,note),cell=document.createElement('button');cell.type='button';cell.className='fret';cell.title=`${name}${f}: ${NOTES[note]} · ${ROLES[pos]}`;const isPenta=[1,3,6,8,10].includes(pos);const bg=state.palette==='mono'?(isPenta?'#111':'#fff'):COLORS[pos];const fg=state.palette==='mono'?(isPenta?'#fff':'#111'):'#fff';cell.innerHTML=`<span class="note-dot" style="background:${bg}; color:${fg}; border:1px solid ${state.palette==='mono'?'#111':'rgba(255,255,255,.4)'}; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; font-size: 10px; padding: 2px 0;"><span style="font-weight: 800; font-size: 11px; display: block; margin-bottom: -1px;">${GLYPHS[pos]}</span><span style="font-size: 8px; font-weight: 500; display: block; opacity: 0.95; color:${state.palette==='mono'?(isPenta?'#fff':'#444'):'inherit'}">${NOTES[note]}</span></span>`;cell.addEventListener('click',()=>playNote(note,state.octave+(row===0?1:0)));board.appendChild(cell)}})}
   function angleFromEvent(e){const r=svg.getBoundingClientRect(),x=e.clientX-(r.left+r.width/2),y=e.clientY-(r.top+r.height/2);return Math.atan2(y,x)*180/Math.PI}
   svg.addEventListener('pointerdown',e=>{state.dragging=true;state.moved=false;state.pointerId=e.pointerId;state.startAngle=angleFromEvent(e);state.startTonic=state.tonic;svg.setPointerCapture(e.pointerId)});
   svg.addEventListener('pointermove',e=>{if(!state.dragging||e.pointerId!==state.pointerId)return;const steps=Core.semitoneStepsFromDrag(state.startAngle,angleFromEvent(e));if(Math.abs(steps)>0)state.moved=true;const next=Core.mod(state.startTonic+steps);if(next!==state.tonic)setTonic(next)});
@@ -67,6 +70,7 @@
   $('hMinusButton').addEventListener('click',()=>setTonic(Core.rotateHMinus(state.tonic)));$('hPlusButton').addEventListener('click',()=>setTonic(Core.rotateHPlus(state.tonic)));
   $('zeroButton').addEventListener('click',()=>Core.zeroPythagoras(state.tonic).forEach((n,i)=>setTimeout(()=>playNote(n,3+(i>1?1:0),.9),i*280)));
   $('polygonToggle').addEventListener('change',e=>$('heptagon').classList.toggle('hidden',!e.target.checked));$('starToggle').addEventListener('change',e=>$('pentagram').classList.toggle('hidden',!e.target.checked));$('zonesToggle').addEventListener('change',e=>$('zoneGuides').classList.toggle('hidden',!e.target.checked));
+  $('paletteToggle').addEventListener('change',e=>{state.palette=e.target.checked?'mono':'carta';update()});
   const keyMap={a:{note:0,off:0},w:{note:1,off:0},s:{note:2,off:0},e:{note:3,off:0},d:{note:4,off:0},f:{note:5,off:0},t:{note:6,off:0},g:{note:7,off:0},y:{note:8,off:0},h:{note:9,off:0},u:{note:10,off:0},j:{note:11,off:0},k:{note:0,off:1}};
   document.addEventListener('keydown',e=>{
     if(e.repeat)return;
