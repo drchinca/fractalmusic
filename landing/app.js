@@ -460,9 +460,16 @@ async function main() {
     if (note) engine.playNote(note);
   });
 
+  function rotationForTonic(offset) {
+    const role = roles.find((r) => r.position === offset);
+    if (!role) return 0;
+    return -(role.clock_hour - 9) * SEG_DEG;
+  }
+
   function repaint() {
-    applyRotation(inner, -tonicOffset * SEG_DEG);
-    applyRotation(geometryLayer, -tonicOffset * SEG_DEG);
+    const deg = rotationForTonic(tonicOffset);
+    applyRotation(inner, deg);
+    applyRotation(geometryLayer, deg);
     updateTonicReadout(roles, tonicOffset, chromatic);
     updateBindings(roles, tonicOffset, chromatic);
     repaintPiano(piano, roles, tonicOffset, chromatic, palette);
@@ -506,7 +513,7 @@ async function main() {
       b.setAttribute("aria-pressed", shapes[key] ? "true" : "false");
       b.classList.toggle("active", shapes[key]);
       renderGeometry({ inner: geometryLayer, zonas: zonasLayer, roles, shapes });
-      applyRotation(geometryLayer, -tonicOffset * SEG_DEG);
+      applyRotation(geometryLayer, rotationForTonic(tonicOffset));
     });
   });
   // Cero Pitágoras (Ch. 4): the founding gesture — five fingers on five black
@@ -551,7 +558,8 @@ async function main() {
   wheel.addEventListener("pointermove", (event) => {
     if (!dragging) return;
     const delta = pointerAngle(event) - dragStartAngle;
-    applyRotation(inner, -dragStartOffset * SEG_DEG + delta);
+    const startDeg = rotationForTonic(dragStartOffset);
+    applyRotation(inner, startDeg + delta);
   });
   function endDrag(event) {
     if (!dragging) return;
@@ -560,9 +568,14 @@ async function main() {
     inner.classList.remove("dragging");
     wheel.releasePointerCapture(event.pointerId);
     const delta = pointerAngle(event) - dragStartAngle;
-    const semitones = Math.round(delta / SEG_DEG);
-    const newOffset = ((dragStartOffset + semitones) % 12 + 12) % 12;
-    setTonic(chromatic[newOffset]);
+    const startRole = roles.find((r) => r.position === dragStartOffset);
+    const startHour = startRole ? startRole.clock_hour : 9;
+    const hoursDragged = Math.round(delta / SEG_DEG);
+    const newHour = ((startHour - 1 - hoursDragged) % 12 + 12) % 12 + 1;
+    const nextRole = roles.find((r) => r.clock_hour === newHour);
+    if (nextRole) {
+      setTonic(nextRole.note_default);
+    }
   }
   wheel.addEventListener("pointerup", endDrag);
   wheel.addEventListener("pointercancel", endDrag);
