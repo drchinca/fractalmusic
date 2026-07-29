@@ -91,3 +91,5 @@ web/public/generated/
 # Deliveries and backup snapshots
 FMW_ENTREGA_BADO_2026-07-28/
 
+.vercel
+.env*
