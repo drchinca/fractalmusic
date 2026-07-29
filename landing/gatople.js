@@ -12,27 +12,32 @@
   const svg=$('wheelSvg'),noteRing=$('noteRing'),fixedRing=$('fixedRing');
   let audioCtx=null;
 
+  const CHROMATIC_HOURS=[12,5,10,3,8,1,6,11,4,9,2,7];
+
   function polar(cx,cy,r,a){const rad=(a-90)*Math.PI/180;return{x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)}}
-  function wedgePath(i,outer=230,inner=135){const a0=i*30,a1=a0+30;const p1=polar(300,300,outer,a0),p2=polar(300,300,outer,a1),q2=polar(300,300,inner,a1),q1=polar(300,300,inner,a0);return `M ${p1.x} ${p1.y} A ${outer} ${outer} 0 0 1 ${p2.x} ${p2.y} L ${q2.x} ${q2.y} A ${inner} ${inner} 0 0 0 ${q1.x} ${q1.y} Z`}
-  function polygonPoints(indices,r){return indices.map(i=>{const p=polar(300,300,r,i*30);return `${p.x},${p.y}`}).join(' ')}
+  function wedgePath(angle,outer=230,inner=135){const a0=angle-15,a1=angle+15;const p1=polar(300,300,outer,a0),p2=polar(300,300,outer,a1),q2=polar(300,300,inner,a1),q1=polar(300,300,inner,a0);return `M ${p1.x} ${p1.y} A ${outer} ${outer} 0 0 1 ${p2.x} ${p2.y} L ${q2.x} ${q2.y} A ${inner} ${inner} 0 0 0 ${q1.x} ${q1.y} Z`}
+  function polygonPoints(hours,r){return hours.map(h=>{const p=polar(300,300,r,(h%12)*30);return `${p.x},${p.y}`}).join(' ')}
 
   function buildWheel(){
     noteRing.innerHTML='';fixedRing.innerHTML='';
     for(let pos=0;pos<12;pos++){
+      const hour=CHROMATIC_HOURS[pos];
+      const angle=(hour%12)*30;
+
       const fixed=document.createElementNS('http://www.w3.org/2000/svg','g');
-      const sector=document.createElementNS(fixed.namespaceURI,'path');sector.setAttribute('d',wedgePath(pos,255,232));sector.setAttribute('class','fixed-sector');sector.style.fill=COLORS[pos];
-      const gp=polar(300,300,244,pos*30+15);const glyph=document.createElementNS(fixed.namespaceURI,'text');glyph.setAttribute('x',gp.x);glyph.setAttribute('y',gp.y);glyph.setAttribute('class','fixed-glyph');glyph.textContent=GLYPHS[pos];
+      const sector=document.createElementNS(fixed.namespaceURI,'path');sector.setAttribute('d',wedgePath(angle,255,232));sector.setAttribute('class','fixed-sector');sector.style.fill=COLORS[pos];
+      const gp=polar(300,300,244,angle);const glyph=document.createElementNS(fixed.namespaceURI,'text');glyph.setAttribute('x',gp.x);glyph.setAttribute('y',gp.y);glyph.setAttribute('class','fixed-glyph');glyph.textContent=GLYPHS[pos];
       fixed.append(sector,glyph);fixedRing.appendChild(fixed);
 
       const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-      const path=document.createElementNS(g.namespaceURI,'path');path.setAttribute('d',wedgePath(pos));path.setAttribute('class','segment');path.dataset.position=pos;
-      const np=polar(300,300,183,pos*30+15);const text=document.createElementNS(g.namespaceURI,'text');text.setAttribute('x',np.x);text.setAttribute('y',np.y);text.setAttribute('class','segment-label');text.dataset.position=pos;
+      const path=document.createElementNS(g.namespaceURI,'path');path.setAttribute('d',wedgePath(angle));path.setAttribute('class','segment');path.dataset.position=pos;
+      const np=polar(300,300,183,angle);const text=document.createElementNS(g.namespaceURI,'text');text.setAttribute('x',np.x);text.setAttribute('y',np.y);text.setAttribute('class','segment-label');text.dataset.position=pos;
       g.append(path,text);noteRing.appendChild(g);
       path.addEventListener('pointerenter',()=>showRole(pos));
       path.addEventListener('click',()=>{if(state.moved)return;const note=Core.noteAtPosition(state.tonic,pos);playNote(note,state.octave+(pos===0?0:0));setTonic(note);showRole(Core.ORIGIN_POSITION)});
     }
-    $('heptagon').setAttribute('points',polygonPoints([0,2,4,5,7,9,11],108));
-    $('pentagram').setAttribute('points',polygonPoints([0,5,10,3,8,0],92));
+    $('heptagon').setAttribute('points',polygonPoints([12,1,7,8,9,10,11],108));
+    $('pentagram').setAttribute('points',polygonPoints([2,4,6,3,5],92));
   }
 
   function update(){
