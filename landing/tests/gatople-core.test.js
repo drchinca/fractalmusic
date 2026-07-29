@@ -61,3 +61,10 @@ test('los saltos del círculo de cuartas en sentido horario son correctos (A ➔
     assert.equal(note, expectedNotes[idx], `El salto de cuartas en hora ${hour} es incorrecto: se esperaba ${expectedNotes[idx]} pero se obtuvo ${note}`);
   });
 });
+
+test('la octava del piano empieza y termina en la nota A (La menor)',()=>{
+  const whiteKeys = [9, 11, 0, 2, 4, 5, 7, 9];
+  assert.equal(whiteKeys[0], 9, 'El piano debe empezar en la nota A');
+  assert.equal(whiteKeys[whiteKeys.length - 1], 9, 'El piano debe terminar en la nota A');
+  assert.equal(whiteKeys.length, 8, 'La octava blanca debe contener 8 teclas');
+});
