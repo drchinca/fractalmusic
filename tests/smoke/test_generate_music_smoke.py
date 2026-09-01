@@ -21,7 +21,7 @@ from fractalmusic.render import RenderConfig, render_wav
     ("tonic", "mode", "flavor"),
     [
         ("A", "Eólico", "free"),
-        ("D", "Penta 2", "penta-walk"),
+        ("D", "PentaII", "penta-walk"),
         ("E", "Frigio", "carta-progression"),
     ],
 )

@@ -100,11 +100,11 @@ _MODE_ORDER: tuple[str, ...] = (
     "Frigio",
     "Lidio",
     "Mixolidio",
-    "Penta 1",
-    "Penta 2",
-    "Penta 3",
-    "Penta 4",
-    "Penta 5",
+    "PentaI",
+    "PentaII",
+    "PentaIII",
+    "PentaIV",
+    "PentaV",
 )
 _FLAVOR_ORDER: tuple[Flavor, ...] = ("free", "penta-walk", "carta-progression")
 

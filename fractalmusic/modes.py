@@ -65,7 +65,7 @@ class Mode:
     """A Gátople mode: the musical identity of one of the 12 worlds."""
 
     note: str  # canonical note name (A-order)
-    mode_name: str  # e.g. "Eólico", "Penta 3"
+    mode_name: str  # e.g. "Eólico", "PentaIII"
     family: str  # HEPTA or PENTA
     glyph: str  # the world's symbol
     quality: str  # MAJOR / MINOR / DIMINISHED
@@ -101,11 +101,11 @@ _HEPTA_MODES: Final[tuple[Mode, ...]] = (
 
 # Pentatonic modes — black keys (Ch. 4 & 9). Each is a rotation of the black-key cycle.
 _PENTA_MODES: Final[tuple[Mode, ...]] = (
-    _penta("C#", "Penta 1", MINOR),
-    _penta("D#", "Penta 2", MINOR),
-    _penta("F#", "Penta 3", MAJOR),
-    _penta("G#", "Penta 4", MINOR),
-    _penta("A#", "Penta 5", MINOR),
+    _penta("C#", "PentaI", MINOR),
+    _penta("D#", "PentaII", MINOR),
+    _penta("F#", "PentaIII", MAJOR),
+    _penta("G#", "PentaIV", MINOR),
+    _penta("A#", "PentaV", MINOR),
 )
 
 # Penta roman order follows penta-mode number: Penta1=I … Penta5=V.

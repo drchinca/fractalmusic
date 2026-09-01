@@ -13,11 +13,11 @@ ModeName = Literal[
     "Frigio",
     "Lidio",
     "Mixolidio",
-    "Penta 1",
-    "Penta 2",
-    "Penta 3",
-    "Penta 4",
-    "Penta 5",
+    "PentaI",
+    "PentaII",
+    "PentaIII",
+    "PentaIV",
+    "PentaV",
 ]
 Flavor = Literal["penta-walk", "carta-progression", "free"]
 ConfidenceBand = Literal["strong", "tentative", "exploratory"]
@@ -25,7 +25,7 @@ ConfidenceBand = Literal["strong", "tentative", "exploratory"]
 NOTE_NAMES: frozenset[str] = frozenset(get_args(NoteName))
 MODE_NAMES: frozenset[str] = frozenset(get_args(ModeName))
 FLAVORS: frozenset[str] = frozenset(get_args(Flavor))
-PENTA_MODES: frozenset[str] = frozenset({"Penta 1", "Penta 2", "Penta 3", "Penta 4", "Penta 5"})
+PENTA_MODES: frozenset[str] = frozenset({"PentaI", "PentaII", "PentaIII", "PentaIV", "PentaV"})
 
 
 @dataclass(frozen=True, slots=True)

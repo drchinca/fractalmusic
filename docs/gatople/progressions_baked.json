@@ -2393,11 +2393,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Lift — the jazz door.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "A#",
@@ -2411,11 +2411,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Cross into the penta world.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "D#",
@@ -2429,11 +2429,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Balance.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "G#",
@@ -2447,11 +2447,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Descend.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "C#",
@@ -2465,11 +2465,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Seed.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "F#",
@@ -2625,11 +2625,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Lift — the jazz door.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "B",
@@ -2643,11 +2643,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Cross into the penta world.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "E",
@@ -2661,11 +2661,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Balance.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "A",
@@ -2679,11 +2679,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Descend.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "D",
@@ -2697,11 +2697,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Seed.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "G",
@@ -2857,11 +2857,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Lift — the jazz door.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "C",
@@ -2875,11 +2875,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Cross into the penta world.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "F",
@@ -2893,11 +2893,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Balance.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "A#",
@@ -2911,11 +2911,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Descend.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "D#",
@@ -2929,11 +2929,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Seed.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "G#",
@@ -3089,11 +3089,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Lift — the jazz door.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "C#",
@@ -3107,11 +3107,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Cross into the penta world.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "F#",
@@ -3125,11 +3125,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Balance.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "B",
@@ -3143,11 +3143,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Descend.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "E",
@@ -3161,11 +3161,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Seed.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "A",
@@ -3321,11 +3321,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Lift — the jazz door.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "D",
@@ -3339,11 +3339,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Cross into the penta world.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "G",
@@ -3357,11 +3357,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Balance.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "C",
@@ -3375,11 +3375,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Descend.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "F",
@@ -3393,11 +3393,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Seed.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "A#",
@@ -3553,11 +3553,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Lift — the jazz door.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "D#",
@@ -3571,11 +3571,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Cross into the penta world.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "G#",
@@ -3589,11 +3589,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Balance.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "C#",
@@ -3607,11 +3607,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Descend.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "F#",
@@ -3625,11 +3625,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Seed.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "B",
@@ -3785,11 +3785,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Lift — the jazz door.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "E",
@@ -3803,11 +3803,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Cross into the penta world.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "A",
@@ -3821,11 +3821,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Balance.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "D",
@@ -3839,11 +3839,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Descend.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "G",
@@ -3857,11 +3857,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Seed.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "C",
@@ -4017,11 +4017,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Lift — the jazz door.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "F",
@@ -4035,11 +4035,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Cross into the penta world.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "A#",
@@ -4053,11 +4053,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Balance.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "D#",
@@ -4071,11 +4071,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Descend.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "G#",
@@ -4089,11 +4089,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Seed.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "C#",
@@ -4249,11 +4249,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Lift — the jazz door.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "F#",
@@ -4267,11 +4267,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Cross into the penta world.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "B",
@@ -4285,11 +4285,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Balance.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "E",
@@ -4303,11 +4303,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Descend.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "A",
@@ -4321,11 +4321,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Seed.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "D",
@@ -4481,11 +4481,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Lift — the jazz door.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "G",
@@ -4499,11 +4499,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Cross into the penta world.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "C",
@@ -4517,11 +4517,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Balance.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "F",
@@ -4535,11 +4535,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Descend.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "A#",
@@ -4553,11 +4553,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Seed.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "D#",
@@ -4713,11 +4713,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Lift — the jazz door.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "G#",
@@ -4731,11 +4731,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Cross into the penta world.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "C#",
@@ -4749,11 +4749,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Balance.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "F#",
@@ -4767,11 +4767,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Descend.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "B",
@@ -4785,11 +4785,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Seed.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "E",
@@ -4945,11 +4945,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Lift — the jazz door.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "A",
@@ -4963,11 +4963,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Cross into the penta world.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "D",
@@ -4981,11 +4981,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Balance.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "G",
@@ -4999,11 +4999,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Descend.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "C",
@@ -5017,11 +5017,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "Seed.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "F",
@@ -5191,11 +5191,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "C → F.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "A#",
@@ -5209,11 +5209,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "F → A♯ (enharmonic Bb).",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "D#",
@@ -5227,11 +5227,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "A♯ → D♯.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "G#",
@@ -5245,11 +5245,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "D♯ → G♯.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "C#",
@@ -5263,11 +5263,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "G♯ → C♯.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "F#",
@@ -5443,11 +5443,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "C → F.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "B",
@@ -5461,11 +5461,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "F → A♯ (enharmonic Bb).",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "E",
@@ -5479,11 +5479,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "A♯ → D♯.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "A",
@@ -5497,11 +5497,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "D♯ → G♯.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "D",
@@ -5515,11 +5515,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "G♯ → C♯.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "G",
@@ -5695,11 +5695,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "C → F.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "C",
@@ -5713,11 +5713,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "F → A♯ (enharmonic Bb).",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "F",
@@ -5731,11 +5731,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "A♯ → D♯.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "A#",
@@ -5749,11 +5749,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "D♯ → G♯.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "D#",
@@ -5767,11 +5767,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "G♯ → C♯.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "G#",
@@ -5947,11 +5947,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "C → F.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "C#",
@@ -5965,11 +5965,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "F → A♯ (enharmonic Bb).",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "F#",
@@ -5983,11 +5983,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "A♯ → D♯.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "B",
@@ -6001,11 +6001,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "D♯ → G♯.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "E",
@@ -6019,11 +6019,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "G♯ → C♯.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "A",
@@ -6199,11 +6199,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "C → F.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "D",
@@ -6217,11 +6217,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "F → A♯ (enharmonic Bb).",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "G",
@@ -6235,11 +6235,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "A♯ → D♯.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "C",
@@ -6253,11 +6253,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "D♯ → G♯.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "F",
@@ -6271,11 +6271,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "G♯ → C♯.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "A#",
@@ -6451,11 +6451,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "C → F.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "D#",
@@ -6469,11 +6469,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "F → A♯ (enharmonic Bb).",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "G#",
@@ -6487,11 +6487,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "A♯ → D♯.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "C#",
@@ -6505,11 +6505,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "D♯ → G♯.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "F#",
@@ -6523,11 +6523,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "G♯ → C♯.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "B",
@@ -6703,11 +6703,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "C → F.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "E",
@@ -6721,11 +6721,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "F → A♯ (enharmonic Bb).",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "A",
@@ -6739,11 +6739,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "A♯ → D♯.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "D",
@@ -6757,11 +6757,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "D♯ → G♯.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "G",
@@ -6775,11 +6775,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "G♯ → C♯.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "C",
@@ -6955,11 +6955,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "C → F.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "F",
@@ -6973,11 +6973,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "F → A♯ (enharmonic Bb).",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "A#",
@@ -6991,11 +6991,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "A♯ → D♯.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "D#",
@@ -7009,11 +7009,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "D♯ → G♯.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "G#",
@@ -7027,11 +7027,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "G♯ → C♯.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "C#",
@@ -7207,11 +7207,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "C → F.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "F#",
@@ -7225,11 +7225,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "F → A♯ (enharmonic Bb).",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "B",
@@ -7243,11 +7243,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "A♯ → D♯.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "E",
@@ -7261,11 +7261,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "D♯ → G♯.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "A",
@@ -7279,11 +7279,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "G♯ → C♯.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "D",
@@ -7459,11 +7459,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "C → F.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "G",
@@ -7477,11 +7477,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "F → A♯ (enharmonic Bb).",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "C",
@@ -7495,11 +7495,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "A♯ → D♯.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "F",
@@ -7513,11 +7513,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "D♯ → G♯.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "A#",
@@ -7531,11 +7531,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "G♯ → C♯.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "D#",
@@ -7711,11 +7711,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "C → F.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "G#",
@@ -7729,11 +7729,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "F → A♯ (enharmonic Bb).",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "C#",
@@ -7747,11 +7747,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "A♯ → D♯.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "F#",
@@ -7765,11 +7765,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "D♯ → G♯.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "B",
@@ -7783,11 +7783,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "G♯ → C♯.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "E",
@@ -7963,11 +7963,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "C → F.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "A",
@@ -7981,11 +7981,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "F → A♯ (enharmonic Bb).",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "D",
@@ -7999,11 +7999,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "A♯ → D♯.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "G",
@@ -8017,11 +8017,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "D♯ → G♯.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "C",
@@ -8035,11 +8035,11 @@
             "drone_octave": 3,
             "bars": 1,
             "hint": "G♯ → C♯.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "F",
@@ -9900,11 +9900,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "G ↔ C# tritone pair.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "D#",
@@ -9938,11 +9938,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "C ↔ F# tritone pair.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "G#",
@@ -9976,11 +9976,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "F ↔ A# tritone pair.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "C",
@@ -10056,11 +10056,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "G ↔ C# tritone pair.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "E",
@@ -10094,11 +10094,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "C ↔ F# tritone pair.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "A",
@@ -10132,11 +10132,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "F ↔ A# tritone pair.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "C#",
@@ -10212,11 +10212,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "G ↔ C# tritone pair.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "F",
@@ -10250,11 +10250,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "C ↔ F# tritone pair.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "A#",
@@ -10288,11 +10288,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "F ↔ A# tritone pair.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "D",
@@ -10368,11 +10368,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "G ↔ C# tritone pair.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "F#",
@@ -10406,11 +10406,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "C ↔ F# tritone pair.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "B",
@@ -10444,11 +10444,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "F ↔ A# tritone pair.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "D#",
@@ -10524,11 +10524,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "G ↔ C# tritone pair.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "G",
@@ -10562,11 +10562,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "C ↔ F# tritone pair.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "C",
@@ -10600,11 +10600,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "F ↔ A# tritone pair.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "E",
@@ -10680,11 +10680,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "G ↔ C# tritone pair.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "G#",
@@ -10718,11 +10718,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "C ↔ F# tritone pair.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "C#",
@@ -10756,11 +10756,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "F ↔ A# tritone pair.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "F",
@@ -10836,11 +10836,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "G ↔ C# tritone pair.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "A",
@@ -10874,11 +10874,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "C ↔ F# tritone pair.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "D",
@@ -10912,11 +10912,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "F ↔ A# tritone pair.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "F#",
@@ -10992,11 +10992,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "G ↔ C# tritone pair.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "A#",
@@ -11030,11 +11030,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "C ↔ F# tritone pair.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "D#",
@@ -11068,11 +11068,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "F ↔ A# tritone pair.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "G",
@@ -11148,11 +11148,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "G ↔ C# tritone pair.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "B",
@@ -11186,11 +11186,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "C ↔ F# tritone pair.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "E",
@@ -11224,11 +11224,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "F ↔ A# tritone pair.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "G#",
@@ -11304,11 +11304,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "G ↔ C# tritone pair.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "C",
@@ -11342,11 +11342,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "C ↔ F# tritone pair.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "F",
@@ -11380,11 +11380,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "F ↔ A# tritone pair.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "A",
@@ -11460,11 +11460,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "G ↔ C# tritone pair.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "C#",
@@ -11498,11 +11498,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "C ↔ F# tritone pair.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "F#",
@@ -11536,11 +11536,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "F ↔ A# tritone pair.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "A#",
@@ -11616,11 +11616,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "G ↔ C# tritone pair.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           },
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "D",
@@ -11654,11 +11654,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "C ↔ F# tritone pair.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "G",
@@ -11692,11 +11692,11 @@
             "drone_octave": 3,
             "bars": 2,
             "hint": "F ↔ A# tritone pair.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "B",
@@ -11769,7 +11769,7 @@
       "keys": [
         [
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "A",
@@ -11783,11 +11783,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★I — the seed pentatonic.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "B",
@@ -11801,11 +11801,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★II — horizon, balance.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "D",
@@ -11819,11 +11819,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★III — Casa de Gátople, the home position.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "E",
@@ -11837,11 +11837,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★IV — gravity / descent.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "F#",
@@ -11855,13 +11855,13 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★V — door between hepta and penta worlds.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           }
         ],
         [
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "A#",
@@ -11875,11 +11875,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★I — the seed pentatonic.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "C",
@@ -11893,11 +11893,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★II — horizon, balance.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "D#",
@@ -11911,11 +11911,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★III — Casa de Gátople, the home position.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "F",
@@ -11929,11 +11929,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★IV — gravity / descent.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "G",
@@ -11947,13 +11947,13 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★V — door between hepta and penta worlds.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           }
         ],
         [
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "B",
@@ -11967,11 +11967,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★I — the seed pentatonic.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "C#",
@@ -11985,11 +11985,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★II — horizon, balance.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "E",
@@ -12003,11 +12003,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★III — Casa de Gátople, the home position.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "F#",
@@ -12021,11 +12021,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★IV — gravity / descent.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "G#",
@@ -12039,13 +12039,13 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★V — door between hepta and penta worlds.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           }
         ],
         [
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "C",
@@ -12059,11 +12059,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★I — the seed pentatonic.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "D",
@@ -12077,11 +12077,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★II — horizon, balance.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "F",
@@ -12095,11 +12095,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★III — Casa de Gátople, the home position.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "G",
@@ -12113,11 +12113,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★IV — gravity / descent.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "A",
@@ -12131,13 +12131,13 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★V — door between hepta and penta worlds.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           }
         ],
         [
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "C#",
@@ -12151,11 +12151,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★I — the seed pentatonic.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "D#",
@@ -12169,11 +12169,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★II — horizon, balance.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "F#",
@@ -12187,11 +12187,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★III — Casa de Gátople, the home position.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "G#",
@@ -12205,11 +12205,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★IV — gravity / descent.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "A#",
@@ -12223,13 +12223,13 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★V — door between hepta and penta worlds.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           }
         ],
         [
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "D",
@@ -12243,11 +12243,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★I — the seed pentatonic.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "E",
@@ -12261,11 +12261,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★II — horizon, balance.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "G",
@@ -12279,11 +12279,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★III — Casa de Gátople, the home position.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "A",
@@ -12297,11 +12297,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★IV — gravity / descent.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "B",
@@ -12315,13 +12315,13 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★V — door between hepta and penta worlds.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           }
         ],
         [
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "D#",
@@ -12335,11 +12335,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★I — the seed pentatonic.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "F",
@@ -12353,11 +12353,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★II — horizon, balance.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "G#",
@@ -12371,11 +12371,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★III — Casa de Gátople, the home position.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "A#",
@@ -12389,11 +12389,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★IV — gravity / descent.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "C",
@@ -12407,13 +12407,13 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★V — door between hepta and penta worlds.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           }
         ],
         [
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "E",
@@ -12427,11 +12427,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★I — the seed pentatonic.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "F#",
@@ -12445,11 +12445,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★II — horizon, balance.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "A",
@@ -12463,11 +12463,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★III — Casa de Gátople, the home position.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "B",
@@ -12481,11 +12481,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★IV — gravity / descent.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "C#",
@@ -12499,13 +12499,13 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★V — door between hepta and penta worlds.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           }
         ],
         [
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "F",
@@ -12519,11 +12519,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★I — the seed pentatonic.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "G",
@@ -12537,11 +12537,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★II — horizon, balance.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "A#",
@@ -12555,11 +12555,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★III — Casa de Gátople, the home position.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "C",
@@ -12573,11 +12573,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★IV — gravity / descent.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "D",
@@ -12591,13 +12591,13 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★V — door between hepta and penta worlds.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           }
         ],
         [
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "F#",
@@ -12611,11 +12611,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★I — the seed pentatonic.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "G#",
@@ -12629,11 +12629,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★II — horizon, balance.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "B",
@@ -12647,11 +12647,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★III — Casa de Gátople, the home position.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "C#",
@@ -12665,11 +12665,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★IV — gravity / descent.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "D#",
@@ -12683,13 +12683,13 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★V — door between hepta and penta worlds.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           }
         ],
         [
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "G",
@@ -12703,11 +12703,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★I — the seed pentatonic.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "A",
@@ -12721,11 +12721,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★II — horizon, balance.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "C",
@@ -12739,11 +12739,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★III — Casa de Gátople, the home position.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "D",
@@ -12757,11 +12757,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★IV — gravity / descent.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "E",
@@ -12775,13 +12775,13 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★V — door between hepta and penta worlds.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           }
         ],
         [
           {
-            "role_mode_name": "Penta 1",
+            "role_mode_name": "PentaI",
             "role_position": 4,
             "display_glyph": "★I",
             "tonic_note": "G#",
@@ -12795,11 +12795,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★I — the seed pentatonic.",
-            "next_role_mode_name": "Penta 2",
+            "next_role_mode_name": "PentaII",
             "next_role_position": 6
           },
           {
-            "role_mode_name": "Penta 2",
+            "role_mode_name": "PentaII",
             "role_position": 6,
             "display_glyph": "★II",
             "tonic_note": "A#",
@@ -12813,11 +12813,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★II — horizon, balance.",
-            "next_role_mode_name": "Penta 3",
+            "next_role_mode_name": "PentaIII",
             "next_role_position": 9
           },
           {
-            "role_mode_name": "Penta 3",
+            "role_mode_name": "PentaIII",
             "role_position": 9,
             "display_glyph": "★III",
             "tonic_note": "C#",
@@ -12831,11 +12831,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★III — Casa de Gátople, the home position.",
-            "next_role_mode_name": "Penta 4",
+            "next_role_mode_name": "PentaIV",
             "next_role_position": 11
           },
           {
-            "role_mode_name": "Penta 4",
+            "role_mode_name": "PentaIV",
             "role_position": 11,
             "display_glyph": "★IV",
             "tonic_note": "D#",
@@ -12849,11 +12849,11 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★IV — gravity / descent.",
-            "next_role_mode_name": "Penta 5",
+            "next_role_mode_name": "PentaV",
             "next_role_position": 1
           },
           {
-            "role_mode_name": "Penta 5",
+            "role_mode_name": "PentaV",
             "role_position": 1,
             "display_glyph": "★V",
             "tonic_note": "F",
@@ -12867,7 +12867,7 @@
             "drone_octave": 3,
             "bars": 4,
             "hint": "★V — door between hepta and penta worlds.",
-            "next_role_mode_name": "Penta 1",
+            "next_role_mode_name": "PentaI",
             "next_role_position": 4
           }
         ]

@@ -23,11 +23,11 @@ ORIGIN_NOTE: Final[str] = "A"  # La menor / Eólico — the matriarchal origin
 # The note spellings below are the canonical black-key roots; passing any other
 # root to penta() transposes the same step pattern.
 PENTA_MODES: Final[dict[str, tuple[int, ...]]] = {
-    "I": (2, 3, 2, 2, 3),  # Penta 1, from C#: C# D# F# G# A#
-    "II": (3, 2, 2, 3, 2),  # Penta 2, from D#: D# F# G# A# C#
-    "III": (2, 2, 3, 2, 3),  # Penta 3, from F#: F# G# A# C# D#
-    "IV": (2, 3, 2, 3, 2),  # Penta 4, from G#: G# A# C# D# F#
-    "V": (3, 2, 3, 2, 2),  # Penta 5, from A#: A# C# D# F# G#
+    "I": (2, 3, 2, 2, 3),  # PentaI, from C#: C# D# F# G# A#
+    "II": (3, 2, 2, 3, 2),  # PentaII, from D#: D# F# G# A# C#
+    "III": (2, 2, 3, 2, 3),  # PentaIII, from F#: F# G# A# C# D#
+    "IV": (2, 3, 2, 3, 2),  # PentaIV, from G#: G# A# C# D# F#
+    "V": (3, 2, 3, 2, 2),  # PentaV, from A#: A# C# D# F# G#
 }
 
 

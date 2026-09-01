@@ -44,7 +44,7 @@
     {
       "position": 1,
       "note_default": "A#",
-      "mode_name": "Penta 5",
+      "mode_name": "PentaV",
       "glyph": "★",
       "display_glyph": "★V",
       "display_label": "V",
@@ -123,7 +123,7 @@
     {
       "position": 4,
       "note_default": "C#",
-      "mode_name": "Penta 1",
+      "mode_name": "PentaI",
       "glyph": "★",
       "display_glyph": "★I",
       "display_label": "I",
@@ -175,7 +175,7 @@
     {
       "position": 6,
       "note_default": "D#",
-      "mode_name": "Penta 2",
+      "mode_name": "PentaII",
       "glyph": "★",
       "display_glyph": "★II",
       "display_label": "II",
@@ -254,7 +254,7 @@
     {
       "position": 9,
       "note_default": "F#",
-      "mode_name": "Penta 3",
+      "mode_name": "PentaIII",
       "glyph": "★",
       "display_glyph": "★III",
       "display_label": "III",
@@ -306,7 +306,7 @@
     {
       "position": 11,
       "note_default": "G#",
-      "mode_name": "Penta 4",
+      "mode_name": "PentaIV",
       "glyph": "★",
       "display_glyph": "★IV",
       "display_label": "IV",

@@ -49,11 +49,11 @@
         {"role": "Mixolidio",  "glyph": "↓",    "improvise_in": "G Mixolidio",  "bars": 1, "hint": "Compress."},
         {"role": "Jónico",     "glyph": "□",    "improvise_in": "C Jónico",     "bars": 1, "hint": "Stand vertical."},
         {"role": "Lidio",      "glyph": "↑",    "improvise_in": "F Lidio",      "bars": 1, "hint": "Lift — the jazz door."},
-        {"role": "Penta 5",    "glyph": "★V",   "improvise_in": "A# Penta 5",   "bars": 1, "hint": "Cross into the penta world."},
-        {"role": "Penta 2",    "glyph": "★II",  "improvise_in": "D# Penta 2",   "bars": 1, "hint": "Balance."},
-        {"role": "Penta 4",    "glyph": "★IV",  "improvise_in": "G# Penta 4",   "bars": 1, "hint": "Descend."},
-        {"role": "Penta 1",    "glyph": "★I",   "improvise_in": "C# Penta 1",   "bars": 1, "hint": "Seed."},
-        {"role": "Penta 3",    "glyph": "★III", "improvise_in": "F# Penta 3",   "bars": 1, "hint": "Casa de Gátople — the home position."},
+        {"role": "PentaV",    "glyph": "★V",   "improvise_in": "A# PentaV",   "bars": 1, "hint": "Cross into the penta world."},
+        {"role": "PentaII",    "glyph": "★II",  "improvise_in": "D# PentaII",   "bars": 1, "hint": "Balance."},
+        {"role": "PentaIV",    "glyph": "★IV",  "improvise_in": "G# PentaIV",   "bars": 1, "hint": "Descend."},
+        {"role": "PentaI",    "glyph": "★I",   "improvise_in": "C# PentaI",   "bars": 1, "hint": "Seed."},
+        {"role": "PentaIII",    "glyph": "★III", "improvise_in": "F# PentaIII",   "bars": 1, "hint": "Casa de Gátople — the home position."},
         {"role": "Locrio",     "glyph": "△",    "improvise_in": "B Locrio",     "bars": 1, "hint": "Return through the leading-tone."},
         {"role": "Frigio",     "glyph": "♀",    "improvise_in": "E Frigio",     "bars": 1, "hint": "Close — the key turns."}
       ]
@@ -70,11 +70,11 @@
         {"role": "Mixolidio", "glyph": "↓",   "improvise_in": "G Mixolidio", "bars": 1, "hint": "D → G."},
         {"role": "Jónico",    "glyph": "□",   "improvise_in": "C Jónico",    "bars": 1, "hint": "G → C."},
         {"role": "Lidio",     "glyph": "↑",   "improvise_in": "F Lidio",     "bars": 1, "hint": "C → F."},
-        {"role": "Penta 5",   "glyph": "★V",  "improvise_in": "A# Penta 5",  "bars": 1, "hint": "F → A♯ (enharmonic Bb)."},
-        {"role": "Penta 2",   "glyph": "★II", "improvise_in": "D# Penta 2",  "bars": 1, "hint": "A♯ → D♯."},
-        {"role": "Penta 4",   "glyph": "★IV", "improvise_in": "G# Penta 4",  "bars": 1, "hint": "D♯ → G♯."},
-        {"role": "Penta 1",   "glyph": "★I",  "improvise_in": "C# Penta 1",  "bars": 1, "hint": "G♯ → C♯."},
-        {"role": "Penta 3",   "glyph": "★III","improvise_in": "F# Penta 3",  "bars": 1, "hint": "C♯ → F♯ — casa de Gátople."},
+        {"role": "PentaV",   "glyph": "★V",  "improvise_in": "A# PentaV",  "bars": 1, "hint": "F → A♯ (enharmonic Bb)."},
+        {"role": "PentaII",   "glyph": "★II", "improvise_in": "D# PentaII",  "bars": 1, "hint": "A♯ → D♯."},
+        {"role": "PentaIV",   "glyph": "★IV", "improvise_in": "G# PentaIV",  "bars": 1, "hint": "D♯ → G♯."},
+        {"role": "PentaI",   "glyph": "★I",  "improvise_in": "C# PentaI",  "bars": 1, "hint": "G♯ → C♯."},
+        {"role": "PentaIII",   "glyph": "★III","improvise_in": "F# PentaIII",  "bars": 1, "hint": "C♯ → F♯ — casa de Gátople."},
         {"role": "Locrio",    "glyph": "△",   "improvise_in": "B Locrio",    "bars": 1, "hint": "F♯ → B."},
         {"role": "Frigio",    "glyph": "♀",   "improvise_in": "E Frigio",    "bars": 1, "hint": "B → E."},
         {"role": "Eólico",    "glyph": "⋮",   "improvise_in": "A Eólico",    "bars": 1, "hint": "E → A. The serpent eats its tail."}
@@ -113,11 +113,11 @@
       "tonic": "A",
       "steps": [
         {"role": "Mixolidio", "glyph": "↓",   "improvise_in": "G Mixolidio", "bars": 2, "hint": "G ↔ C# tritone pair."},
-        {"role": "Penta 1",   "glyph": "★I",  "improvise_in": "C# Penta 1",  "bars": 2, "hint": "C# is G's mirror — same axis, opposite pole."},
+        {"role": "PentaI",   "glyph": "★I",  "improvise_in": "C# PentaI",  "bars": 2, "hint": "C# is G's mirror — same axis, opposite pole."},
         {"role": "Jónico",    "glyph": "□",   "improvise_in": "C Jónico",    "bars": 2, "hint": "C ↔ F# tritone pair."},
-        {"role": "Penta 3",   "glyph": "★III","improvise_in": "F# Penta 3",  "bars": 2, "hint": "F# is C's mirror — casa de Gátople."},
+        {"role": "PentaIII",   "glyph": "★III","improvise_in": "F# PentaIII",  "bars": 2, "hint": "F# is C's mirror — casa de Gátople."},
         {"role": "Lidio",     "glyph": "↑",   "improvise_in": "F Lidio",     "bars": 2, "hint": "F ↔ A# tritone pair."},
-        {"role": "Penta 5",   "glyph": "★V",  "improvise_in": "A# Penta 5",  "bars": 2, "hint": "A# is F's mirror."},
+        {"role": "PentaV",   "glyph": "★V",  "improvise_in": "A# PentaV",  "bars": 2, "hint": "A# is F's mirror."},
         {"role": "Locrio",    "glyph": "△",   "improvise_in": "B Locrio",    "bars": 2, "hint": "B ↔ E tritone pair."},
         {"role": "Frigio",    "glyph": "♀",   "improvise_in": "E Frigio",    "bars": 2, "hint": "E is B's mirror — close the cycle."}
       ]
@@ -129,11 +129,11 @@
       "book_ref": ["fractal_libro:183", "fractal_libro:217"],
       "tonic": "A",
       "steps": [
-        {"role": "Penta 1", "glyph": "★I", "improvise_in": "C# Penta 1", "bars": 4, "hint": "★I — the seed pentatonic."},
-        {"role": "Penta 2", "glyph": "★II", "improvise_in": "D# Penta 2", "bars": 4, "hint": "★II — horizon, balance."},
-        {"role": "Penta 3", "glyph": "★III", "improvise_in": "F# Penta 3", "bars": 4, "hint": "★III — Casa de Gátople, the home position."},
-        {"role": "Penta 4", "glyph": "★IV", "improvise_in": "G# Penta 4", "bars": 4, "hint": "★IV — gravity / descent."},
-        {"role": "Penta 5", "glyph": "★V", "improvise_in": "A# Penta 5", "bars": 4, "hint": "★V — door between hepta and penta worlds."}
+        {"role": "PentaI", "glyph": "★I", "improvise_in": "C# PentaI", "bars": 4, "hint": "★I — the seed pentatonic."},
+        {"role": "PentaII", "glyph": "★II", "improvise_in": "D# PentaII", "bars": 4, "hint": "★II — horizon, balance."},
+        {"role": "PentaIII", "glyph": "★III", "improvise_in": "F# PentaIII", "bars": 4, "hint": "★III — Casa de Gátople, the home position."},
+        {"role": "PentaIV", "glyph": "★IV", "improvise_in": "G# PentaIV", "bars": 4, "hint": "★IV — gravity / descent."},
+        {"role": "PentaV", "glyph": "★V", "improvise_in": "A# PentaV", "bars": 4, "hint": "★V — door between hepta and penta worlds."}
       ]
     }
   ]

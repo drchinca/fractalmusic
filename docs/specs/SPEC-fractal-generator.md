@@ -1,9 +1,28 @@
+---
+title: fractal-generator — research → realize → score loop
+status: Implemented
+author: drchinca
+created: 2026-06-19
+---
+
 # SPEC-fractal-generator
 
 > Generate music on demand from the Sistema Fractal — a research loop that pulls
 > patterns from the indexed books, realizes them through `Wheel` + pytheory, and
 > learns from each successful run. **All theory lives in BE; FE plays inert
 > JSON** (CLAUDE.md cardinal 6).
+>
+> **2026-09-01 audit:** `fractalmusic/generate/` (`types.py`, `loop.py`,
+> `realize.py`, `scoring.py`, `adapters.py`, `cli.py`) and `patterns/*.json`
+> are shipped and tested (`tests/unit/test_generate.py`); real generated
+> patterns exist in `patterns/`. This document's `ModeName` Literal had drifted
+> from the shipped type (it said `"PentaI".."PentaV"` while the code shipped
+> `"Penta 1".."Penta 5"`); rather than just fix the doc, the canonical format
+> was decided to be `"PentaI".."PentaV"` (no space — a bare space-separated
+> arabic form was judged more failure-prone downstream), so
+> `fractalmusic/modes.py`, `fractalmusic/generate/types.py`, every
+> `patterns/*.json` file, and this spec were all migrated to that format in
+> the same pass. See `fractalmusic/modes.py` for the canonical source.
 
 ## 1. Context
 
@@ -52,7 +71,7 @@ from pathlib import Path
 from typing import Literal, Protocol, TypedDict
 
 NoteName = Literal["A","A#","B","C","C#","D","D#","E","F","F#","G","G#"]
-ModeName = Literal[                # mirrors ALL_MODES; single source in modes.py
+ModeName = Literal[                # mirrors fractalmusic.generate.types.ModeName
     "Eólico","Locrio","Jónico","Dórico","Frigio","Lidio","Mixolidio",
     "PentaI","PentaII","PentaIII","PentaIV","PentaV",
 ]

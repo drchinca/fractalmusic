@@ -49,21 +49,21 @@ The notes shown are the A-tonic readings — they will all rotate when you spin.
 <table>
 <tr>
   <td align="center"><img src="docs/assets/cartas/01-dos-puntos.jpg" width="120"><br><b>1 · ⋮ Dos Puntos</b><br>A · Eólico · red</td>
-  <td align="center"><img src="docs/assets/cartas/02-estrella-v.jpg" width="120"><br><b>2 · ★ V Estrella V</b><br>A♯/B♭ · Penta 5 · blue</td>
+  <td align="center"><img src="docs/assets/cartas/02-estrella-v.jpg" width="120"><br><b>2 · ★ V Estrella V</b><br>A♯/B♭ · PentaV · blue</td>
   <td align="center"><img src="docs/assets/cartas/03-triangulo.jpg" width="120"><br><b>3 · △ Triángulo</b><br>B · Locrio · green</td>
   <td align="center"><img src="docs/assets/cartas/04-casita.jpg" width="120"><br><b>4 · ■ Casita</b><br>C · Jónico · ivory wall + red roof</td>
 </tr>
 <tr>
-  <td align="center"><img src="docs/assets/cartas/05-estrella-i.jpg" width="120"><br><b>5 · ★ I Estrella I</b><br>C♯/D♭ · Penta 1 · water blue</td>
+  <td align="center"><img src="docs/assets/cartas/05-estrella-i.jpg" width="120"><br><b>5 · ★ I Estrella I</b><br>C♯/D♭ · PentaI · water blue</td>
   <td align="center"><img src="docs/assets/cartas/06-mas.jpg" width="120"><br><b>6 · + Más / Cruz</b><br>D · Dórico · green</td>
-  <td align="center"><img src="docs/assets/cartas/07-estrella-ii.jpg" width="120"><br><b>7 · ★ II Estrella II</b><br>D♯/E♭ · Penta 2 · blue + sun</td>
+  <td align="center"><img src="docs/assets/cartas/07-estrella-ii.jpg" width="120"><br><b>7 · ★ II Estrella II</b><br>D♯/E♭ · PentaII · blue + sun</td>
   <td align="center"><img src="docs/assets/cartas/08-llave.jpg" width="120"><br><b>8 · ♀ Llave (koppa)</b><br>E · Frigio · red</td>
 </tr>
 <tr>
   <td align="center"><img src="docs/assets/cartas/09-flecha-arriba.jpg" width="120"><br><b>9 · ↑ Flecha arriba</b><br>F · Lidio · sky blue</td>
-  <td align="center"><img src="docs/assets/cartas/10-estrella-iii.jpg" width="120"><br><b>10 · ★ III Estrella III</b><br>F♯/G♭ · Penta 3 · red (casa de Gátople)</td>
+  <td align="center"><img src="docs/assets/cartas/10-estrella-iii.jpg" width="120"><br><b>10 · ★ III Estrella III</b><br>F♯/G♭ · PentaIII · red (casa de Gátople)</td>
   <td align="center"><img src="docs/assets/cartas/11-flecha-abajo.jpg" width="120"><br><b>11 · ↓ Flecha abajo</b><br>G · Mixolidio · green</td>
-  <td align="center"><img src="docs/assets/cartas/12-estrella-iv.jpg" width="120"><br><b>12 · ★ IV Estrella IV</b><br>G♯/A♭ · Penta 4 · blue + orange</td>
+  <td align="center"><img src="docs/assets/cartas/12-estrella-iv.jpg" width="120"><br><b>12 · ★ IV Estrella IV</b><br>G♯/A♭ · PentaIV · blue + orange</td>
 </tr>
 </table>
 </p>
@@ -152,7 +152,7 @@ import fractalmusic as fm
 print(fm.deck())                      # the 12 cartas, colored + glyphed
 fm.world("Bb")                        # → NoteWorld for A# (enharmonic-aware)
 fm.mode_for("C")                      # → Jónico, □, major, 12 o'clock
-fm.penta("C#", mode="I")              # C# D# F# G# A# — Penta 1 (no semitones)
+fm.penta("C#", mode="I")              # C# D# F# G# A# — PentaI (no semitones)
 fm.cero_pitagoras("A")                # ['A','B','D','E','F#'] — 5-note penta seed
 fm.spell(["A", "C", "E"])             # '⋮ □ ♀' — a chord written in glyphs
 fm.interval_angle("A", "C")           # 90.0° on the Gátople
@@ -198,7 +198,7 @@ THE 7 GREEK MODES (white keys)
 THE GÁTOPLE CLOCK (hour & angle from A)
 ⋮ A   Eólico      9 o'clock       0°
 □ C   Jónico     12 o'clock      90°
-★ F#  Penta 3     6 o'clock     270°
+★ F#  PentaIII     6 o'clock     270°
 ...
 COMBINATIONS — music written in glyphs
 A minor triad          A  C  E                ⋮ □ ♀

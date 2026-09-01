@@ -49,8 +49,7 @@ def _scale_for_mode(wheel: Wheel, mode: str) -> tuple[str, ...]:
     modes we look up the canonical penta root and read the scale from there.
     """
     if mode in PENTA_MODES:
-        penta_index = int(mode.split()[1])  # "Penta 3" → 3
-        roman = ["I", "II", "III", "IV", "V"][penta_index - 1]
+        roman = mode.removeprefix("Penta")  # "PentaIII" → "III"
         return wheel.penta(roman)
     canonical_note = next(n for n, m in MODE_BY_NOTE.items() if m.mode_name == mode)
     position_at_default = _note_index(canonical_note)

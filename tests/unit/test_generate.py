@@ -59,7 +59,7 @@ def test_pattern_rejects_out_of_range_degrees_for_penta():
         Pattern(
             name="bad",
             tonic="A",
-            mode="Penta 1",
+            mode="PentaI",
             degrees=(1, 2, 6),
             rhythm=(1.0, 1.0, 1.0),
             provenance=PROV,
@@ -112,7 +112,7 @@ def test_realize_attaches_role_hour_and_carta_glyph():
 def test_realize_penta_uses_penta_scale():
     pattern = _pattern(
         tonic="A",
-        mode="Penta 1",
+        mode="PentaI",
         degrees=(1, 2, 3, 4, 5, 1),
     )
     events = realize(pattern)
