@@ -5,6 +5,7 @@ from pathlib import Path
 
 import numpy as np
 
+from fractalmusic.generate.realize import _midi_number
 from fractalmusic.generate.types import Event
 
 
@@ -42,7 +43,7 @@ def render_with_soundfont(
     schedule: list[tuple[int, str, int]] = []
     # action: ("on" or "off", midi_note)
     for e in events:
-        midi_num = _note_octave_to_midi(e.note, e.octave)
+        midi_num = _midi_number(note=e.note, octave=e.octave)
         on_sample = int(e.beat * sec_per_beat * sr)
         off_sample = int((e.beat + e.duration) * sec_per_beat * sr)
         schedule.append((on_sample, "on", midi_num))
@@ -81,22 +82,3 @@ def render_with_soundfont(
     return buf
 
 
-_PITCH_CLASS: dict[str, int] = {
-    "C": 0,
-    "C#": 1,
-    "D": 2,
-    "D#": 3,
-    "E": 4,
-    "F": 5,
-    "F#": 6,
-    "G": 7,
-    "G#": 8,
-    "A": 9,
-    "A#": 10,
-    "B": 11,
-}
-
-
-def _note_octave_to_midi(note: str, octave: int) -> int:
-    """A4 = 69. C-1 = 0."""
-    return 12 * (octave + 1) + _PITCH_CLASS[note]
