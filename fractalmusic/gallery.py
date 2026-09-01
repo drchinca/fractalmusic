@@ -53,7 +53,7 @@ def write_gallery(out_dir: Path = _DEFAULT_DIR) -> list[Path]:
     """Write all gallery SVGs and return the paths written."""
     out_dir.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
-    
+
     # We export the Gátople wheel natively synthesized using the mathematical Wheel rotation
     artifacts = {
         "gatople-wheel.svg": gatople_wheel_svg(Wheel()),

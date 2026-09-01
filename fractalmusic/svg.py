@@ -212,7 +212,7 @@ def gatople_wheel_svg(wheel: "Wheel", *, size: int = 600) -> str:
     seg_deg = 30.0
 
     parts: list[str] = []
-    
+
     # 1. Geometry of the Outer Disc (Fixed Roles)
     for role in wheel.all_modes():
         angle = (role.clock_hour % 12) * seg_deg
@@ -232,7 +232,7 @@ def gatople_wheel_svg(wheel: "Wheel", *, size: int = 600) -> str:
     for role in wheel.all_modes():
         angle = (role.clock_hour % 12) * seg_deg
         nx, ny = _polar(angle, note_radius)
-        # Format the display note dynamically 
+        # Format the display note dynamically
         note_str = role.note.replace("#", "♯")
         parts.append(
             f"<circle cx='{nx:.1f}' cy='{ny:.1f}' r='{size * 0.04:.1f}' fill='#fff' stroke='#333' stroke-width='2'/>"
