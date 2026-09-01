@@ -20,8 +20,8 @@ export function AnswerView({ result }: AnswerViewProps): JSX.Element {
   // or the model_reading second pass itself failed.
   const headline =
     result.reason === "no_evidence_in_corpus"
-      ? "No encontré nada en estos libros sobre tu pregunta. Probá una más cercana al Sistema Fractal — el Dodecamundo, los modos griegos, o las cartas."
-      : "No pude responder con seguridad.";
+      ? "Che, no encontré nada de eso en los libros. Probá con algo más del Sistema Fractal, como el Dodecamundo o las cartas."
+      : "La verdad, che, no te quiero chamuyar: no encontré una respuesta segura.";
   return (
     <div className="answer-view answer-null">
       <p className="answer-null-message">{headline}</p>

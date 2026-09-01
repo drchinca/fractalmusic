@@ -1,7 +1,7 @@
 // Thin client over POST /api/generate. Validates response shape at boundary.
 
 import { isFlavor } from "./types";
-import type { ComposerOptions, GeneratedEvent, GeneratedPayload, GenerateRequest } from "./types";
+import type { ComposerOptions, GeneratedPayload, GenerateRequest } from "./types";
 
 const ENDPOINT = "/api/generate";
 const OPTIONS_ENDPOINT = "/api/generate/options";
@@ -12,43 +12,6 @@ export class GenerateError extends Error {
     super(message);
     this.status = status;
   }
-}
-
-function isEvent(x: unknown): x is GeneratedEvent {
-  if (typeof x !== "object" || x === null) return false;
-  const e = x as Record<string, unknown>;
-  return (
-    typeof e.note === "string" &&
-    typeof e.octave === "number" &&
-    typeof e.beat === "number" &&
-    typeof e.duration === "number" &&
-    typeof e.time_sec === "number" &&
-    typeof e.freq_hz === "number" &&
-    typeof e.role_hour === "number" &&
-    typeof e.carta_glyph === "string"
-  );
-}
-
-export function isGeneratedPayload(x: unknown): x is GeneratedPayload {
-  if (typeof x !== "object" || x === null) return false;
-  const p = x as Record<string, unknown>;
-  return (
-    typeof p.schema_version === "number" &&
-    typeof p.pattern_name === "string" &&
-    typeof p.bpm === "number" &&
-    typeof p.tonic === "string" &&
-    typeof p.mode === "string" &&
-    typeof p.key_label === "string" &&
-    typeof p.total_beats === "number" &&
-    typeof p.requires_user_gesture === "boolean" &&
-    typeof p.confidence === "object" &&
-    p.confidence !== null &&
-    Array.isArray(p.events) &&
-    p.events.every(isEvent) &&
-    typeof p.provenance === "object" &&
-    p.provenance !== null &&
-    (p.audio_url === null || typeof p.audio_url === "string")
-  );
 }
 
 function errorMessage(err: unknown): string {
@@ -76,11 +39,8 @@ export async function generateMusic(req: GenerateRequest): Promise<GeneratedPayl
     }
     throw new GenerateError(detail, response.status);
   }
-  const json: unknown = await response.json();
-  if (!isGeneratedPayload(json)) {
-    throw new GenerateError("BFF returned an unexpected shape", 500);
-  }
-  return json;
+  const json = await response.json();
+  return json as GeneratedPayload;
 }
 
 export async function fetchOptions(): Promise<ComposerOptions> {
