@@ -18,8 +18,8 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-cemaf = { path = "../../iccha_context_multi_agent/cemaf", editable = true }
-meridian-library = { path = "../../iccha_context_multi_agent/meridian_library", editable = true }
+cemaf = { path = "../../../iccha_context_multi_agent/cemaf", editable = true }
+meridian-library = { path = "../../../iccha_context_multi_agent/meridian_library", editable = true }
 fractalmusic = { path = "..", editable = true }
 
 [project.optional-dependencies]
