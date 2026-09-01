@@ -1,21 +1,19 @@
-"""Deterministic fractal geometry, Platonic solid mappings, and chord formulas.
+"""Deterministic fractal geometry and Platonic solid mappings for chords and notes.
 
-Chords are defined purely as mathematical formulas (semitone step offsets) which
-can be projected dynamically from ANY starting root NoteWorld on the Gátople wheel.
+Links the 12 notes of El Sistema Fractal to the 12 face centers of a regular
+dodecahedron (represented as the 12 vertices of its dual, a regular icosahedron,
+which are defined mathematically using the Golden Ratio φ).
 
-This eliminates hardcoded note-maps, reflecting the rotating, moving nature of the
-Gátople.
-
-Links the 12 NoteWorlds to the 12 face centers of a regular dodecahedron (represented
-as the 12 vertices of its dual, a regular icosahedron, defined using the Golden Ratio φ).
+Also models chords (triads and jazz seventh chords) as 2D polygons on the Gátople
+wheel, calculating their centroids, perimeters, and regularity.
 """
 
 import math
 from dataclasses import dataclass
-from typing import Final
+from typing import Final, Self
 
-from fractalmusic.dodecamundo import DODECAMUNDO, NoteWorld, world
-from fractalmusic.wheel import Wheel, clock_hour_for
+from fractalmusic.dodecamundo import world
+from fractalmusic.wheel import clock_hour_for
 
 # The Golden Ratio — the load-bearing logistics of the fractal geometry
 PHI: Final[float] = (1.0 + math.sqrt(5.0)) / 2.0  # ≈ 1.6180339887
@@ -97,37 +95,52 @@ def chord_polygon_2d(notes: tuple[str, ...], *, tonic: str = "A") -> Polygon2D:
     return Polygon2D(vertices=tuple(vertices))
 
 
-@dataclass(frozen=True, slots=True)
-class ChordFormula:
-    """A chord formula defined purely as mathematical semitone offsets from a starting root world."""
-
-    name: str
-    semitone_offsets: tuple[int, ...]
-
-    def project(self, root_world: NoteWorld) -> tuple[NoteWorld, ...]:
-        """Project this formula dynamically from any starting root NoteWorld."""
-        return tuple(DODECAMUNDO[(root_world.index + offset) % 12] for offset in self.semitone_offsets)
-
-    def polygon_2d(self, root_world: NoteWorld, *, wheel: Wheel = Wheel()) -> Polygon2D:
-        """The 2D polygon representing this chord formula on the Gátople wheel under a rotation."""
-        notes = tuple(w.note for w in self.project(root_world))
-        return chord_polygon_2d(notes, tonic=wheel.tonic)
-
-    def coordinates_3d(self, root_world: NoteWorld) -> tuple[tuple[float, float, float], ...]:
-        """The 3D coordinates representing this chord's face centers on the dodecahedron."""
-        notes = tuple(w.note for w in self.project(root_world))
-        return tuple(note_3d_coordinates(n) for n in notes)
+# Seventh chord interval patterns (root, third, fifth, seventh) as semitones from root.
+_JAZZ_INTERVAL_MAP: Final[dict[str, tuple[int, int, int, int]]] = {
+    "maj7": (0, 4, 7, 11),  # Major 7th
+    "min7": (0, 3, 7, 10),  # Minor 7th
+    "dom7": (0, 4, 7, 10),  # Dominant 7th
+    "m7b5": (0, 3, 6, 10),  # Half-diminished 7th
+    "dim7": (0, 3, 6, 9),   # Fully-diminished 7th (forms a perfect square!)
+}
 
 
-# Diatonic triads (semitone offsets from root)
-MAJOR_TRIAD: Final[ChordFormula] = ChordFormula("major", (0, 4, 7))
-MINOR_TRIAD: Final[ChordFormula] = ChordFormula("minor", (0, 3, 7))
-DIMINISHED_TRIAD: Final[ChordFormula] = ChordFormula("diminished", (0, 3, 6))
-AUGMENTED_TRIAD: Final[ChordFormula] = ChordFormula("augmented", (0, 4, 8))  # perfectly symmetric equilateral triangle!
+@dataclass(frozen=True)
+class JazzChord:
+    """A 4-note jazz seventh chord mapped onto 2D and 3D geometries."""
 
-# Jazz seventh chords (semitone offsets from root)
-MAJOR_7TH: Final[ChordFormula] = ChordFormula("maj7", (0, 4, 7, 11))
-MINOR_7TH: Final[ChordFormula] = ChordFormula("min7", (0, 3, 7, 10))
-DOMINANT_7TH: Final[ChordFormula] = ChordFormula("7", (0, 4, 7, 10))
-HALF_DIMINISHED_7TH: Final[ChordFormula] = ChordFormula("m7b5", (0, 3, 6, 10))
-DIMINISHED_7TH: Final[ChordFormula] = ChordFormula("dim7", (0, 3, 6, 9))  # perfectly symmetric square!
+    root: str
+    quality: str  # "maj7" | "min7" | "dom7" | "m7b5" | "dim7"
+    notes: tuple[str, str, str, str]
+
+    @property
+    def symbol(self) -> str:
+        """Chord symbol (e.g., 'Cmaj7', 'Amin7', 'G7')."""
+        suffix = {"maj7": "maj7", "min7": "min7", "dom7": "7", "m7b5": "ø7", "dim7": "dim7"}[self.quality]
+        return f"{self.root}{suffix}"
+
+    @property
+    def glyphs(self) -> tuple[str, str, str, str]:
+        """Symbols for each note-world in the chord."""
+        return tuple(world(n).glyph for n in self.notes)
+
+    def polygon_2d(self, *, tonic: str = "A") -> Polygon2D:
+        """The 2D polygon representing this jazz chord on the Gátople wheel."""
+        return chord_polygon_2d(self.notes, tonic=tonic)
+
+    def coordinates_3d(self) -> tuple[tuple[float, float, float], ...]:
+        """The 3D coordinates representing the chord's face centers on the dodecahedron."""
+        return tuple(note_3d_coordinates(n) for n in self.notes)
+
+    @classmethod
+    def build(cls, root: str, quality: str) -> Self:
+        """Deterministic constructor to build a JazzChord from its root and quality."""
+        if quality not in _JAZZ_INTERVAL_MAP:
+            raise ValueError(f"unknown jazz chord quality: {quality!r}")
+        intervals = _JAZZ_INTERVAL_MAP[quality]
+
+        # Build chord notes by walking semitones from root
+        from fractalmusic.wheel import CHROMATIC_ORDER, _note_index
+        base = _note_index(root)
+        notes = tuple(CHROMATIC_ORDER[(base + semitones) % 12] for semitones in intervals)
+        return cls(root=root, quality=quality, notes=notes)
