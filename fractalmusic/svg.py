@@ -5,8 +5,14 @@ open in any browser. This is the visual counterpart to ``showcase`` (which is
 terminal-only).
 """
 
+import math
+from typing import TYPE_CHECKING
+
 from fractalmusic.dodecamundo import DODECAMUNDO, NoteWorld, world
 from fractalmusic.scales import FractalScale
+
+if TYPE_CHECKING:
+    from fractalmusic.wheel import Wheel
 
 _FONT = "font-family='Helvetica,Arial,sans-serif'"
 
@@ -172,4 +178,73 @@ def deck_grid(*, cols: int = 6, cell: int = 80) -> str:
         f"<svg xmlns='http://www.w3.org/2000/svg' width='{width}' height='{height}' "
         f"viewBox='0 0 {width} {height}'>"
         f"<rect width='{width}' height='{height}' fill='#fff'/>" + "".join(cells) + "</svg>"
+    )
+
+
+def _polar(deg: float, radius: float) -> tuple[float, float]:
+    """Calculate Euclidean (x, y) coordinates from fractal polar coordinates."""
+    rad = (deg - 90) * (math.pi / 180.0)
+    return radius * math.cos(rad), radius * math.sin(rad)
+
+
+def _arc_path(start_deg: float, end_deg: float, r_outer: float, r_inner: float) -> str:
+    """Generate deterministic SVG arc geometry for fractal sectors."""
+    x1o, y1o = _polar(start_deg, r_outer)
+    x2o, y2o = _polar(end_deg, r_outer)
+    x1i, y1i = _polar(start_deg, r_inner)
+    x2i, y2i = _polar(end_deg, r_inner)
+    large = 1 if (end_deg - start_deg) > 180 else 0
+    return (
+        f"M {x1i:.3f} {y1i:.3f} "
+        f"L {x1o:.3f} {y1o:.3f} "
+        f"A {r_outer} {r_outer} 0 {large} 1 {x2o:.3f} {y2o:.3f} "
+        f"L {x2i:.3f} {y2i:.3f} "
+        f"A {r_inner} {r_inner} 0 {large} 0 {x1i:.3f} {y1i:.3f} Z"
+    )
+
+
+def gatople_wheel_svg(wheel: "Wheel", *, size: int = 600) -> str:
+    """Render the deterministic spinning Gátople wheel natively using backend geometry math."""
+    r_outer = size * 0.4
+    r_inner = size * 0.275
+    r_mid = (r_outer + r_inner) / 2
+    note_radius = size * 0.21
+    seg_deg = 30.0
+
+    parts: list[str] = []
+    
+    # 1. Geometry of the Outer Disc (Fixed Roles)
+    for role in wheel.all_modes():
+        angle = (role.clock_hour % 12) * seg_deg
+        start = angle - seg_deg / 2
+        end = angle + seg_deg / 2
+        path = _arc_path(start, end, r_outer, r_inner)
+        gx, gy = _polar(angle, r_mid)
+
+        w = DODECAMUNDO[role.role.position]
+        fg = _contrast(w.color_hex)
+        parts.append(
+            f"<path d='{path}' fill='{w.color_hex}' stroke='#111' stroke-width='2'/>"
+            f"<text x='{gx:.1f}' y='{gy + 8:.1f}' fill='{fg}' font-size='32' text-anchor='middle' {_FONT}>{w.glyph}</text>"
+        )
+
+    # 2. Geometry of the Inner Disc (Rotating Notes synced to Tonic)
+    for role in wheel.all_modes():
+        angle = (role.clock_hour % 12) * seg_deg
+        nx, ny = _polar(angle, note_radius)
+        # Format the display note dynamically 
+        note_str = role.note.replace("#", "♯")
+        parts.append(
+            f"<circle cx='{nx:.1f}' cy='{ny:.1f}' r='{size * 0.04:.1f}' fill='#fff' stroke='#333' stroke-width='2'/>"
+            f"<text x='{nx:.1f}' y='{ny + 5:.1f}' fill='#111' font-size='18' font-weight='bold' text-anchor='middle' {_FONT}>{note_str}</text>"
+        )
+
+    cx, cy = size / 2, size / 2
+    return (
+        f"<svg xmlns='http://www.w3.org/2000/svg' width='{size}' height='{size}' viewBox='{-cx} {-cy} {size} {size}'>"
+        f"<rect x='{-cx}' y='{-cy}' width='{size}' height='{size}' fill='#fcf8ee'/>"
+        + "".join(parts) +
+        f"<circle cx='0' cy='0' r='{size * 0.08}' fill='#fff' stroke='#333' stroke-width='2'/>"
+        f"<text x='0' y='6' fill='#111' font-size='22' text-anchor='middle' {_FONT}>👁</text>"
+        "</svg>"
     )

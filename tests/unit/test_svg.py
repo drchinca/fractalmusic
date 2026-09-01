@@ -8,7 +8,9 @@ from fractalmusic.svg import (
     fretboard_stickers_svg,
     piano_stickers_svg,
     scale_strip,
+    gatople_wheel_svg,
 )
+from fractalmusic.wheel import Wheel
 
 
 def _is_svg(text: str) -> bool:
@@ -53,6 +55,7 @@ def test_gallery_writes_all_artifacts(tmp_path):
     paths = write_gallery(tmp_path)
     names = {p.name for p in paths}
     assert names == {
+        "gatople-wheel.svg",
         "deck.svg",
         "greek-modes.svg",
         "penta-modes.svg",
@@ -60,3 +63,16 @@ def test_gallery_writes_all_artifacts(tmp_path):
         "fretboard-stickers.svg",
     }
     assert all(p.read_text().startswith("<svg") for p in paths)
+
+
+def test_gatople_wheel_svg_renders_deterministic_geometry():
+    wheel = Wheel("D")
+    svg = gatople_wheel_svg(wheel)
+    assert _is_svg(svg)
+    # The SVG should contain the custom math-drawn center eye
+    assert ">👁<" in svg
+    # The SVG should contain the twelve roles
+    for glyph in ("⋮", "△", "□", "+", "♀", "↑", "↓", "★"):
+        assert f">{glyph}<" in svg
+    # Under a D-tonic rotation, D should be visible
+    assert ">D<" in svg
