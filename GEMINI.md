@@ -23,21 +23,23 @@ This is the project-specific instruction file for the **Sistema Fractal / Fracta
 
 ---
 
-## 3. Git Workflow & Branching Discipline
+## 3. Git Workflow & Branch Protection Invariants (Strict Team Standard)
 
-To maintain high technical integrity, all development must strictly respect these guidelines:
+To maintain absolute technical and pipeline hygiene, all development must strictly respect these guidelines:
 
-- **Branch Naming**: Must use `<user>/<scope>/<short-desc>` format (e.g., `drchinca/landing/compraclick-assisted-checkout`).
-- **Base Branch**: Branches must branch off `develop`. `master` is reserved for stable production releases and must never be committed to or merged into without explicit user instruction.
+- **Strict Branch Separation**: Branches must branch off `develop`. `master` is reserved for stable production releases.
+- **Branch Naming**: Must use `<user>/<scope>/<short-desc>` format (e.g., `drchinca/geometry/chord-formulas-from-worlds`).
+- **NO Direct Commits**: The agent is strictly prohibited from pushing direct commits to `develop` or `master`. All work must be conducted inside isolated feature branches.
+- **PRs Stay Draft (Non-negotiable)**: All Pull Requests must be created strictly as **Draft Pull Requests** (using `gh pr create --draft`) and left there. The agent is **NEVER** allowed to mark a PR as ready, nor run `gh pr ready`, nor un-draft a PR, nor merge its own PRs programmatically. Promoting out of draft and merging is the human user's (`drchinca`) explicit authority alone.
+- **Absolute Git Authority**: All commits must be made under the exact local git configuration: name `drchinca` and email `badilladrianch@gmail.com`. No AI, Cursor, or agent attribution attributes are allowed.
 - **Conventional Commits**: Messages must use:
   - `feat(scope): ...` — for new features.
   - `fix(scope): ...` — for bug fixes.
   - `refactor(scope): ...` — for structural code cleanups.
-- **No AI Attribution**: Do not include "AI-generated" or AI attribution headers/signatures in commits or pull request descriptions.
+  - `docs(scope): ...` — for documentation additions.
 - **Size Limits**:
   - Preferred PR size: **≤ 500 lines** of functional code.
   - Hard cap: **≤ 900 lines** per PR.
-  - Split large refactors or migrations into multiple smaller, self-contained branches/PRs.
 
 ---
 
@@ -51,6 +53,9 @@ PR descriptions must be calibrated dynamically based on complexity:
   - Bulleted `## What & Why`, a markdown table of `## Changes` (Area vs File), and exact copy-pasteable `## Review Steps`.
 - **🎯 Tier 3: Large/Epic PRs (> 300 lines / Cross-System Refactors)**
   - Full architectural explanation with a custom ASCII diagram of state/data flow, comprehensive file audit tables, complete passing test logs (`npm run qa`, `uv run pytest`), and an honesty guard section highlighting quirks or limitations.
+
+### References and Citations Invariant
+Any citation of a spec, IP asset, ADR, doctrine, or source document in PR bodies or commit messages must carry its relative path (e.g., `docs/specs/SPEC-fractal-mathematics.md`), never the bare name alone.
 
 ### Banned Jargon Invariants
 Scrub all occurrences of banned terms from PR descriptions and commit messages:
