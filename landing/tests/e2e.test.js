@@ -5,6 +5,8 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawn } from "node:child_process";
 import { createHmac } from "node:crypto";
+import { questions } from "../test-data.js";
+import { scoreAnswers } from "../scoring-engine.js";
 
 const source = resolve(process.cwd());
 const port = 34187;
@@ -60,7 +62,7 @@ test.after(() => {
 test("health, estáticos y cabeceras de seguridad", async () => {
   const health = await fetch(`${base}/api/health`);
   assert.equal(health.status, 200);
-  assert.equal((await health.json()).version, "0.8.0");
+  assert.equal((await health.json()).version, "0.9.0");
   const home = await fetch(`${base}/`);
   assert.equal(home.status, 200);
   assert.equal(home.headers.get("x-frame-options"), "DENY");
@@ -68,11 +70,13 @@ test("health, estáticos y cabeceras de seguridad", async () => {
 });
 
 test("flujo completo: lead, historial, checkout, webhook, confirmación y administración", async () => {
+  const answers = Object.fromEntries(questions.map((question) => [question.id, question.options[0].technicalId]));
+  const verified = scoreAnswers(answers);
   const leadPayload = {
-    FNAME: "QA FMW", EMAIL: "qa@fractalmusicworld.test", ARQUETIPO: "Oído Fractal", ARQSEC: "Crononauta",
+    FNAME: "QA FMW", EMAIL: "qa@fractalmusicworld.test", ARQUETIPO: "RESULTADO ALTERADO", ARQSEC: "RESULTADO ALTERADO",
     SCORE1: "0.75", SCORE2: "0.66", MUESTRA: "/muestra.html?arquetipo=oido-fractal", TESTDATE: new Date().toISOString(),
     COMPRA: "NO", PRODUCTO: "", FUENTE: "QA", CONSENT: "SÍ", result_id: "qa-result-001",
-    answers: { Q1_A: true }, raw_scores: { "Oído Fractal": 3 }, normalized_scores: { "Oído Fractal": 0.75 }
+    answers, raw_scores: { "Resultado alterado": 99 }, normalized_scores: { "Resultado alterado": 1 }
   };
   const lead = await jsonRequest("/api/leads", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(leadPayload) });
   assert.equal(lead.response.status, 201);
@@ -81,6 +85,8 @@ test("flujo completo: lead, historial, checkout, webhook, confirmación y admini
   const history = await jsonRequest("/api/history", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: leadPayload.EMAIL, token: lead.body.accessToken }) });
   assert.equal(history.response.status, 200);
   assert.equal(history.body.assessments.length, 1);
+  assert.equal(history.body.assessments[0].ARQUETIPO, verified.dominant.name);
+  assert.notEqual(history.body.assessments[0].ARQUETIPO, "RESULTADO ALTERADO");
 
   const checkout = await jsonRequest("/api/checkout/start", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: leadPayload.EMAIL, product: "EL_LUJO_ES" }) });
   assert.equal(checkout.response.status, 201);
@@ -127,4 +133,18 @@ test("recuperación responde neutralmente y limita abuso", async () => {
   }
   const limited = await jsonRequest("/api/delivery/recover", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email: "nobody@example.test", reference: "missing-limit" }) });
   assert.equal(limited.response.status, 429);
+});
+
+test("eventos simultáneos se guardan sin colisiones ni pérdidas", async () => {
+  const total = 40;
+  const responses = await Promise.all(Array.from({ length: total }, (_, index) => jsonRequest("/api/events", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ name: "test_answer", detail: { audit_index: index } })
+  })));
+  assert.ok(responses.every(({ response }) => response.status === 202));
+  const store = JSON.parse(await readFile(join(work, "data", "store.json"), "utf8"));
+  const saved = store.events.filter((event) => Number.isInteger(event.detail?.audit_index));
+  assert.equal(saved.length, total);
+  assert.equal(new Set(saved.map((event) => event.detail.audit_index)).size, total);
 });

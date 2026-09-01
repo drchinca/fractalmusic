@@ -1,7 +1,3 @@
-try {
-  if (typeof process.loadEnvFile === "function") process.loadEnvFile();
-} catch {}
-
 const EMAIL_API_KEY = process.env.EMAIL_API_KEY || "";
 const EMAIL_FROM = process.env.EMAIL_FROM || "Fractal Music World <noreply@fractalmusicworld.com>";
 const EMAIL_REPLY_TO = process.env.EMAIL_REPLY_TO || "";

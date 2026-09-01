@@ -1,7 +1,3 @@
-try {
-  if (typeof process.loadEnvFile === "function") process.loadEnvFile();
-} catch {}
-
 import { access, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 

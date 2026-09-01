@@ -133,7 +133,14 @@ function restore() {
   }
 
   try {
-    Object.assign(state, JSON.parse(raw));
+    const saved = JSON.parse(raw);
+    const validCurrent = Number.isInteger(saved?.current) && saved.current >= 0 && saved.current < questions.length;
+    const validAnswers = saved?.answers && typeof saved.answers === "object" && Object.entries(saved.answers).every(([questionId, technicalId]) => {
+      const question = questions.find((item) => item.id === questionId);
+      return question?.options.some((option) => option.technicalId === technicalId);
+    });
+    if (!validCurrent || !validAnswers) throw new Error("Borrador inválido");
+    Object.assign(state, saved);
     if (state.result) renderResult();
   } catch {
     localStorage.removeItem(STORAGE_KEY);

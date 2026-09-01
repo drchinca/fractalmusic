@@ -1,7 +1,3 @@
-try {
-  if (typeof process.loadEnvFile === "function") process.loadEnvFile();
-} catch {}
-
 import { createHash } from "node:crypto";
 
 const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY || "";

@@ -74,3 +74,23 @@ test("dominante y secundario siempre son distintos y pertenecen al catálogo", (
     assert.ok(archetypes.some((a) => a.name === result.secondary.name));
   }
 });
+
+test("la calibración reduce empates y mantiene equilibrada la distribución aleatoria", () => {
+  const counts = Object.fromEntries(archetypes.map((archetype) => [archetype.name, 0]));
+  let hybrids = 0;
+  let seed = 0x260826;
+  const random = () => ((seed = (1664525 * seed + 1013904223) >>> 0) / 0x100000000);
+  const sampleSize = 50_000;
+  for (let i = 0; i < sampleSize; i += 1) {
+    const answers = Object.fromEntries(questions.map((question) => {
+      const option = question.options[Math.floor(random() * question.options.length)];
+      return [question.id, option.technicalId];
+    }));
+    const result = scoreAnswers(answers);
+    counts[result.dominant.name] += 1;
+    if (result.resultType === "hybrid") hybrids += 1;
+  }
+  const percentages = Object.values(counts).map((count) => count * 100 / sampleSize);
+  assert.ok(Math.max(...percentages) - Math.min(...percentages) < 2.5);
+  assert.ok(hybrids / sampleSize < 0.001);
+});

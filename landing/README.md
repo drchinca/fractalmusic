@@ -1,12 +1,29 @@
-# Fractal Music World — entrega canónica para Bado
+# Fractal Music World — optimización creativa final
 
-**Versión:** COMMIT 018 — Fauna Fractal / Reorquestación de personajes  
-**Fecha de consolidación:** 28 de julio de 2026  
-**Estado:** base técnica y narrativa consolidada para integración y despliegue controlado.
+**Versión:** COMMIT 019 — Optimización creativa final  
+**Base preservada:** COMMIT 018 — Fauna Fractal / Reorquestación de personajes  
+**Fecha de optimización:** 24 de agosto de 2026  
+**Estado:** base técnica preservada y Home depurada para revisión creativa final.
+
+## Qué cambió en COMMIT 019
+
+- Hero concentrado en Gátople, el titular principal y dos acciones.
+- Retiro de personajes pequeños en Hero, Participación y Acción.
+- Reducción de ruido visual en El Llamado mediante rutas numeradas.
+- Nombre y principio visibles para todos los personajes de El Descubrimiento.
+- Numeración continua: Movimiento I a Movimiento VII; `HOME-001` permanece como Umbral.
+- Jerarquía tipográfica más decidida y mayor espacio entre escenas.
+- Transiciones visuales entre Movimientos.
+- Botones normalizados en tamaño, forma, prioridad y respuesta de foco.
+- Tratamiento visual común para las imágenes de la Fauna conservadas.
+- Refinamiento mobile de navegación, titulares, áreas táctiles y composición relacional.
+- Restauración Gátople A9: montaje centrado, estaciones constitucionales, piano de La a La y glifo oficial de dos puntos.
+
+El detalle completo está en `docs/REVISION_COMMIT_019_OPTIMIZACION_CREATIVA.md`.
 
 ## Qué contiene
 
-- Home completa organizada en ocho movimientos (`HOME-001` a `HOME-008`).
+- Home completa organizada en ocho escenas (`HOME-001` a `HOME-008`): Umbral y siete Movimientos.
 - Fauna Fractal integrada narrativamente: Musicalia, Juglar, Trilobites, Vesica Piscis, Lute y Gátople.
 - The Dissonance Test: 12 preguntas, 48 opciones técnicas y 12 arquetipos.
 - Resultado, recomendación, captura de datos, checkout, confirmación y recuperación.
@@ -59,7 +76,7 @@ npm run qa
 npm run preflight
 ```
 
-La consolidación pasó **16/16 pruebas automatizadas**. El motor del test está técnicamente validado para beta controlada; la validación psicométrica con participantes reales sigue siendo una fase posterior.
+La consolidación original pasó **16/16 pruebas automatizadas**. En la revisión COMMIT 019.1 pasan las 16 pruebas que no requieren iniciar un servidor, incluidas las nuevas protecciones de orientación A9, piano de La a La y glifo de dos puntos, además de la simulación determinista de 250.000 respuestas. Las tres pruebas de flujo integral requieren un entorno que permita abrir un puerto local. El motor del test está técnicamente validado para beta controlada; la validación psicométrica con participantes reales sigue siendo una fase posterior.
 
 ## Despliegue en Vercel
 
@@ -84,4 +101,4 @@ La consolidación pasó **16/16 pruebas automatizadas**. El motor del test está
 
 ## Límite de esta entrega
 
-La estructura, el flujo y la narrativa están consolidados. Antes de publicar al público deben conectarse credenciales reales, archivo de producto, webhook de CompraClick y proveedor de correo, y ejecutarse una transacción real de prueba.
+La estructura, el flujo y la narrativa están consolidados. Antes de publicar al público deben conectarse credenciales reales, archivo de producto, webhook de CompraClick y proveedor de correo, y ejecutarse una transacción real de prueba. La respuesta pendiente del BAC no bloquea la revisión creativa, pero sí debe resolverse antes del cierre comercial definitivo.

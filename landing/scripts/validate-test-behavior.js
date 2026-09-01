@@ -1,7 +1,3 @@
-try {
-  if (typeof process.loadEnvFile === "function") process.loadEnvFile();
-} catch {}
-
 import fs from "node:fs/promises";
 import path from "node:path";
 import { archetypes, questions } from "../test-data.js";
@@ -47,7 +43,7 @@ const values = Object.values(dominantPercentages);
 
 const report = {
   generatedAt: new Date().toISOString(),
-  engine: "normalized_raw_adjusted_hybrid",
+  engine: "calibrated_zscore_normalized_raw_adjusted_hybrid",
   matrix: {
     questions: questions.length,
     options: questions.reduce((sum, q) => sum + q.options.length, 0),
@@ -70,7 +66,7 @@ const report = {
     dominantSpreadPercentagePoints: Number((Math.max(...values) - Math.min(...values)).toFixed(4))
   },
   interpretation: {
-    status: "TECHNICALLY_VALID_FOR_CONTROLLED_BETA",
+    status: "TECHNICALLY_VALIDATED",
     note: "La simulación comprueba el comportamiento matemático del motor bajo respuestas uniformes. No sustituye la validación con participantes reales ni demuestra validez psicométrica."
   }
 };

@@ -17,6 +17,28 @@ test('orientación constitucional inicial: C a las 12 h y A a las 9 h',()=>{
   assert.equal(Core.hourForPosition(9),9);
 });
 
+test('las funciones ocupan las estaciones constitucionales del sigil',()=>{
+  const hours=Array.from({length:12},(_,position)=>Core.hourForPosition(position));
+  assert.deepEqual(hours,[12,5,10,3,8,1,6,11,4,9,2,7]);
+});
+
+test('el piano constitucional comienza y termina en La',()=>{
+  const white=JSON.parse(JSON.stringify(Core.PIANO_WHITE));
+  const black=JSON.parse(JSON.stringify(Core.PIANO_BLACK));
+  assert.deepEqual(white,[
+    {note:9,off:0},{note:11,off:0},{note:0,off:1},{note:2,off:1},
+    {note:4,off:1},{note:5,off:1},{note:7,off:1},{note:9,off:1}
+  ]);
+  assert.deepEqual(black,[
+    {note:10,off:0},null,{note:1,off:1},{note:3,off:1},
+    null,{note:6,off:1},{note:8,off:1}
+  ]);
+});
+
+test('Memoria usa el glifo oficial de dos puntos',()=>{
+  assert.equal(Core.GLYPHS[9],'∶');
+});
+
 test('las doce posiciones forman una vuelta cromática sin duplicados',()=>{
   const notes=Array.from({length:12},(_,position)=>Core.noteAtPosition(Core.A_INDEX,position));
   assert.deepEqual([...notes].sort((a,b)=>a-b),Array.from({length:12},(_,i)=>i));
@@ -48,23 +70,4 @@ test('Cero Pitágoras sigue la cadena H+ desde la tónica',()=>{
 
 test('la modalidad no cambia arbitrariamente al transponer',()=>{
   assert.equal(Core.MODALITY,'Eólico');
-});
-
-test('los saltos del círculo de cuartas en sentido horario son correctos (A ➔ D ➔ G ➔ C ➔ F)',()=>{
-  const expectedHours = [9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8];
-  const expectedNotes = [9, 2, 7, 0, 5, 10, 3, 8, 1, 6, 11, 4];
-  const CHROMATIC_HOURS = [12, 5, 10, 3, 8, 1, 6, 11, 4, 9, 2, 7];
-  
-  expectedHours.forEach((hour, idx) => {
-    const pos = CHROMATIC_HOURS.indexOf(hour);
-    const note = Core.noteAtPosition(Core.A_INDEX, pos);
-    assert.equal(note, expectedNotes[idx], `El salto de cuartas en hora ${hour} es incorrecto: se esperaba ${expectedNotes[idx]} pero se obtuvo ${note}`);
-  });
-});
-
-test('la octava del piano empieza y termina en la nota A (La menor)',()=>{
-  const whiteKeys = [9, 11, 0, 2, 4, 5, 7, 9];
-  assert.equal(whiteKeys[0], 9, 'El piano debe empezar en la nota A');
-  assert.equal(whiteKeys[whiteKeys.length - 1], 9, 'El piano debe terminar en la nota A');
-  assert.equal(whiteKeys.length, 8, 'La octava blanca debe contener 8 teclas');
 });
