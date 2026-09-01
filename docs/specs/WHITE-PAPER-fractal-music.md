@@ -73,48 +73,17 @@ This is genuine, citable intellectual history — real books, a real and strikin
 
 ## 4. Modulo-12 Chromatic Coordinate Space ($\mathbb{Z}_{12}$)
 
-We model the note space as the ring of integers modulo 12, $\mathbb{Z}_{12} = \{0, 1, 2, \dots, 11\}$.
+We model the note space as the ring of integers modulo 12, $\mathbb{Z}_{12} = \{0, 1, 2, \dots, 11\}$, with the origin ($A=0$) set to Gátople's matriarchal anchor (§7) rather than the western convention of $C$ — matching the common orchestral convention of tuning to $A$ (the concertmaster's open string, the oboe's reference pitch), a defensible convention choice, not a claim about acoustic necessity. The chromatic interval between two note indices is $d(a,b) = (b-a) \bmod 12$.
 
-In alignment with Gátople's matriarchal anchor (§7), the coordinate origin ($0$) is set to **La (A)** rather than the western convention of $C$. This matches the common orchestral convention of tuning to $A$ (the concertmaster's open string, the oboe's reference pitch) rather than $C$ — a real, defensible convention choice, not a claim about acoustic necessity:
-
-$$x \in \mathbb{Z}_{12} \quad \text{where} \quad A = 0$$
-
-### The Chromatic Ring:
-$$\begin{array}{c|c|c|c|c|c|c|c|c|c|c|c}
-A & A\# & B & C & C\# & D & D\# & E & F & F\# & G & G\# \\
-\hline
-0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11
-\end{array}$$
-
-The **chromatic interval** (subtraction distance) between any two note indices $a, b \in \mathbb{Z}_{12}$ is defined deterministically as:
-
-$$d(a, b) = (b - a) \pmod{12}$$
+The full chromatic-ring table and the derivation of every formula from here through §9 live in the canonical, code-verified reference, `docs/specs/SPEC-fractal-mathematics.md` — this paper cites it rather than re-deriving it, so a formula only needs fixing in one place (see the Provenance Note on a bug that duplication once caused).
 
 ---
 
 ## 5. The Gátople Clock Face: The Circle of Fourths Isomorphism
 
-To capture the harmonic gravity and acoustic progression of perfect fourths (which correspond to jumps of 5 semitones in $\mathbb{Z}_{12}$), the Gátople wheel maps note coordinates spatially on a clock dial.
+The Gátople wheel maps note coordinates spatially on a 12-hour clock dial via the circle of fourths (perfect fourths = jumps of 5 semitones in $\mathbb{Z}_{12}$), anchoring $A$ at 9 o'clock. The full bijection $H: \mathbb{Z}_{12} \to [1,12]$ is defined in `SPEC-fractal-mathematics.md` §2; it is algebraically identical to `_clock_hour()` in `fractalmusic/modes.py`, verified by direct substitution for all 12 notes.
 
-We define a closed-form, deterministic bijection $H: \mathbb{Z}_{12} \to [1, 12]$ that maps any chromatic note index $n$ to its exact **Gátople Clock Hour ($H$)**:
-
-### Step 1: Fourth-Step Offset ($s$)
-$$s(n) = (n \times 5) \pmod{12}$$
-
-### Step 2: 9 o'clock Origin Shift
-The matriarchal origin $A$ ($s=0$) is placed at exactly **9 o'clock** (the eastern horizon of the dial). The clock hour $H$ is:
-
-$$H(n) = \psi\Big(((n \times 5) + 9) \pmod{12}\Big)$$
-
-$$\text{where} \quad \psi(y) = \begin{cases} 12 & \text{if } y = 0 \\ y & \text{otherwise} \end{cases}$$
-
-This is algebraically identical to `_clock_hour()` in `fractalmusic/modes.py` — the paper's formula and the shipped code compute the same integer for all 12 notes; this was verified by direct substitution, not asserted.
-
-### Continuous Spatial Regions on the Dial
-One of the most useful geometric properties of this bijection is that the Gátople clock face segregates notes into **two perfectly contiguous, uninterrupted hemispheres**:
-
-1.  ⚪ **The Heptatonic (Diatonic) Region — Hours [7 to 1]**: Spans hours `7, 8, 9, 10, 11, 12, 1`. These are the 7 natural notes (the white keys), representing the Greek family.
-2.  ⚫ **The Pentatonic Region — Hours [2 to 6]**: Spans hours `2, 3, 4, 5, 6`. These are the 5 sharp notes (the black-key stars), representing the Star family (Roman numerals I to V).
+One useful geometric property of this bijection, used again in §10: the clock face segregates notes into two contiguous hemispheres — ⚪ the seven heptatonic (white-key) hours `7, 8, 9, 10, 11, 12, 1`, and ⚫ the five pentatonic (black-key/star) hours `2, 3, 4, 5, 6` — both boundaries confirmed against `fractalmusic/modes.py`.
 
 ```text
                                   12 o'clock [Zenith / Noon]
@@ -124,22 +93,22 @@ One of the most useful geometric properties of this bijection is that the Gátop
                     G [Mixolidio] ⚪        │        ⚪ F [Lidio]
                          ↓                  │             ↑
              10 o'clock                     │                  2 o'clock
-          D [Dórico] ⚪                     │                  ⚫ A# [Penta 5]
+          D [Dórico] ⚪                     │                  ⚫ A# [PentaV]
                +                            │                       ★
                                             │
         9 o'clock  ─────────────────────────┼───────────────────────── 3 o'clock [Sunset]
-     A [Eólico] ⚪                     (0.0, 0.0)                     ⚫ D# [Penta 2]
+     A [Eólico] ⚪                     (0.0, 0.0)                     ⚫ D# [PentaII]
      [Sunrise / ⋮ ]                    [Gátople]                          ★
      [Horizon Anchor]                     [Eye]
                                            👁
          8 o'clock                          │                          4 o'clock
-          E [Frigio] ⚪                     │                     ⚫ G# [Penta 4]
+          E [Frigio] ⚪                     │                     ⚫ G# [PentaIV]
                ♀                            │                          ★
                         7 o'clock           │          5 o'clock
-                       B [Locrio] ⚪        │        ⚫ C# [Penta 1]
+                       B [Locrio] ⚪        │        ⚫ C# [PentaI]
                             △               │             ★
                                   6 o'clock [Nadir / Midnight]
-                                       F# [Penta 3] ⚫
+                                       F# [PentaIII] ⚫
                                             ★
 ```
 
@@ -194,55 +163,13 @@ On the group defined in §6, the seven heptatonic modes are the seven possible r
 
 ## 8. 2D Euclidean Chord Polygons & Symmetries
 
-Chords are modeled as subsets of NoteWorlds $C = \{n_1, n_2, \dots, n_k\} \subset \mathbb{Z}_{12}$ projected onto the Gátople wheel (modeled as a unit circle in 2D Euclidean space).
-
-The angular coordinate $\theta_i$ (in radians) for each note $n_i$ in the chord is:
-
-$$\theta_i = \left(\frac{H(n_i) \cdot \pi}{6}\right) - \frac{\pi}{2}$$
-
-This yields the 2D vertex coordinate $(x_i, y_i)$ on the unit circle:
-
-$$x_i = \cos(\theta_i), \quad y_i = \sin(\theta_i)$$
-
-### Centroid of the Chord ($\bar{x}, \bar{y}$)
-$$\bar{x} = \frac{1}{k} \sum_{i=1}^k x_i, \quad \bar{y} = \frac{1}{k} \sum_{i=1}^k y_i$$
-
-### Geometric Symmetries:
-*   **The Equilateral Triangle (Augmented Triad)**: An augmented triad (e.g., C augmented: C–E–G#) has intervals of exactly 4 semitones. On the Gátople clock, it connects hours 12 (Noon), 8 (Twilight), and 4 (Dusk). Because of this perfect 120-degree symmetry, its centroid is exactly at the origin `(0.0, 0.0)`, forming a perfectly regular equilateral triangle.
-*   **The Square (Diminished Seventh)**: A diminished seventh chord (e.g., Adim7) has intervals of exactly 3 semitones. On the chromatic circle, its four notes are spaced 90-degrees apart, forming a perfect square. On the Gátople fourths wheel, it connects the four cardinal diurnal points (9, 12, 3, 6 o'clock).
+Chords project onto the Gátople wheel as polygons: each note $n_i$ gets an angle $\theta_i = H(n_i)\cdot\pi/6 - \pi/2$ and unit-circle coordinate $(\cos\theta_i, \sin\theta_i)$; a chord's centroid is the mean of its vertices. Two symmetries worth naming: the augmented triad (e.g. C–E–G#, hours 12/8/4) forms a perfectly regular equilateral triangle centered at the origin, and the diminished seventh (e.g. Adim7, hours 9/12/3/6) forms a perfect square. Both are implemented and tested — `fractalmusic/geometry.py`'s `Polygon2D.centroid`/`is_regular`, exercised by `tests/unit/test_geometry.py::test_augmented_triad_forms_equilateral_triangle_on_gatople_wheel` — and derived in full in `SPEC-fractal-mathematics.md` §5.
 
 ---
 
 ## 9. 3D Golden-Ratio Dodecahedron & Icosahedron Mesh
 
-The 12 NoteWorlds can be mapped to the 12 vertices of a regular **Icosahedron** (dual of the regular dodecahedron).
-
-Using the **Golden Ratio ($\phi = \frac{1+\sqrt{5}}{2} \approx 1.618$)**, we define the 3D coordinates for each note index $n \in \mathbb{Z}_{12}$ as vertices of a regular icosahedron of circumradius $\sqrt{1 + \phi^2}$:
-
-$$\mathbf{v}(n) \in \mathbb{R}^3$$
-
-$$\begin{array}{c|c|c}
-\text{Index } (n) & \text{Note} & \text{3D Coordinate } \mathbf{v}(n) \\
-\hline
-0 & A & (0.0, 1.0, \phi) \\
-1 & A\# & (0.0, -1.0, \phi) \\
-2 & B & (0.0, 1.0, -\phi) \\
-3 & C & (0.0, -1.0, -\phi) \\
-4 & C\# & (1.0, \phi, 0.0) \\
-5 & D & (-1.0, \phi, 0.0) \\
-6 & D\# & (1.0, -\phi, 0.0) \\
-7 & E & (-1.0, -\phi, 0.0) \\
-8 & F & (\phi, 0.0, 1.0) \\
-9 & F\# & (-\phi, 0.0, 1.0) \\
-10 & G & (\phi, 0.0, -1.0) \\
-11 & G\# & (-\phi, 0.0, -1.0)
-\end{array}$$
-
-This assignment uses all 12 standard icosahedron vertices — every permutation of $(0, \pm 1, \pm\phi)$ exactly once — so it is a valid, non-degenerate mapping. For any two *graph-adjacent* vertices in this 3D note space (an edge of the solid, not any arbitrary pair), their Euclidean distance is always exactly $2$ units:
-
-$$d_{\text{3D}}(a, b) = \|\mathbf{v}(b) - \mathbf{v}(a)\| = 2.0 \quad \text{(for edge-connected } a, b\text{)}$$
-
-We note honestly that this edge-length-$2$ property is a general fact about the regular icosahedron under these coordinates, true regardless of which note is assigned to which vertex — it is a property of the solid, not a discovery about these specific 12 notes. What *is* specific to this mapping is that it gives every NoteWorld a distinct, well-defined 3D coordinate usable for rendering; we do not claim the chromatic-adjacency graph (semitone neighbors) coincides with the icosahedron's edge graph, and it does not in general.
+The 12 NoteWorlds also map to the 12 vertices of a regular icosahedron (dual of the dodecahedron), built from the Golden Ratio $\phi = \frac{1+\sqrt5}{2}$ — every permutation of $(0,\pm1,\pm\phi)$ used exactly once, matching `fractalmusic/geometry.py`'s `_ICOSAHEDRON_VERTICES` note-for-note. For any two *graph-adjacent* vertices (an edge of the solid, not an arbitrary pair), the Euclidean distance is exactly $2$ — verified numerically (30 edges, all length 2.0) — a general property of the solid under these coordinates, not a discovery about these specific 12 notes; we do not claim chromatic-adjacency (semitone neighbors) coincides with the icosahedron's edge graph, and it does not in general. Full coordinate table in `SPEC-fractal-mathematics.md` §6.
 
 ---
 
@@ -260,11 +187,7 @@ The Gátople's twelve-hour dial invites comparison to other twelve-fold systems 
 
 ## 11. Dynamic Fibonacci Chord Formulas
 
-Rather than stacking chords by arbitrary thirds, Gátople leverages the **Fibonacci sequence** $F = [1, 2, 3, 5, 8, \dots]$ to represent natural, logarithmic growth spacing.
-
-Let $w_0 \in \mathbb{Z}_{12}$ be the starting root world. We construct a dynamic **Fibonacci Chord** of $k$ voices by projecting the Fibonacci numbers as cumulative chromatic step offsets:
-
-$$n_i = \left(w_0 + \sum_{j=1}^i F_j\right) \pmod{12} \quad \text{for } i \in [1, k]$$
+Rather than stacking chords by arbitrary thirds, Gátople leverages the **Fibonacci sequence** $F = [1, 2, 3, 5, 8, \dots]$ for chord spacing: each voice's semitone offset from the root is $F_i - 1$ (not a cumulative sum of the sequence — see the Provenance Note), so `fibonacci_chord("A", voices=4)` gives $[A, A\#, B, C\#]$. The gap between consecutive voices is itself a Fibonacci number, so voices still spread apart at Fibonacci-growing intervals. Full formula and code cross-reference in `SPEC-fractal-mathematics.md` §7.
 
 ---
 
@@ -304,4 +227,6 @@ The central, defensible claim of this paper is narrower than "sound is a cosmic 
 
 ## Provenance Note
 
-Every citation in this paper to `[b202598c]` or `[f39cb7c5]` was verified against `~/.meridian/library` via `meridian-library search` before inclusion. Claims sourced to external scholarship (Helmholtz, Plomp & Levelt, Haynes, Sachs & von Hornbostel, Kepler, Eliade, Shepard, Deutsch) are standard, independently-checkable academic references, cited by author/title/year rather than by fractal-corpus chunk, because they are not part of that corpus — conflating the two would violate this project's own citation-scope rule (`docs/agents/fractal-expert.md`: *"Reject any answer where a citation points to a chunk outside the scoped book hashes."*). An earlier draft of this paper attributed the Eliade and Piaget/Vygotsky framing in §1 to a fractal-corpus citation (`e8e0ea3b`); that hash was checked against `~/.meridian/library/catalog.db` and resolves to an unrelated title (a Maya numerology text), not either fractal book. That misattribution has been corrected in this revision.
+Every citation in this paper to `[b202598c]` or `[f39cb7c5]` was verified against `~/.meridian/library` via `meridian-library search` before inclusion. Claims sourced to external scholarship (Helmholtz, Plomp & Levelt, Haynes, Sachs & von Hornbostel, Kepler, Eliade, Shepard, Deutsch, de Santillana & von Dechend, Michell) are standard, independently-checkable academic references, cited by author/title/year rather than by fractal-corpus chunk, because they are not part of that corpus — conflating the two would violate this project's own citation-scope rule (`docs/agents/fractal-expert.md`: *"Reject any answer where a citation points to a chunk outside the scoped book hashes."*). An earlier draft of this paper attributed the Eliade and Piaget/Vygotsky framing in §1 to a fractal-corpus citation (`e8e0ea3b`); that hash was checked against `~/.meridian/library/catalog.db` and resolves to an unrelated title (a Maya numerology text), not either fractal book. That misattribution has been corrected in this revision.
+
+**2026-09-01 audit correction.** §11's Fibonacci-chord formula previously stated a cumulative-sum offset ($n_i = w_0 + \sum_{j=1}^i F_j$), duplicated identically in `SPEC-fractal-mathematics.md`. Checked against the shipped `fractalmusic/formulas.py::fibonacci_chord()` and its test (`tests/unit/test_formulas.py::test_fibonacci_chord_offsets`, which locks in `fibonacci_chord("A", voices=4) == [A, A#, B, C#]`), the real formula is a direct per-voice offset, $n_i = w_0 + F_i - 1$ — not cumulative. Both documents were corrected; the code was treated as the source of truth per this project's BE-owns-logic cardinal invariant, not rewritten to match the paper. This audit also removed the duplicated derivations in §4–§5, §8–§9, §11 (previously identical to `SPEC-fractal-mathematics.md`) in favor of cross-references, so a future formula fix only has one place to land.
