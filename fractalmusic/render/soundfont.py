@@ -80,5 +80,3 @@ def render_with_soundfont(
 
     fs.delete()
     return buf
-
-

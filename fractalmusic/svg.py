@@ -240,8 +240,8 @@ def gatople_wheel_svg(wheel: Wheel, *, size: int = 600) -> str:
     return (
         f"<svg xmlns='http://www.w3.org/2000/svg' width='{size}' height='{size}' viewBox='{-cx} {-cy} {size} {size}'>"
         f"<rect x='{-cx}' y='{-cy}' width='{size}' height='{size}' fill='#fcf8ee'/>"
-        + "".join(parts) +
-        f"<circle cx='0' cy='0' r='{size * 0.08}' fill='#fff' stroke='#333' stroke-width='2'/>"
+        + "".join(parts)
+        + f"<circle cx='0' cy='0' r='{size * 0.08}' fill='#fff' stroke='#333' stroke-width='2'/>"
         f"<text x='0' y='6' fill='#111' font-size='22' text-anchor='middle' {_FONT}>👁</text>"
         "</svg>"
     )
