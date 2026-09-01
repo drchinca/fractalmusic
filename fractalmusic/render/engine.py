@@ -125,14 +125,11 @@ def render_wav(
     mix = apply_reverb(mix, sr=cfg.sample_rate, wet_gain=cfg.reverb_wet, ir_path=cfg.ir_path)
 
     # 5. Gain stage:
-    #    a) pre-attenuate so the typical mix peak lands near 0.9 — keeps
-    #       low-level content out of the tanh curve where it would compress.
-    #    b) tanh as a soft-clip safety net for genuine over-1.0 peaks only.
-    #    c) normalize the post-clip peak to 0.95 to leave a touch of headroom.
+    #    a) tanh as a soft-clip safety net for genuine over-1.0 peaks only.
+    #    b) normalize the post-clip peak to 0.95 to leave a touch of headroom.
     raw_peak = float(np.max(np.abs(mix)))
-    if raw_peak > 0:
-        mix = mix * (0.9 / raw_peak)
-    mix = np.tanh(mix).astype(np.float32)
+    if raw_peak > 1.0:
+        mix = np.tanh(mix).astype(np.float32)
     final_peak = float(np.max(np.abs(mix)))
     if final_peak > 0:
         mix = (mix / final_peak) * 0.95

@@ -88,12 +88,13 @@ def _one_pole_lowpass(buf: np.ndarray, cutoff_curve_hz: np.ndarray, sr: int) -> 
     """Time-varying one-pole lowpass. cutoff_curve_hz length must match buf."""
     out = np.empty_like(buf)
     y = 0.0
-    two_pi_over_sr = 2.0 * np.pi / sr
+    dt = 1.0 / sr
+    # RC = 1 / (2 * pi * fc)
+    rc = 1.0 / (2.0 * np.pi * np.maximum(cutoff_curve_hz, 60.0))
+    # alpha = dt / (RC + dt)
+    alphas = dt / (rc + dt)
     for i, x in enumerate(buf):
-        # alpha = dt / (RC + dt), RC = 1/(2*pi*fc)
-        rc = 1.0 / (two_pi_over_sr * max(cutoff_curve_hz[i], 60.0))
-        alpha = (1.0 / sr) / (rc + (1.0 / sr))
-        y = y + alpha * (x - y)
+        y = y + alphas[i] * (x - y)
         out[i] = y
     return out
 

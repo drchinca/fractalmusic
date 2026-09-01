@@ -126,8 +126,8 @@ def generate_options() -> dict[str, list[str]]:
     }
 
 
-def _cache_key(*, tonic: str, mode: str, length: int, flavor: str, pattern_name: str) -> str:
-    raw = f"{tonic}|{mode}|{length}|{flavor}|{pattern_name}".encode()
+def _cache_key(*, tonic: str, mode: str, length: int, flavor: str, pattern_name: str, sf2_name: str = "", ir_name: str = "") -> str:
+    raw = f"{tonic}|{mode}|{length}|{flavor}|{pattern_name}|{sf2_name}|{ir_name}".encode()
     return hashlib.sha256(raw).hexdigest()[:16]
 
 
@@ -334,6 +334,8 @@ def _render_web_payload(
         length=body.length,
         flavor=body.flavor,
         pattern_name=result.pattern.name,
+        sf2_name=settings.soundfont_path.name if settings.soundfont_path else "",
+        ir_name=settings.reverb_ir_path.name if settings.reverb_ir_path else "",
     )
     wav_path = cache_dir / f"{key}.wav"
 

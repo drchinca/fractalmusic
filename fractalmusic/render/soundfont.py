@@ -53,7 +53,10 @@ def render_with_soundfont(
         delta = sample_idx - cursor
         if delta > 0:
             block = fs.get_samples(delta)  # float32 stereo, length = 2*delta
-            stereo = np.frombuffer(block, dtype=np.float32).reshape(-1, 2)
+            if isinstance(block, np.ndarray):
+                stereo = block.reshape(-1, 2)
+            else:
+                stereo = np.frombuffer(block, dtype=np.float32).reshape(-1, 2)
             mono = stereo.mean(axis=1)
             end = cursor + mono.shape[0]
             if end > buf.shape[0]:
