@@ -4,10 +4,12 @@ import { ChatPanel } from "../chat/ChatPanel";
 import { ComposerPanel } from "../composer/ComposerPanel";
 import { GatopleApp } from "../gatople/GatopleApp";
 import { StrudelPanel } from "../strudel/StrudelPanel";
+import { HomePanel } from "../home/HomePanel";
 
-type View = "gatople" | "chat" | "composer" | "strudel";
+type View = "home" | "gatople" | "chat" | "composer" | "strudel";
 
 const HASH_TO_VIEW: Record<string, View> = {
+  "#home": "home",
   "#gatople": "gatople",
   "#chat": "chat",
   "#composer": "composer",
@@ -15,7 +17,7 @@ const HASH_TO_VIEW: Record<string, View> = {
 };
 
 function readView(): View {
-  return HASH_TO_VIEW[window.location.hash] ?? "gatople";
+  return HASH_TO_VIEW[window.location.hash] ?? "home";
 }
 
 export function AppShell(): JSX.Element {
@@ -29,12 +31,24 @@ export function AppShell(): JSX.Element {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
+  useEffect(() => {
+    if (view === "home") {
+      document.body.classList.add("fmw-score");
+      document.body.style.background = "#030303";
+    } else {
+      document.body.classList.remove("fmw-score");
+      document.body.style.background = "#fffaf1";
+    }
+  }, [view]);
+
   function go(next: View): void {
     window.location.hash = `#${next}`;
   }
 
   let body;
-  if (view === "gatople") {
+  if (view === "home") {
+    body = <HomePanel onNavigate={go} />;
+  } else if (view === "gatople") {
     body = <GatopleApp />;
   } else if (view === "chat") {
     body = <ChatPanel />;
@@ -48,6 +62,14 @@ export function AppShell(): JSX.Element {
     <>
       <a href="#content" className="app-skip-link">Saltar al contenido</a>
       <nav className="app-nav" aria-label="Vista principal">
+        <button
+          type="button"
+          className={`app-nav-tab ${view === "home" ? "is-active" : ""}`}
+          onClick={() => go("home")}
+          aria-current={view === "home" ? "page" : undefined}
+        >
+          Inicio
+        </button>
         <button
           type="button"
           className={`app-nav-tab ${view === "gatople" ? "is-active" : ""}`}
