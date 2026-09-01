@@ -6,13 +6,10 @@ terminal-only).
 """
 
 import math
-from typing import TYPE_CHECKING
 
 from fractalmusic.dodecamundo import DODECAMUNDO, NoteWorld, world
 from fractalmusic.scales import FractalScale
-
-if TYPE_CHECKING:
-    from fractalmusic.wheel import Wheel
+from fractalmusic.wheel import Wheel
 
 _FONT = "font-family='Helvetica,Arial,sans-serif'"
 
@@ -203,7 +200,7 @@ def _arc_path(start_deg: float, end_deg: float, r_outer: float, r_inner: float) 
     )
 
 
-def gatople_wheel_svg(wheel: "Wheel", *, size: int = 600) -> str:
+def gatople_wheel_svg(wheel: Wheel, *, size: int = 600) -> str:
     """Render the deterministic spinning Gátople wheel natively using backend geometry math."""
     r_outer = size * 0.4
     r_inner = size * 0.275
