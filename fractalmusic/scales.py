@@ -158,20 +158,6 @@ def mode_scale(note: str) -> FractalScale:
     )
 
 
-# Triad qualities for the 7 diatonic positions of A natural minor — the book's
-# default rotation. Index 0 = root mode (Eólico), then up the cycle of fourths.
-# Confirmed against image 9 of the user's notebook: i ii° III iv v VI VII.
-_TRIAD_QUALITIES: Final[dict[str, str]] = {
-    "Eólico": "minor",
-    "Locrio": "diminished",
-    "Jónico": "major",
-    "Dórico": "minor",
-    "Frigio": "minor",
-    "Lidio": "major",
-    "Mixolidio": "major",
-}
-
-
 @dataclass(frozen=True)
 class Triad:
     """A 1-3-5 triad picked from a heptatonic mode's scale."""
@@ -214,5 +200,5 @@ def triad_for(note: str) -> Triad:
         root=note,
         notes=triad_notes,
         glyphs=triad_glyphs,
-        quality=_TRIAD_QUALITIES[mode.mode_name],
+        quality=mode.quality,
     )
