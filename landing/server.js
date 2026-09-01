@@ -1,7 +1,3 @@
-try {
-  if (typeof process.loadEnvFile === "function") process.loadEnvFile();
-} catch {}
-
 import { createServer } from "node:http";
 import { readFile, writeFile, mkdir, rename, stat } from "node:fs/promises";
 import { basename, extname, join, normalize, resolve } from "node:path";
@@ -9,6 +5,7 @@ import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { mailchimpConfigured, markPurchaseInMailchimp, syncLeadToMailchimp } from "./integrations.js";
 import { purchaseEmail, recoveryEmail, sendTransactionalEmail, transactionalEmailConfigured } from "./email.js";
 import { log } from "./logger.js";
+import { scoreAnswers } from "./scoring-engine.js";
 
 const ROOT = resolve(process.cwd());
 const DATA_DIR = process.env.VERCEL ? "/tmp/fmw-data" : join(ROOT, "data");
@@ -22,8 +19,12 @@ const MAX_BODY_BYTES = 256_000;
 const PRODUCT_FILE = process.env.FMW_PRODUCT_FILE ? resolve(process.env.FMW_PRODUCT_FILE) : "";
 const DELIVERY_TOKEN_HOURS = Number(process.env.FMW_DELIVERY_TOKEN_HOURS || 72);
 const RECOVERY_MAX_PER_HOUR = Number(process.env.FMW_RECOVERY_MAX_PER_HOUR || 5);
+const TEST_EVENTS_MAX_PER_HOUR = Number(process.env.FMW_TEST_EVENTS_MAX_PER_HOUR || 500);
+const TEST_RESULTS_MAX_PER_HOUR = Number(process.env.FMW_TEST_RESULTS_MAX_PER_HOUR || 30);
 const TRUST_PROXY = process.env.FMW_TRUST_PROXY === "true";
 const rateBuckets = new Map();
+let storeReady;
+let mutationQueue = Promise.resolve();
 
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8",
@@ -38,8 +39,11 @@ const emptyStore = () => ({
 });
 
 async function ensureStore() {
-  await mkdir(DATA_DIR, { recursive: true });
-  try { await stat(DATA_FILE); } catch { await atomicWrite(emptyStore()); }
+  if (!storeReady) storeReady = (async () => {
+    await mkdir(DATA_DIR, { recursive: true });
+    try { await stat(DATA_FILE); } catch { await atomicWrite(emptyStore()); }
+  })();
+  return storeReady;
 }
 
 async function readStore() {
@@ -50,9 +54,15 @@ async function readStore() {
 
 async function atomicWrite(store) {
   store.updatedAt = new Date().toISOString();
-  const temporary = `${DATA_FILE}.${process.pid}.tmp`;
+  const temporary = `${DATA_FILE}.${process.pid}.${randomUUID()}.tmp`;
   await writeFile(temporary, JSON.stringify(store, null, 2), "utf8");
   await rename(temporary, DATA_FILE);
+}
+
+async function serializeMutation(task) {
+  const pending = mutationQueue.then(task, task);
+  mutationQueue = pending.catch(() => {});
+  return pending;
 }
 
 function securityHeaders() {
@@ -162,9 +172,16 @@ function validateLead(input) {
     throw Object.assign(new Error("Correo inválido"), { status: 422 });
   }
   if (!input.CONSENT) throw Object.assign(new Error("Consentimiento obligatorio"), { status: 422 });
-  if (!input.ARQUETIPO || !input.ARQSEC) throw Object.assign(new Error("Resultado incompleto"), { status: 422 });
+  let verified;
+  try { verified = scoreAnswers(input.answers); }
+  catch { throw Object.assign(new Error("Respuestas del test incompletas o inválidas"), { status: 422 }); }
+  const percentage = (value) => `${Math.round(value * 100)}%`;
   return {
-    ...input, EMAIL: email, FNAME: name, COMPRA: input.COMPRA === "SÍ" ? "SÍ" : "NO",
+    ...input, EMAIL: email, FNAME: name,
+    ARQUETIPO: verified.dominant.name, ARQSEC: verified.secondary.name,
+    SCORE1: percentage(verified.dominant.normalizedScore), SCORE2: percentage(verified.secondary.normalizedScore),
+    raw_scores: verified.rawScores, normalized_scores: verified.normalizedScores,
+    result_type: verified.resultType, COMPRA: input.COMPRA === "SÍ" ? "SÍ" : "NO",
     FUENTE: String(input.FUENTE || "THE_DISSONANCE_TEST"),
     tags: [...new Set(Array.isArray(input.tags) ? input.tags.map(String) : [])],
     updatedAt: new Date().toISOString()
@@ -224,12 +241,13 @@ function verifyWebhook(raw, signature) {
 
 async function handleApi(request, response, url) {
   if (request.method === "GET" && url.pathname === "/api/health") {
-    return json(response, 200, { ok: true, service: "fmw-web", version: "0.8.0", integrations: {
+    return json(response, 200, { ok: true, service: "fmw-web", version: "0.9.0", integrations: {
       mailchimp: mailchimpConfigured(), transactionalEmail: transactionalEmailConfigured(), compraClickCheckout: Boolean(COMPRACLICK_CHECKOUT_URL), compraClickWebhook: Boolean(COMPRACLICK_WEBHOOK_SECRET)
     }});
   }
 
   if (request.method === "POST" && url.pathname === "/api/leads") {
+    enforceRateLimit(request, "test-results", TEST_RESULTS_MAX_PER_HOUR);
     const lead = validateLead(await parseBody(request));
     const store = await readStore();
     const index = store.leads.findIndex((item) => item.EMAIL === lead.EMAIL);
@@ -287,6 +305,7 @@ async function handleApi(request, response, url) {
   }
 
   if (request.method === "POST" && url.pathname === "/api/events") {
+    enforceRateLimit(request, "test-events", TEST_EVENTS_MAX_PER_HOUR);
     const event = sanitizeEvent(await parseBody(request));
     const store = await readStore();
     store.events.push(event);
@@ -517,7 +536,10 @@ export async function handler(request, response) {
   try {
     await ensureStore();
     const url = new URL(request.url || "/", `http://${request.headers.host || "localhost"}`);
-    if (url.pathname.startsWith("/api/")) return await handleApi(request, response, url);
+    if (url.pathname.startsWith("/api/")) {
+      if (request.method !== "GET") return await serializeMutation(() => handleApi(request, response, url));
+      return await handleApi(request, response, url);
+    }
     return await serveStatic(request, response, url);
   } catch (error) {
     const requestId = randomUUID();
