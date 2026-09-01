@@ -20,8 +20,9 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from chat_bff.bootstrap import make_similarity
 from meridian_library.embedders.ollama import OllamaEmbedder
+
+from chat_bff.bootstrap import make_similarity
 
 EVAL_DIR = Path(__file__).resolve().parent
 PAIRS_PATH = EVAL_DIR / "calibration_pairs.json"
@@ -105,26 +106,44 @@ def best(metrics: list[ThresholdMetrics]) -> ThresholdMetrics:
     return max(metrics, key=lambda m: (m.f1, -abs(m.threshold - 0.55)))
 
 
-def render_results(*, scored: list[ScoredPair], sweep_metrics: list[ThresholdMetrics], chosen: ThresholdMetrics) -> str:
+def render_results(
+    *,
+    scored: list[ScoredPair],
+    sweep_metrics: list[ThresholdMetrics],
+    chosen: ThresholdMetrics,
+) -> str:
     pos_scores = sorted([s.score for s in scored if s.supports])
     neg_scores = sorted([s.score for s in scored if not s.supports])
     lines: list[str] = []
     lines.append("# Fidelity Threshold Calibration")
     lines.append("")
-    lines.append(f"- Pairs: {len(scored)} ({sum(1 for s in scored if s.supports)} supporting, {sum(1 for s in scored if not s.supports)} non-supporting)")
-    lines.append(f"- Embedder: Ollama nomic-embed-text, cosine similarity")
+    n_supporting = sum(1 for s in scored if s.supports)
+    n_non_supporting = sum(1 for s in scored if not s.supports)
+    lines.append(f"- Pairs: {len(scored)} ({n_supporting} supporting, {n_non_supporting} non-supporting)")
+    lines.append("- Embedder: Ollama nomic-embed-text, cosine similarity")
     lines.append("")
     lines.append("## Score distribution")
     lines.append("")
-    lines.append(f"- Supporting pairs:    min={min(pos_scores):.3f}  median={pos_scores[len(pos_scores)//2]:.3f}  max={max(pos_scores):.3f}")
-    lines.append(f"- Non-supporting:      min={min(neg_scores):.3f}  median={neg_scores[len(neg_scores)//2]:.3f}  max={max(neg_scores):.3f}")
+    lines.append(
+        f"- Supporting pairs:    min={min(pos_scores):.3f}  "
+        f"median={pos_scores[len(pos_scores)//2]:.3f}  "
+        f"max={max(pos_scores):.3f}"
+    )
+    lines.append(
+        f"- Non-supporting:      min={min(neg_scores):.3f}  "
+        f"median={neg_scores[len(neg_scores)//2]:.3f}  "
+        f"max={max(neg_scores):.3f}"
+    )
     lines.append("")
     lines.append("## Sweep")
     lines.append("")
     lines.append("| threshold | TP | FP | TN | FN | precision | recall | F1 | accuracy |")
     lines.append("|---|---|---|---|---|---|---|---|---|")
     for m in sweep_metrics[::5]:  # every 0.05 for readability
-        lines.append(f"| {m.threshold:.2f} | {m.tp} | {m.fp} | {m.tn} | {m.fn} | {m.precision:.3f} | {m.recall:.3f} | {m.f1:.3f} | {m.accuracy:.3f} |")
+        lines.append(
+            f"| {m.threshold:.2f} | {m.tp} | {m.fp} | {m.tn} | {m.fn} | "
+            f"{m.precision:.3f} | {m.recall:.3f} | {m.f1:.3f} | {m.accuracy:.3f} |"
+        )
     lines.append("")
     lines.append(f"## Chosen threshold: **{chosen.threshold:.2f}**")
     lines.append("")

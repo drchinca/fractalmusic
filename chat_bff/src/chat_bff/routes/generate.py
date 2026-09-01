@@ -126,7 +126,16 @@ def generate_options() -> dict[str, list[str]]:
     }
 
 
-def _cache_key(*, tonic: str, mode: str, length: int, flavor: str, pattern_name: str, sf2_name: str = "", ir_name: str = "") -> str:
+def _cache_key(
+    *,
+    tonic: str,
+    mode: str,
+    length: int,
+    flavor: str,
+    pattern_name: str,
+    sf2_name: str = "",
+    ir_name: str = "",
+) -> str:
     raw = f"{tonic}|{mode}|{length}|{flavor}|{pattern_name}|{sf2_name}|{ir_name}".encode()
     return hashlib.sha256(raw).hexdigest()[:16]
 
