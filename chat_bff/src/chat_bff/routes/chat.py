@@ -27,7 +27,7 @@ log = structlog.get_logger("chat_bff.chat")
 def get_services(request: Request) -> ChatServices:
     """FastAPI dependency. Tests override this via app.dependency_overrides."""
     services = getattr(request.app.state, "services", None)
-    if services is None:
+    if not isinstance(services, ChatServices):
         raise RuntimeError("ChatServices not attached to app.state — wire create_app correctly.")
     return services
 

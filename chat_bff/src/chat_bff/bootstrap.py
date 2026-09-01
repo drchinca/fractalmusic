@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from cemaf.llm.anthropic import AnthropicLLMClient
 from cemaf.llm.openai_compat import OpenAICompatClient
 from cemaf.llm.protocols import Message, MessageRole
+from fastapi import FastAPI
 from fractalmusic.generate import JsonCorpus, StubExpert
 from meridian_library.embedders.ollama import OllamaEmbedder
 from meridian_library.embedders.protocol import EmbeddingClient
@@ -47,7 +48,7 @@ class CemafLLMAdapter:
         )
         if not result.success:
             raise RuntimeError(f"{self.name} LLM error: {result.error}")
-        return result.message.content
+        return str(result.message.content)
 
 
 # ---------- Retriever: hybrid index → in-scope RetrievedChunk tuple ----------
@@ -165,7 +166,7 @@ def build_services(settings: ChatSettings | None = None) -> ChatServices:
 # ---------- ASGI entry point for `uvicorn chat_bff.bootstrap:app_factory --factory` ----------
 
 
-def app_factory():
+def app_factory() -> FastAPI:
     """Build a FastAPI app for `uvicorn chat_bff.bootstrap:app_factory --factory`."""
     from chat_bff.app import create_app
 

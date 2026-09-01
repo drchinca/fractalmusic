@@ -73,7 +73,7 @@ log = structlog.get_logger("chat_bff.generate")
 
 def get_services(request: Request) -> ChatServices:
     services = getattr(request.app.state, "services", None)
-    if services is None:
+    if not isinstance(services, ChatServices):
         raise RuntimeError("ChatServices not attached to app.state — wire create_app correctly.")
     return services
 
