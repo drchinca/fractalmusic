@@ -6,9 +6,9 @@ from fractalmusic.scales import mode_scale, penta
 from fractalmusic.svg import (
     deck_grid,
     fretboard_stickers_svg,
+    gatople_wheel_svg,
     piano_stickers_svg,
     scale_strip,
-    gatople_wheel_svg,
 )
 from fractalmusic.wheel import Wheel
 
