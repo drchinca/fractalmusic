@@ -48,9 +48,18 @@ dependency per-test.
 ## Config
 
 Env-loaded via `gatople_api.settings.ChatSettings` (prefix `CHAT_BFF_`,
-`.env`-file supported). See that file for the full field list — the load-
-bearing ones are `anthropic_api_key` (chat needs it; falls back to Ollama
-without it) and `index_dir` (defaults to `~/.meridian/library`).
+`.env`-file supported). See that file for the full field list and the
+Claude backend's 3-tier selection order (direct Anthropic key → AWS
+Bedrock → local Ollama). `index_dir` defaults to `~/.meridian/library`.
+
+The FE's "Ollama (local)" chat toggle and the citation-similarity scorer
+are two independent local Ollama dependencies — both need pulling, or
+that toggle 502s and citation scoring can't run at all:
+
+```bash
+ollama pull nomic-embed-text   # citation-similarity embeddings, ~274MB
+ollama pull qwen2.5:7b         # ChatSettings.ollama_model default, ~4.7GB
+```
 
 ## Tests
 

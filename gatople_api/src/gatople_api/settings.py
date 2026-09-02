@@ -49,7 +49,7 @@ class ChatSettings(BaseSettings):
     bedrock_model: str = "global.anthropic.claude-sonnet-4-6"
     bedrock_region: str = "us-east-1"
     ollama_base_url: str = "http://localhost:11434"
-    ollama_model: str = "qwen2.5:14b"
+    ollama_model: str = "qwen2.5:7b"
 
     # Pipeline knobs
     retrieval_k: int = 8
