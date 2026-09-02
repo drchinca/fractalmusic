@@ -153,7 +153,7 @@ export function Wheel({
       onKeyDown={handleKeyDown}
     >
       <g transform={outerLocked ? undefined : `rotate(${rotation})`}>
-        <OuterDisc roles={roles} />
+        <OuterDisc roles={roles} rotationDeg={outerLocked ? 0 : rotation} />
       </g>
       <InnerDisc
         roles={roles}

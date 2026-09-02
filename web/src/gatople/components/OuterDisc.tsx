@@ -6,9 +6,14 @@ import type { Role } from "../types";
 
 interface OuterDiscProps {
   readonly roles: readonly Role[];
+  // The rotation this disc's own parent <g> is currently applying (0 when the
+  // outer ring is locked). Each glyph counter-rotates by the same amount —
+  // exactly how InnerDisc keeps its note labels upright — so spinning the
+  // ring never turns a "+" into an "×" or a "↓" into a checkmark.
+  readonly rotationDeg: number;
 }
 
-export function OuterDisc({ roles }: OuterDiscProps): JSX.Element {
+export function OuterDisc({ roles, rotationDeg }: OuterDiscProps): JSX.Element {
   return (
     <g id="outer-disc">
       {roles.map((role) => {
@@ -28,14 +33,11 @@ export function OuterDisc({ roles }: OuterDiscProps): JSX.Element {
             >
               <title>{tooltip}</title>
             </path>
-            <text
-              className="role-glyph"
-              x={gx}
-              y={gy}
-              fill={role.glyph_fg}
-            >
-              {role.display_glyph}
-            </text>
+            <g transform={`translate(${gx} ${gy}) rotate(${-rotationDeg})`}>
+              <text className="role-glyph" fill={role.glyph_fg}>
+                {role.display_glyph}
+              </text>
+            </g>
           </g>
         );
       })}
