@@ -64,9 +64,10 @@ def chessboard_grains(square: int) -> int:
 def self_squaring_grains(step: int) -> int:
     """The self-squaring sequence the book recites in Ch. 5.
 
-    Step 1 is the seed (1 grain); each subsequent step squares the previous:
-    ``1, 2, 4, 16, 256, 65_536, 4_294_967_296, …``. Closed form for ``step >= 2``
-    is ``2 ** (2 ** (step - 2))``. Python ints are unbounded, so ``step >= 9``
+    Step 1 is the seed (1 grain), step 2 doubles it (2 grains), and every step
+    after that squares the previous one: ``1, 2, 4, 16, 256, 65_536,
+    4_294_967_296, …``. Closed form for ``step >= 2`` is
+    ``2 ** (2 ** (step - 2))``. Python ints are unbounded, so ``step >= 9``
     just produces astronomically large numbers natively.
     """
     if step < 1:
