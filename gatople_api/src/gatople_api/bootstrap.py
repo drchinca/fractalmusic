@@ -25,6 +25,7 @@ from meridian_library.index.book_catalog import SQLiteBookCatalog
 from meridian_library.index.hybrid import LibraryHybridIndex
 from meridian_library.index.vector_store import LibraryVectorStore
 
+from gatople_api.audit import build_audit_system
 from gatople_api.llm_expert import LLMExpert
 from gatople_api.models import in_scope, short_hash
 from gatople_api.protocols import LLM, RetrievedChunk
@@ -169,6 +170,8 @@ def build_services(settings: ChatSettings | None = None) -> GatopleServices:
         # Ollama.
         claude_llm = ollama_llm
 
+    audit_log, audit_trail = build_audit_system()
+
     return GatopleServices(
         retriever=retriever,
         llm_claude=claude_llm,
@@ -178,6 +181,8 @@ def build_services(settings: ChatSettings | None = None) -> GatopleServices:
         expert=StubExpert(),
         llm_expert=LLMExpert(llm=claude_llm),
         corpus=JsonCorpus(root=settings.corpus_root),
+        audit_log=audit_log,
+        audit_trail=audit_trail,
     )
 
 

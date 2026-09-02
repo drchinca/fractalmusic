@@ -6,6 +6,7 @@ cemaf + meridian wiring (see gatople_api.bootstrap, deferred)."""
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from gatople_api.routes import audit as audit_route
 from gatople_api.routes import chat as chat_route
 from gatople_api.routes import generate as generate_route
 from gatople_api.routes import health as health_route
@@ -31,4 +32,5 @@ def create_app(*, services: GatopleServices, cors_origins: tuple[str, ...] = ())
     app.include_router(chat_route.router)
     app.include_router(generate_route.router)
     app.include_router(theory_route.router)
+    app.include_router(audit_route.router)
     return app

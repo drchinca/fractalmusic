@@ -35,9 +35,14 @@ repos:
     hooks:
       - id: ruff
         args: ["--fix", "--exit-non-zero-on-fix"]
-        files: ^(fractalmusic|scripts)/
+        # Was scoped to ^(fractalmusic|scripts)/ only — tests/ silently
+        # never ran ruff locally, while CI's py3.14 make-check job (the
+        # only one that runs the full `make check`, not just `pytest`)
+        # covers the whole repo. Two real pushes hit this: an import-sort
+        # error and a formatting diff in tests/, invisible until CI.
+        files: ^(fractalmusic|scripts|tests)/
       - id: ruff-format
-        files: ^(fractalmusic|scripts)/
+        files: ^(fractalmusic|scripts|tests)/
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v2.1.0
@@ -81,6 +86,20 @@ repos:
       - id: gatople-api-ruff
         name: gatople_api ruff
         entry: bash -c 'cd gatople_api && uv run ruff check src tests'
+        language: system
+        files: ^gatople_api/.*\.py$
+        pass_filenames: false
+
+      - id: gatople-api-ruff-format
+        # gatople_api/ is excluded from CI entirely (documented in
+        # ci.yml — local cemaf/meridian_library path deps can't be
+        # checked out there), so this local hook is the only formatting
+        # check this package ever gets. gatople-api-ruff above only ran
+        # `ruff check` (linting), never `ruff format --check` — a real
+        # formatting diff in gatople_api/tests was invisible everywhere
+        # until a manual full-repo `ruff format --check .` caught it.
+        name: gatople_api ruff format
+        entry: bash -c 'cd gatople_api && uv run ruff format --check src tests'
         language: system
         files: ^gatople_api/.*\.py$
         pass_filenames: false

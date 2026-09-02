@@ -20,6 +20,7 @@ from fractalmusic.generate import (
 )
 from fractalmusic.generate.loop import _adapt_length
 from fractalmusic.generate.realize import _midi_number
+from fractalmusic.generate.types import CandidateTrace, GenerationTrace
 from fractalmusic.wheel import Wheel
 
 PROV = Provenance(book_hash="b202598c", book_title="El Sistema Fractal")
@@ -495,6 +496,76 @@ def test_research_loop_with_free_text_bypasses_corpus_best_of_n(tmp_path: Path):
 
     assert result.pattern.name == "from-expert"
     assert expert.calls == 1
+
+
+def test_research_loop_with_free_text_still_returns_a_real_trace(tmp_path: Path):
+    # The reconciliation point between the free-text bypass and the audit
+    # trail: a free-text composition must be exactly as auditable as a
+    # best-of-N one, not a blind spot — a lone "expert" candidate that
+    # always won, not a missing trace field.
+    corpus = JsonCorpus(root=tmp_path / "patterns")
+    described_request = GenerationRequest(
+        tonic="A", mode="Eólico", length_events=8, free_text="a bright morning fanfare"
+    )
+    result = research_loop(request=described_request, expert=_CountingExpert(), corpus=corpus)
+
+    assert result.trace.winner_source == "expert"
+    assert len(result.trace.candidates) == 1
+    only = result.trace.candidates[0]
+    assert only.source == "expert"
+    assert only.won is True
+    assert only.pattern_name == "from-expert"
+    assert only.score_total == result.score.total
+
+
+def test_trace_records_every_candidate_and_exactly_one_winner(tmp_path: Path):
+    # The audit record's basic contract: N_CANDIDATES entries in, exactly
+    # one marked won, and it's the actual returned pattern.
+    request = GenerationRequest(tonic="A", mode="Eólico", length_events=8)
+    corpus = JsonCorpus(root=tmp_path / "patterns")
+    result = research_loop(request=request, expert=_VaryingQualityExpert(), corpus=corpus)
+
+    assert isinstance(result.trace, GenerationTrace)
+    assert len(result.trace.candidates) == 5
+    winners = [c for c in result.trace.candidates if c.won]
+    assert len(winners) == 1
+    assert winners[0].pattern_name == result.pattern.name
+    assert winners[0].score_total == result.score.total
+    assert all(isinstance(c, CandidateTrace) for c in result.trace.candidates)
+
+
+def test_trace_attributes_source_correctly_when_corpus_pattern_wins(tmp_path: Path):
+    # This is the exact shape of the two real bugs caught live this
+    # session: a corpus-seeded pattern silently outscoring a fresh
+    # expert candidate. Before the trace existed, telling which one
+    # actually won required re-deriving it by hand from the response.
+    # Now it's a direct field.
+    request = GenerationRequest(tonic="A", mode="Eólico", length_events=8)
+    corpus = JsonCorpus(root=tmp_path / "patterns")
+    research_loop(
+        request=request, expert=StubExpert(), corpus=corpus
+    )  # seeds a strong corpus entry
+
+    result = research_loop(request=request, expert=_FlatLowScoreExpert(), corpus=corpus)
+
+    assert result.trace.winner_source == "corpus"
+    corpus_candidates = [c for c in result.trace.candidates if c.source == "corpus"]
+    expert_candidates = [c for c in result.trace.candidates if c.source == "expert"]
+    assert len(corpus_candidates) == 1
+    assert len(expert_candidates) == 4
+    assert corpus_candidates[0].won is True
+    assert all(not c.won for c in expert_candidates)
+
+
+def test_trace_attributes_source_correctly_when_expert_candidate_wins(tmp_path: Path):
+    # No corpus seed at all -> every candidate must come from the expert,
+    # and the trace must say so.
+    request = GenerationRequest(tonic="D", mode="Dórico", length_events=8)
+    corpus = JsonCorpus(root=tmp_path / "patterns")
+    result = research_loop(request=request, expert=_VaryingQualityExpert(), corpus=corpus)
+
+    assert result.trace.winner_source == "expert"
+    assert all(c.source == "expert" for c in result.trace.candidates)
 
 
 def test_adapt_length_is_a_noop_when_length_already_matches():

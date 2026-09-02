@@ -11,6 +11,7 @@ from fastapi.testclient import TestClient
 from fractalmusic.generate import JsonCorpus, StubExpert
 
 from gatople_api.app import create_app
+from gatople_api.llm_expert import LLMExpert
 from gatople_api.services import GatopleServices
 from gatople_api.settings import ChatSettings
 from tests.integration.conftest import FakeLLM, FakeRetriever
@@ -21,13 +22,15 @@ def _client(tmp_path) -> TestClient:
         anthropic_api_key="test-key-not-real",
         corpus_root=tmp_path / "patterns",
     )
+    fake_claude = FakeLLM(name="claude")
     services = GatopleServices(
         retriever=FakeRetriever(),
-        llm_claude=FakeLLM(name="claude"),
+        llm_claude=fake_claude,
         llm_ollama=FakeLLM(name="ollama"),
         similarity=lambda _a, _b: _always_high(),
         settings=settings,
         expert=StubExpert(),
+        llm_expert=LLMExpert(llm=fake_claude),
         corpus=JsonCorpus(root=settings.corpus_root),
     )
     return TestClient(create_app(services=services))

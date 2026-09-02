@@ -27,6 +27,7 @@ from fractalmusic.generate.types import FLAVORS, MODE_NAMES, NOTE_NAMES
 from fractalmusic.render import RenderConfig, render_wav
 from pydantic import BaseModel, ConfigDict, Field
 
+from gatople_api.audit import record_generation
 from gatople_api.models import in_scope, short_hash
 from gatople_api.protocols import RetrievedChunk
 from gatople_api.services import GatopleServices
@@ -348,7 +349,7 @@ def _research(body: GenerateBody, services: GatopleServices) -> GenerationResult
         raise HTTPException(status_code=422, detail=str(error)) from error
 
 
-def _render_web_payload(
+async def _render_web_payload(
     body: GenerateBody,
     services: GatopleServices,
 ) -> tuple[GenerationResult, WebPayload]:
@@ -366,6 +367,13 @@ def _render_web_payload(
         sf2_name=settings.soundfont_path.name if settings.soundfont_path else "",
         ir_name=settings.reverb_ir_path.name if settings.reverb_ir_path else "",
     )
+    if services.audit_log is not None:
+        await record_generation(
+            audit_log=services.audit_log,
+            run_id=key,
+            request=_generation_request(body),
+            trace=result.trace,
+        )
     wav_path = cache_dir / f"{key}.wav"
 
     if not wav_path.exists():
@@ -406,11 +414,11 @@ def _render_web_payload(
 
 
 @router.post("/api/generate")
-def generate(
+async def generate(
     body: GenerateBody,
     services: Annotated[GatopleServices, Depends(get_services)],
 ) -> WebPayload:
-    _, payload = _render_web_payload(body=body, services=services)
+    _, payload = await _render_web_payload(body=body, services=services)
     return payload
 
 
@@ -419,7 +427,7 @@ async def generate_strudel(
     body: GenerateBody,
     services: Annotated[GatopleServices, Depends(get_services)],
 ) -> StrudelPayload:
-    result, web_payload = _render_web_payload(body=body, services=services)
+    result, web_payload = await _render_web_payload(body=body, services=services)
     book_guidance = await _book_guidance_for_strudel(
         body=body,
         result=result,

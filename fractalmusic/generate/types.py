@@ -206,9 +206,41 @@ class StrudelBookGuidancePayload(TypedDict):
 
 
 @dataclass(frozen=True, slots=True)
+class CandidateTrace:
+    """One candidate research_loop actually considered, and what happened
+    to it — not just the winner. Source is "corpus" (a pattern already
+    persisted for this tonic/mode/flavor) or "expert" (freshly queried
+    this run, StubExpert/LLMExpert/whichever ExpertClient was passed in).
+    """
+
+    source: str  # "corpus" | "expert"
+    pattern_name: str
+    score_total: float
+    won: bool
+
+
+@dataclass(frozen=True, slots=True)
+class GenerationTrace:
+    """What research_loop actually did, for audit/provenance — every
+    candidate it weighed, not just the one that made it into the response.
+
+    This is the "what created what and how" record: whether the winner
+    came from the corpus or was freshly composed, and what it beat to get
+    there. Two real bugs this session (a stale corpus pattern silently
+    outscoring a fresh free-text/flavor-specific composition) were only
+    findable by manually re-deriving this by hand — this makes it visible
+    directly, without needing to reproduce the bug to see it.
+    """
+
+    candidates: tuple[CandidateTrace, ...]
+    winner_source: str  # "corpus" | "expert"
+
+
+@dataclass(frozen=True, slots=True)
 class GenerationResult:
     pattern: Pattern
     events: tuple[Event, ...]
     score: Score
     midi_path: Path | None
     web_payload: WebPayload
+    trace: GenerationTrace
