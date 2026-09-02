@@ -9,9 +9,11 @@ from fractalmusic.generate.realize import realize
 from fractalmusic.generate.scoring import score as score_events
 from fractalmusic.generate.types import (
     PENTA_MODES,
+    CandidateTrace,
     Event,
     GenerationRequest,
     GenerationResult,
+    GenerationTrace,
     Pattern,
     Provenance,
     Score,
@@ -141,7 +143,9 @@ def research_loop(
     whenever a curated corpus pattern scores higher on raw musical-rule
     metrics — and re-querying a real LLM N_CANDIDATES times per request
     just to fill the field isn't affordable or fast. The expert's single
-    interpretation is used directly.
+    interpretation is used directly — but it still gets a real trace (a
+    lone "expert" candidate that always won), so a free-text composition
+    is exactly as auditable as a best-of-N one, not a blind spot.
     """
     if request.free_text:
         pattern = expert.query(request)
@@ -149,32 +153,59 @@ def research_loop(
         s = score_events(events=events, pattern=pattern)
         if s.total >= SCORE_THRESHOLD:
             corpus.append(pattern, s)
+        trace = GenerationTrace(
+            candidates=(
+                CandidateTrace(
+                    source="expert",
+                    pattern_name=pattern.name,
+                    score_total=s.total,
+                    won=True,
+                ),
+            ),
+            winner_source="expert",
+        )
         return GenerationResult(
             pattern=pattern,
             events=events,
             score=s,
             midi_path=None,
             web_payload=to_web_payload(pattern=pattern, events=events, score=s),
+            trace=trace,
         )
 
-    candidates: list[Pattern] = [
-        _adapt_length(p, request.length_events) for p in corpus.find(request)
+    sourced: list[tuple[Pattern, str]] = [
+        (_adapt_length(p, request.length_events), "corpus") for p in corpus.find(request)
     ]
-    while len(candidates) < N_CANDIDATES:
-        candidates.append(expert.query(request))
+    while len(sourced) < N_CANDIDATES:
+        sourced.append((expert.query(request), "expert"))
 
-    best: tuple[Pattern, tuple[Event, ...], Score] | None = None
-    for i, pattern in enumerate(candidates[:N_CANDIDATES]):
+    best: tuple[Pattern, tuple[Event, ...], Score, str] | None = None
+    scored: list[tuple[Pattern, Score, str]] = []
+    for i, (pattern, source) in enumerate(sourced[:N_CANDIDATES]):
         events = realize(pattern, seed=i)
         s = score_events(events=events, pattern=pattern)
+        scored.append((pattern, s, source))
         if best is None or s.total > best[2].total:
-            best = (pattern, events, s)
+            best = (pattern, events, s, source)
 
     if best is None:
         raise RuntimeError("research_loop produced no candidates")
-    pattern, events, s = best
+    pattern, events, s, winner_source = best
     if s.total >= SCORE_THRESHOLD:
         corpus.append(pattern, s)
+
+    trace = GenerationTrace(
+        candidates=tuple(
+            CandidateTrace(
+                source=source,
+                pattern_name=candidate.name,
+                score_total=candidate_score.total,
+                won=candidate is pattern,
+            )
+            for candidate, candidate_score, source in scored
+        ),
+        winner_source=winner_source,
+    )
 
     return GenerationResult(
         pattern=pattern,
@@ -182,4 +213,5 @@ def research_loop(
         score=s,
         midi_path=None,
         web_payload=to_web_payload(pattern=pattern, events=events, score=s),
+        trace=trace,
     )

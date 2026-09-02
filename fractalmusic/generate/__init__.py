@@ -21,10 +21,12 @@ from fractalmusic.generate.loop import (
 from fractalmusic.generate.realize import realize
 from fractalmusic.generate.scoring import score
 from fractalmusic.generate.types import (
+    CandidateTrace,
     Event,
     Flavor,
     GenerationRequest,
     GenerationResult,
+    GenerationTrace,
     ModeName,
     NoteName,
     Pattern,
@@ -36,11 +38,13 @@ from fractalmusic.generate.types import (
 )
 
 __all__ = [
+    "CandidateTrace",
     "Event",
     "ExpertClient",
     "Flavor",
     "GenerationRequest",
     "GenerationResult",
+    "GenerationTrace",
     "JsonCorpus",
     "MidiUnavailable",
     "ModeName",
