@@ -46,6 +46,7 @@ export interface GenerateRequest {
   mode: string;
   length: number;
   flavor: Flavor;
+  free_text?: string;
 }
 
 export interface ComposerOptions {

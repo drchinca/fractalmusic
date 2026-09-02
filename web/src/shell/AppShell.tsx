@@ -2,16 +2,18 @@ import { type JSX, useEffect, useState } from "react";
 
 import { ChatPanel } from "../chat/ChatPanel";
 import { ComposerPanel } from "../composer/ComposerPanel";
+import { DescribePanel } from "../composer/DescribePanel";
 import { GatopleApp } from "../gatople/GatopleApp";
 import { StrudelPanel } from "../strudel/StrudelPanel";
 
-type View = "gatople" | "chat" | "composer" | "strudel";
+type View = "gatople" | "chat" | "composer" | "strudel" | "describe";
 
 const HASH_TO_VIEW: Record<string, View> = {
   "#gatople": "gatople",
   "#chat": "chat",
   "#composer": "composer",
   "#strudel": "strudel",
+  "#describe": "describe",
 };
 
 function readView(): View {
@@ -40,6 +42,8 @@ export function AppShell(): JSX.Element {
     body = <ChatPanel />;
   } else if (view === "strudel") {
     body = <StrudelPanel />;
+  } else if (view === "describe") {
+    body = <DescribePanel />;
   } else {
     body = <ComposerPanel />;
   }
@@ -71,6 +75,14 @@ export function AppShell(): JSX.Element {
           aria-current={view === "strudel" ? "page" : undefined}
         >
           Patrón en vivo
+        </button>
+        <button
+          type="button"
+          className={`app-nav-tab ${view === "describe" ? "is-active" : ""}`}
+          onClick={() => go("describe")}
+          aria-current={view === "describe" ? "page" : undefined}
+        >
+          Describir
         </button>
         <button
           type="button"
