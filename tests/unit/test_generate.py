@@ -242,6 +242,27 @@ def test_to_strudel_code_sanitizes_metadata_comments():
     assert "// warning: rhythm_quantized_to_event_sequence" in code
 
 
+def test_to_strudel_code_rejects_empty_events():
+    pattern = _pattern()
+    with pytest.raises(ValueError, match="at least one Event"):
+        to_strudel_code(pattern=pattern, events=(), score=score(events=(), pattern=pattern))
+
+
+def test_to_strudel_code_includes_page_comment_when_provenance_has_one():
+    pattern = Pattern(
+        name="test",
+        tonic="A",
+        mode="Eólico",
+        degrees=(1, 2, 3, 4),
+        rhythm=(1.0, 1.0, 1.0, 1.0),
+        provenance=Provenance(book_hash="b202598c", book_title="El Sistema Fractal", page=26),
+    )
+    events = realize(pattern)
+    s = score(events=events, pattern=pattern)
+    code = to_strudel_code(pattern=pattern, events=events, score=s)
+    assert "// page: 26" in code
+
+
 def test_to_midi_writes_a_file(tmp_path: Path):
     pattern = _pattern()
     events = realize(pattern)
