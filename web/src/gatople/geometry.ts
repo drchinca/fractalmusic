@@ -1,7 +1,11 @@
-// Pure geometry / data helpers — no DOM, no React.
+// Pure geometry helpers (coordinate math, no DOM, no React) and pure lookups
+// over BE-baked data. No wheel-rotation or enharmonic-spelling arithmetic
+// lives here — every one of those is precomputed by
+// scripts/build_gatople_data.py and shipped in the JSON payload; this file
+// only reads it.
 
-import { ENHARMONIC_FLAT, SEG_DEG } from "./constants";
-import type { Chromatic, Role } from "./types";
+import { SEG_DEG } from "./constants";
+import type { Chromatic, Role, RotationTable } from "./types";
 
 export function polar(deg: number, radius: number): readonly [number, number] {
   const rad = (deg - 90) * (Math.PI / 180);
@@ -34,36 +38,29 @@ export function arcPath(
 }
 
 export function indexOfNote(note: string, chromatic: Chromatic): number {
-  const i = chromatic.indexOf(note);
-  if (i >= 0) return i;
-  for (const sharp of Object.keys(ENHARMONIC_FLAT)) {
-    const flat = ENHARMONIC_FLAT[sharp];
-    if (flat === note) return chromatic.indexOf(sharp);
-  }
-  return -1;
+  return chromatic.indexOf(note);
 }
 
-export function displayNote(note: string): string {
-  const flat = ENHARMONIC_FLAT[note];
+export function displayNote(note: string, enharmonic: Readonly<Record<string, string>>): string {
+  const flat = enharmonic[note];
   return flat ? `${note}/${flat}` : note;
 }
 
 export function noteAtRolePosition(
   rolePosition: number,
   tonicOffset: number,
-  chromatic: Chromatic,
+  rotations: RotationTable,
 ): string {
-  return chromatic[(rolePosition + tonicOffset) % 12];
+  return rotations[tonicOffset][rolePosition];
 }
 
 export function roleAtNote(
   note: string,
   roles: readonly Role[],
   tonicOffset: number,
-  chromatic: Chromatic,
+  rotations: RotationTable,
 ): Role | null {
-  const noteIdx = indexOfNote(note, chromatic);
-  if (noteIdx < 0) return null;
-  const position = (noteIdx - tonicOffset + 12) % 12;
+  const position = rotations[tonicOffset].indexOf(note);
+  if (position < 0) return null;
   return roles.find((r) => r.position === position) ?? null;
 }

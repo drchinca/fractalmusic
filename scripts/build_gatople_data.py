@@ -12,8 +12,12 @@ from pathlib import Path
 from typing import TypedDict
 
 from fractalmusic.colors import CARTA_HEX, GLYPH_FG, WHEEL_HEX
+from fractalmusic.dodecamundo import DODECAMUNDO
 from fractalmusic.modes import CHROMATIC_ORDER, PENTA_ROOTS
-from fractalmusic.wheel import ROLES
+from fractalmusic.svg import _GUITAR_TUNING
+from fractalmusic.wheel import ROLES, Wheel
+
+FRET_COUNT: int = 12
 
 
 class RoleEntry(TypedDict):
@@ -51,6 +55,9 @@ class GatoplePayload(TypedDict):
     chromatic: list[str]
     roles: list[RoleEntry]
     penta_roots: list[PentaRootEntry]
+    rotations: list[list[str]]  # rotations[tonicOffset][rolePosition] -> note
+    enharmonic: dict[str, str]  # sharp note -> flat spelling (black keys only)
+    fretboard: list[list[str]]  # fretboard[stringIndex][fret] -> note, tonic-independent
 
 
 CARTA_NAMES: tuple[str, ...] = (
@@ -83,6 +90,41 @@ CARTA_FILES: tuple[str, ...] = (
     "11-flecha-abajo.jpg",
     "12-estrella-iv.jpg",
 )
+
+
+def _build_rotations() -> list[list[str]]:
+    """Every possible spin: rotations[tonicOffset][rolePosition] -> note.
+
+    Lets the FE answer "what note sits at role Y when spun to tonic X" via
+    array lookup instead of recomputing the rotation formula itself — see
+    fractalmusic.wheel.Wheel.note_at_position, the single source of truth
+    this mirrors.
+    """
+    return [
+        [Wheel(tonic=tonic).note_at_position(position) for position in range(12)]
+        for tonic in CHROMATIC_ORDER
+    ]
+
+
+def _build_enharmonic() -> dict[str, str]:
+    """Sharp note -> flat spelling, from each NoteWorld's own alt_names."""
+    return {w.note: w.alt_names[0] for w in DODECAMUNDO if w.alt_names}
+
+
+def _build_fretboard() -> list[list[str]]:
+    """fretboard[stringIndex][fret] -> note, frets 0..FRET_COUNT.
+
+    Physical guitar fact, independent of the Gátople's rotation — reuses
+    svg.py's own _GUITAR_TUNING so the fretboard SVG and this JSON can never
+    disagree about the tuning.
+    """
+    fretboard: list[list[str]] = []
+    for open_note in _GUITAR_TUNING:
+        open_idx = CHROMATIC_ORDER.index(open_note)
+        fretboard.append(
+            [CHROMATIC_ORDER[(open_idx + fret) % 12] for fret in range(FRET_COUNT + 1)]
+        )
+    return fretboard
 
 
 def build_payload() -> GatoplePayload:
@@ -125,6 +167,9 @@ def build_payload() -> GatoplePayload:
         chromatic=list(CHROMATIC_ORDER),
         roles=roles,
         penta_roots=penta_roots,
+        rotations=_build_rotations(),
+        enharmonic=_build_enharmonic(),
+        fretboard=_build_fretboard(),
     )
 
 

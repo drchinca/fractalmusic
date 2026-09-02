@@ -15,6 +15,7 @@ import { OuterDisc } from "./OuterDisc";
 interface WheelProps {
   readonly roles: readonly Role[];
   readonly chromatic: Chromatic;
+  readonly enharmonic: Readonly<Record<string, string>>;
   readonly tonicOffset: number;
   readonly onSetTonic: (note: string) => void;
   readonly onStep: (delta: number) => void;
@@ -42,6 +43,7 @@ function chromaticAt(chromatic: Chromatic, idx: number): string {
 export function Wheel({
   roles,
   chromatic,
+  enharmonic,
   tonicOffset,
   onSetTonic,
   onStep,
@@ -138,6 +140,7 @@ export function Wheel({
       <OuterDisc roles={roles} />
       <InnerDisc
         roles={roles}
+        enharmonic={enharmonic}
         rotationDeg={rotation}
         dragging={dragging}
         onNoteClick={onSetTonic}

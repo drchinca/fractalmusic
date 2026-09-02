@@ -33,10 +33,21 @@ export interface PentaRoot {
   readonly note: string;
 }
 
+// rotations[tonicOffset][rolePosition] -> note. All 12 possible spins,
+// pre-baked so the FE never recomputes "(position + tonicOffset) % 12".
+export type RotationTable = readonly Chromatic[];
+
+// fretboard[stringIndex][fret] -> note, frets 0..FRET_COUNT. Tonic-
+// independent (a guitar's open tuning doesn't spin with the wheel).
+export type FretboardTable = readonly (readonly string[])[];
+
 export interface Payload {
   readonly chromatic: Chromatic;
   readonly roles: readonly Role[];
   readonly penta_roots: readonly PentaRoot[];
+  readonly rotations: RotationTable;
+  readonly enharmonic: Readonly<Record<string, string>>;
+  readonly fretboard: FretboardTable;
 }
 
 export type Palette = "carta" | "mono";

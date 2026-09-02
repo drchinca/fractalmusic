@@ -9,7 +9,7 @@ import { StepControls } from "./components/StepControls";
 import { Wheel } from "./components/Wheel";
 import { displayNote } from "./geometry";
 import { useGatople } from "./hooks/useGatople";
-import type { Chromatic, Payload, Role } from "./types";
+import type { Chromatic, FretboardTable, Payload, Role, RotationTable } from "./types";
 
 // Static import of the canonical Python-derived snapshot. Vite types the JSON
 // at compile time and bundles it (~6 KB → ~1 KB gzip) so there's no loading
@@ -20,15 +20,32 @@ import type { Chromatic, Payload, Role } from "./types";
 const payload = payloadJson as unknown as Payload;
 
 export function GatopleApp(): JSX.Element {
-  return <GatopleStage chromatic={payload.chromatic} roles={payload.roles} />;
+  return (
+    <GatopleStage
+      chromatic={payload.chromatic}
+      roles={payload.roles}
+      rotations={payload.rotations}
+      enharmonic={payload.enharmonic}
+      fretboard={payload.fretboard}
+    />
+  );
 }
 
 interface GatopleStageProps {
   readonly chromatic: Chromatic;
   readonly roles: readonly Role[];
+  readonly rotations: RotationTable;
+  readonly enharmonic: Readonly<Record<string, string>>;
+  readonly fretboard: FretboardTable;
 }
 
-function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
+function GatopleStage({
+  chromatic,
+  roles,
+  rotations,
+  enharmonic,
+  fretboard,
+}: GatopleStageProps): JSX.Element {
   const { tonicOffset, palette, setTonic, step, setPalette } =
     useGatople(chromatic);
 
@@ -57,12 +74,13 @@ function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
           <Wheel
             roles={roles}
             chromatic={chromatic}
+            enharmonic={enharmonic}
             tonicOffset={tonicOffset}
             onSetTonic={setTonic}
             onStep={step}
           />
           <p className="tonic-readout">
-            Tónica: <strong>{displayNote(tonicNote)}</strong>{" "}
+            Tónica: <strong>{displayNote(tonicNote, enharmonic)}</strong>{" "}
             <span className="tonic-mode">({eolicoModeName})</span>
           </p>
           <StepControls
@@ -77,7 +95,8 @@ function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
           <h2>Asignaciones actuales</h2>
           <BindingsTable
             roles={roles}
-            chromatic={chromatic}
+            rotations={rotations}
+            enharmonic={enharmonic}
             tonicOffset={tonicOffset}
           />
         </aside>
@@ -94,6 +113,8 @@ function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
         <Piano
           roles={roles}
           chromatic={chromatic}
+          rotations={rotations}
+          enharmonic={enharmonic}
           tonicOffset={tonicOffset}
           palette={palette}
         />
@@ -105,7 +126,9 @@ function GatopleStage({ chromatic, roles }: GatopleStageProps): JSX.Element {
         </p>
         <Fretboard
           roles={roles}
-          chromatic={chromatic}
+          fretboard={fretboard}
+          rotations={rotations}
+          enharmonic={enharmonic}
           tonicOffset={tonicOffset}
           palette={palette}
         />

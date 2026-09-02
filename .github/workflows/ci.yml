@@ -38,7 +38,7 @@ jobs:
         run: uv run pytest
 
   web:
-    name: web (eslint, typecheck, build)
+    name: web (eslint, typecheck, unit, build, e2e)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -58,8 +58,17 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Unit tests (vitest)
+        run: npm run test
+
       - name: Build (tsc + vite)
         run: npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: E2E tests (playwright)
+        run: npm run test:e2e
 
 # gatople_api/ is intentionally NOT covered here. Its pyproject.toml declares
 # [tool.uv.sources] path dependencies on cemaf and meridian_library at
