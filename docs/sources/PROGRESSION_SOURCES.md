@@ -39,13 +39,31 @@ uv run meridian-library search "Función Cíclica volvemos" \
   --book b202598c --book f39cb7c5
 ```
 
-For two cadences we have already done this round-trip and the indexed
-passage matches the `summary` field of the JSON entry verbatim:
+**2026-09-01 correction.** This section previously claimed `matriarchal-cycle`
+and `flamenco-opener` had "already done this round-trip" with the indexed
+passage matching their `summary` field verbatim, citing
+`[b202598c] ch0 §0 ¶17 p.11` and a full-book match for a Flamenco quote.
+Re-ran the exact command above (plus direct searches for `"Función
+Cíclica"`, `"CERO Alteraciones"`, and `"Flamenco"` individually) and found
+neither exists anywhere in the indexed corpus — `¶17 p.11` is a real chunk,
+but its actual text is about La menor producing the major tonality, not
+about "función cíclica"; "Flamenco" doesn't appear in either indexed book
+at all. **That earlier "verified" claim was wrong — it reported a failed
+verification as a successful one.**
 
-| Progression | Indexed match |
-|---|---|
-| `matriarchal-cycle` | `[b202598c]` ch0 §0 ¶17 p.11 — *"Función Cíclica … volvemos a la tonalidad … con CERO Alteraciones"* |
-| `flamenco-opener` | full-book text match for *"Es la base sonora de la música Árabe-Española conocida como Flamenco"* |
+The likely explanation, not a claim that the underlying content is
+invented: `progressions.json`'s real `book_ref` for both of these is
+`fractal_libro:1045` / `fractal_libro:1424` — line numbers into the book's
+full plaintext export, a completely different addressing scheme from
+meridian's chunk index (`chN §M ¶P pQ`). Only Chapter 0 of `b202598c` is
+currently indexed in meridian; lines 1045/1424 may simply fall outside
+that indexed range, in which case the content could be entirely real and
+this doc's attempted cross-reference into the chunk index was just the
+wrong tool for verifying it. Either way, **these two book_refs are
+unverified against the current index** — not confirmed, not disproven.
+Do not cite the removed chunk references as if they were checked; treat
+`matriarchal-cycle` and `flamenco-opener` the same as every other
+`fractal_libro:*` reference below until the full book is indexed.
 
 The remaining references (`disonancia:*` and the deeper `fractal_libro:*`
 lines) describe content that is in the books but not in the published
@@ -55,7 +73,11 @@ books are indexed they will become directly resolvable.
 ## Resolving a ref to a meridian chunk
 
 When the full books land in the index, the build script will be updated
-to translate every `book_ref` into a structured chunk address:
+to translate every `book_ref` into a structured chunk address. The shape
+below is illustrative only — the numbers are a schema example, not a
+verified address for any specific progression (they happen to reuse
+`¶17 p.11`, the same chunk the correction above found does *not* contain
+what was once claimed for it):
 
 ```json
 {
