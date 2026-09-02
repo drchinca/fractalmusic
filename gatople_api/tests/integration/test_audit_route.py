@@ -8,10 +8,16 @@ from __future__ import annotations
 from pathlib import Path
 
 from fastapi.testclient import TestClient
-from fractalmusic.generate import JsonCorpus, StubExpert
+from fractalmusic.generate import (
+    CandidateTrace,
+    GenerationRequest,
+    GenerationTrace,
+    JsonCorpus,
+    StubExpert,
+)
 
 from gatople_api.app import create_app
-from gatople_api.audit import build_audit_system
+from gatople_api.audit import build_audit_system, record_generation
 from gatople_api.llm_expert import LLMExpert
 from gatople_api.services import GatopleServices
 from gatople_api.settings import ChatSettings
@@ -132,3 +138,36 @@ def test_audit_unavailable_when_not_wired(tmp_path: Path) -> None:
     response = client.get("/api/audit/anything")
 
     assert response.status_code == 503
+
+
+async def test_cemaf_quality_trend_and_anomaly_detection_work_on_real_data() -> None:
+    # get_quality_trend()/get_anomalies() are CEMAF's own built-in
+    # analysis over an AuditLog — not something this integration writes
+    # itself. record_generation() uses AuditEntryType.EVAL_RESULT with a
+    # "score" payload key specifically so this analysis works on real
+    # generation history, not just resembles an audit log. This proves
+    # that claim rather than asserting it.
+    audit_log, audit_trail = build_audit_system()
+    request = GenerationRequest(tonic="A", mode="Eólico", length_events=8)
+
+    # Three runs: a normal one, a deliberately low-scoring one, and a
+    # deliberately high-scoring one — real statistical variance to detect.
+    for scores in [(0.95, 0.80, 0.70), (0.60, 0.55, 0.50), (0.99, 0.98, 0.97)]:
+        trace = GenerationTrace(
+            candidates=tuple(
+                CandidateTrace(source="expert", pattern_name="test", score_total=s, won=(i == 0))
+                for i, s in enumerate(scores)
+            ),
+            winner_source="expert",
+        )
+        await record_generation(audit_log=audit_log, run_id="run-x", request=request, trace=trace)
+
+    trend = await audit_trail.get_quality_trend(window=20)
+    assert trend == (0.95, 0.80, 0.70, 0.60, 0.55, 0.50, 0.99, 0.98, 0.97)
+
+    anomalies = await audit_trail.get_anomalies(threshold=1.0)
+    anomaly_scores = {a.payload["score"] for a in anomalies}
+    # The two outlier runs' scores must show up as anomalies; the "normal"
+    # middle run's scores must not.
+    assert {0.55, 0.50, 0.99, 0.98}.issubset(anomaly_scores)
+    assert 0.95 not in anomaly_scores
