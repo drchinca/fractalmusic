@@ -1,5 +1,7 @@
 import { type JSX, type RefObject } from "react";
 
+import { AuditTrail } from "./AuditTrail";
+import { runIdFromAudioUrl } from "./auditApi";
 import type { GeneratedPayload } from "./types";
 
 // Score.band measures adherence to the Sistema Fractal's own rules (mode
@@ -28,6 +30,7 @@ interface GeneratedResultProps {
 export function GeneratedResult({ payload, audioRef, activeRoleHour }: GeneratedResultProps): JSX.Element {
   const isLlmComposed = payload.provenance.book_hash === "llm-composed";
   const bandLabels = isLlmComposed ? LLM_BAND_LABELS : BOOK_BAND_LABELS;
+  const runId = payload.audio_url !== null ? runIdFromAudioUrl(payload.audio_url) : null;
   return (
     <article className="composer-result" aria-live="polite">
       <header className="composer-result-head">
@@ -86,6 +89,8 @@ export function GeneratedResult({ payload, audioRef, activeRoleHour }: Generated
         {payload.provenance.chapter !== null && <span> · {payload.provenance.chapter}</span>}
         {payload.provenance.quote !== null && <blockquote>{payload.provenance.quote}</blockquote>}
       </footer>
+
+      {runId !== null && <AuditTrail runId={runId} />}
     </article>
   );
 }
