@@ -55,7 +55,7 @@ target-version = "py314"
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.14"
 files = ["src"]
 warn_return_any = true
 warn_unused_configs = true

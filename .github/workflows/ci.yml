@@ -7,8 +7,16 @@ on:
 
 jobs:
   fractalmusic-core:
-    name: fractalmusic core (lint, types, tests, security)
+    name: fractalmusic core (py${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # pyproject.toml requires-python = ">=3.11" and lists 3.11-3.14 in its
+        # classifiers — this matrix is what makes that claim continuously
+        # true instead of a one-off local check. Lint/type/security run once,
+        # on the pinned dev version; every version runs the real test suite.
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@v7
 
@@ -16,12 +24,18 @@ jobs:
         uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
         with:
           enable-cache: true
+          python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: uv sync --extra dev --extra midi
+        run: uv sync --extra dev --extra midi --python ${{ matrix.python-version }}
 
       - name: Run make check (ruff, mypy, pytest, bandit)
+        if: matrix.python-version == '3.14'
         run: make check
+
+      - name: Run tests
+        if: matrix.python-version != '3.14'
+        run: uv run pytest
 
   web:
     name: web (eslint, typecheck, build)
