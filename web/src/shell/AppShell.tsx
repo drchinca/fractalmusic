@@ -4,9 +4,10 @@ import { ChatPanel } from "../chat/ChatPanel";
 import { ComposerPanel } from "../composer/ComposerPanel";
 import { DescribePanel } from "../composer/DescribePanel";
 import { GatopleApp } from "../gatople/GatopleApp";
+import { HarmonicsPanel } from "../harmonics/HarmonicsPanel";
 import { StrudelPanel } from "../strudel/StrudelPanel";
 
-type View = "gatople" | "chat" | "composer" | "strudel" | "describe";
+type View = "gatople" | "chat" | "composer" | "strudel" | "describe" | "harmonics";
 
 const HASH_TO_VIEW: Record<string, View> = {
   "#gatople": "gatople",
@@ -14,6 +15,7 @@ const HASH_TO_VIEW: Record<string, View> = {
   "#composer": "composer",
   "#strudel": "strudel",
   "#describe": "describe",
+  "#harmonics": "harmonics",
 };
 
 function readView(): View {
@@ -44,6 +46,8 @@ export function AppShell(): JSX.Element {
     body = <StrudelPanel />;
   } else if (view === "describe") {
     body = <DescribePanel />;
+  } else if (view === "harmonics") {
+    body = <HarmonicsPanel />;
   } else {
     body = <ComposerPanel />;
   }
@@ -83,6 +87,14 @@ export function AppShell(): JSX.Element {
           aria-current={view === "describe" ? "page" : undefined}
         >
           Describir
+        </button>
+        <button
+          type="button"
+          className={`app-nav-tab ${view === "harmonics" ? "is-active" : ""}`}
+          onClick={() => go("harmonics")}
+          aria-current={view === "harmonics" ? "page" : undefined}
+        >
+          Armónicos φ
         </button>
         <button
           type="button"
