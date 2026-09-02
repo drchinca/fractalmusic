@@ -104,7 +104,7 @@ _NOTE_ORDER: tuple[str, ...] = (
     "G",
     "G#",
 )
-_MODE_ORDER: tuple[str, ...] = (
+MODE_ORDER: tuple[str, ...] = (
     "Eólico",
     "Locrio",
     "Jónico",
@@ -133,7 +133,7 @@ class GenerateBody(BaseModel):
 def generate_options() -> dict[str, list[str]]:
     return {
         "tonics": [n for n in _NOTE_ORDER if n in NOTE_NAMES],
-        "modes": [m for m in _MODE_ORDER if m in MODE_NAMES],
+        "modes": [m for m in MODE_ORDER if m in MODE_NAMES],
         "flavors": [f for f in _FLAVOR_ORDER if f in FLAVORS],
     }
 

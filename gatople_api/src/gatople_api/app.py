@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from gatople_api.routes import chat as chat_route
 from gatople_api.routes import generate as generate_route
 from gatople_api.routes import health as health_route
+from gatople_api.routes import theory as theory_route
 from gatople_api.services import GatopleServices
 
 
@@ -29,4 +30,5 @@ def create_app(*, services: GatopleServices, cors_origins: tuple[str, ...] = ())
     app.include_router(health_route.router)
     app.include_router(chat_route.router)
     app.include_router(generate_route.router)
+    app.include_router(theory_route.router)
     return app

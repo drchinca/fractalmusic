@@ -4,8 +4,9 @@ import math
 
 import pytest
 from fractalmusic.geometry import (
+    CHORD_QUALITIES,
     PHI,
-    JazzChord,
+    Chord,
     Polygon2D,
     chord_polygon_2d,
     note_3d_coordinates,
@@ -53,9 +54,115 @@ def test_chord_polygon_2d_puts_hour_twelve_at_the_top():
     assert math.isclose(y, -1.0)
 
 
+def test_augmented_triad_via_chord_build_forms_equilateral_triangle():
+    # Same shape as test_augmented_triad_forms_equilateral_triangle_on_gatople_wheel,
+    # but through the Chord.build() convenience API instead of raw notes —
+    # this is the API the wheel's chord picker actually calls.
+    chord = Chord.build("C", "augmented")
+    assert chord.notes == ("C", "E", "G#")
+    assert chord.symbol == "Caug"
+    assert chord.polygon_2d().is_regular is True
+
+
+def test_diminished_seventh_via_chord_build_forms_a_square():
+    chord = Chord.build("A", "dim7")
+    assert chord.notes == ("A", "C", "D#", "F#")
+    assert chord.polygon_2d().is_regular is True
+
+
+def test_major_triad_notes_and_symbol():
+    chord = Chord.build("C", "major")
+    assert chord.notes == ("C", "E", "G")
+    assert chord.symbol == "C"
+
+
+def test_minor_triad_notes_and_symbol():
+    chord = Chord.build("A", "minor")
+    assert chord.notes == ("A", "C", "E")
+    assert chord.symbol == "Am"
+
+
+def test_diminished_triad_notes_and_symbol():
+    chord = Chord.build("B", "diminished")
+    assert chord.notes == ("B", "D", "F")
+    assert chord.symbol == "Bdim"
+
+
+def test_chord_qualities_is_the_closed_set_every_build_call_accepts():
+    assert set(CHORD_QUALITIES) == {
+        "major",
+        "minor",
+        "augmented",
+        "diminished",
+        "maj7",
+        "min7",
+        "dom7",
+        "m7b5",
+        "dim7",
+    }
+    for quality in CHORD_QUALITIES:
+        chord = Chord.build("A", quality)
+        assert chord.root == "A"
+        assert chord.quality == quality
+
+
+def test_augmented_triad_has_uniform_edge_consonance():
+    # Its geometric regularity (equilateral triangle) has a harmonic
+    # mirror: every edge is the same interval (a major third), so every
+    # edge's Pythagorean-ratio consonance must be identical too.
+    chord = Chord.build("A", "augmented")
+    consonances = chord.edge_consonance()
+    assert len(consonances) == 3
+    assert len(set(consonances)) == 1
+
+
+def test_maj7_edge_consonance_is_not_uniform():
+    # Unlike the augmented triad, a maj7's edges are different interval
+    # sizes (major third, minor third, major third, minor second back to
+    # root) — real harmonic tension, not just a classical label.
+    chord = Chord.build("C", "maj7")
+    consonances = chord.edge_consonance()
+    assert len(consonances) == 4
+    assert len(set(consonances)) > 1
+    assert all(0.0 < c <= 1.0 for c in consonances)
+
+
+def test_from_degree_resolves_through_the_wheel_not_a_bare_note():
+    # Degree I of Eólico under tonic A is A itself (Cardinal Invariant #1),
+    # so the augmented triad built from it is the same as Chord.build("A",
+    # "augmented") — but from_degree() is what the chord picker actually
+    # calls, and a note letter never appears in its own arguments.
+    from_degree = Chord.from_degree(tonic="A", mode="Eólico", degree=1, quality="augmented")
+    assert from_degree.notes == Chord.build("A", "augmented").notes
+    assert from_degree.root == "A"
+
+
+def test_from_degree_rotates_with_tonic():
+    # The exact same (mode, degree, quality) under two different tonics
+    # must resolve to different notes — a degree has no fixed identity
+    # independent of the tonic it's read against.
+    at_a = Chord.from_degree(tonic="A", mode="Dórico", degree=3, quality="minor")
+    at_d = Chord.from_degree(tonic="D", mode="Dórico", degree=3, quality="minor")
+    assert at_a.notes != at_d.notes
+
+
+def test_from_degree_rejects_out_of_range_degree():
+    with pytest.raises(ValueError, match="out of range"):
+        Chord.from_degree(tonic="A", mode="Eólico", degree=8, quality="major")
+    with pytest.raises(ValueError, match="out of range"):
+        Chord.from_degree(tonic="A", mode="PentaI", degree=6, quality="major")
+
+
+def test_from_degree_on_penta_mode_resolves_the_fifth_degree():
+    # PentaI under tonic A is (C#, D#, F#, G#, A#) — degree 5 is A#.
+    chord = Chord.from_degree(tonic="A", mode="PentaI", degree=5, quality="minor")
+    assert chord.root == "A#"
+    assert chord.notes == ("A#", "C#", "F")
+
+
 def test_jazz_seventh_chord_construction_and_geometry():
     # Build C Major 7th (C, E, G, B)
-    chord = JazzChord.build("C", "maj7")
+    chord = Chord.build("C", "maj7")
     assert chord.notes == ("C", "E", "G", "B")
     assert chord.symbol == "Cmaj7"
 
@@ -77,7 +184,7 @@ def test_jazz_seventh_chord_construction_and_geometry():
 
 def test_diminished_seventh_chord_notes():
     # Build A diminished 7th (A, C, D#, F#)
-    chord = JazzChord.build("A", "dim7")
+    chord = Chord.build("A", "dim7")
     assert chord.notes == ("A", "C", "D#", "F#")
     assert chord.symbol == "Adim7"
 
@@ -85,26 +192,26 @@ def test_diminished_seventh_chord_notes():
 def test_dominant_seventh_chord_notes():
     # G7: major triad + minor 7th (G, B, D, F). Previously untested — only
     # maj7 and dim7 had note-content assertions.
-    chord = JazzChord.build("G", "dom7")
+    chord = Chord.build("G", "dom7")
     assert chord.notes == ("G", "B", "D", "F")
     assert chord.symbol == "G7"
 
 
 def test_half_diminished_seventh_chord_notes():
     # A half-diminished: diminished triad + minor 7th (A, C, Eb/D#, G).
-    chord = JazzChord.build("A", "m7b5")
+    chord = Chord.build("A", "m7b5")
     assert chord.notes == ("A", "C", "D#", "G")
     assert chord.symbol == "Aø7"
 
 
 def test_jazz_chord_build_rejects_unknown_quality():
-    with pytest.raises(ValueError, match="unknown jazz chord quality"):
-        JazzChord.build("C", "made-up-quality")
+    with pytest.raises(ValueError, match="unknown chord quality"):
+        Chord.build("C", "made-up-quality")
 
 
 def test_jazz_chord_glyphs_matches_the_notes():
     # Previously never accessed by any test.
-    chord = JazzChord.build("C", "maj7")
+    chord = Chord.build("C", "maj7")
     assert chord.glyphs == ("□", "♀", "↓", "△")
 
 

@@ -1,7 +1,6 @@
 """Score realized events against the pattern's claimed mode + fractal shape."""
 
 from fractalmusic.formulas import PHI
-from fractalmusic.generate.realize import _scale_for_mode
 from fractalmusic.generate.types import Event, Pattern, Score
 from fractalmusic.wheel import Wheel
 
@@ -14,7 +13,7 @@ def _mode_membership(events: tuple[Event, ...], pattern: Pattern) -> tuple[float
     if not events:
         return 0.0, ["no events"]
     wheel = Wheel(tonic=pattern.tonic)
-    scale = set(_scale_for_mode(wheel=wheel, mode=pattern.mode))
+    scale = set(wheel.scale_for_mode(pattern.mode))
     in_mode = sum(1 for e in events if e.note in scale)
     ratio = in_mode / len(events)
     breaches: list[str] = []

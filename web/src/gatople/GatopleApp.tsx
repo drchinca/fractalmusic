@@ -1,7 +1,9 @@
-import { type JSX } from "react";
+import { type JSX, useState } from "react";
 
 import payloadJson from "../../public/data.json";
 import { BindingsTable } from "./components/BindingsTable";
+import { ChordOverlay } from "./components/ChordOverlay";
+import { ChordPicker } from "./components/ChordPicker";
 import { Fretboard } from "./components/Fretboard";
 import { PaletteToggle } from "./components/PaletteToggle";
 import { Piano } from "./components/Piano";
@@ -9,6 +11,7 @@ import { StepControls } from "./components/StepControls";
 import { Wheel } from "./components/Wheel";
 import { displayNote } from "./geometry";
 import { useGatople } from "./hooks/useGatople";
+import type { ChordGeometry } from "./theoryApi";
 import type { Chromatic, FretboardTable, Payload, Role, RotationTable } from "./types";
 
 // Static import of the canonical Python-derived snapshot. Vite types the JSON
@@ -48,6 +51,7 @@ function GatopleStage({
 }: GatopleStageProps): JSX.Element {
   const { tonicOffset, palette, setTonic, step, setPalette } =
     useGatople(chromatic);
+  const [chord, setChord] = useState<ChordGeometry | null>(null);
 
   const tonicNote = chromatic[tonicOffset];
   const eolicoRole = roles.find((r) => r.position === 0);
@@ -78,7 +82,18 @@ function GatopleStage({
             tonicOffset={tonicOffset}
             onSetTonic={setTonic}
             onStep={step}
-          />
+          >
+            {chord !== null && (
+              <ChordOverlay
+                notes={chord.notes}
+                symbol={chord.symbol}
+                isRegular={chord.polygon.is_regular}
+                roles={roles}
+                tonicOffset={tonicOffset}
+                rotations={rotations}
+              />
+            )}
+          </Wheel>
           <p className="tonic-readout">
             Tónica: <strong>{displayNote(tonicNote, enharmonic)}</strong>{" "}
             <span className="tonic-mode">({eolicoModeName})</span>
@@ -92,6 +107,24 @@ function GatopleStage({
         </div>
 
         <aside className="readout">
+          <ChordPicker tonic={tonicNote} onChordChange={setChord} />
+          {chord !== null && (
+            <div className="chord-readout" aria-live="polite">
+              <p className="chord-symbol">
+                {chord.symbol}
+                <span className="chord-glyphs">
+                  {chord.glyphs.map((g, i) => (
+                    <span key={i}>{g}</span>
+                  ))}
+                </span>
+              </p>
+              <p className="chord-notes">{chord.notes.join(" · ")}</p>
+              <p className="chord-tension">
+                Tensión (consonancia por lado):{" "}
+                {chord.edge_consonance.map((c) => c.toFixed(2)).join(" · ")}
+              </p>
+            </div>
+          )}
           <h2>Asignaciones actuales</h2>
           <BindingsTable
             roles={roles}
