@@ -65,7 +65,11 @@ repos:
     hooks:
       - id: pytest-check
         name: pytest-check (fractalmusic core)
-        entry: pytest
+        # `language: system` + a bare `pytest` entry only works if something's
+        # on PATH — this project never installs one there (uv + .venv only,
+        # per python-environment.md), so the bare form silently no-ops or
+        # errors "Executable not found" depending on the caller's shell.
+        entry: bash -c 'uv run pytest'
         language: system
         pass_filenames: false
         always_run: true
