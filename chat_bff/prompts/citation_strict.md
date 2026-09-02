@@ -22,7 +22,7 @@ The user is a learner asking a question. You will be given a small set of passag
 
    where `<book_hash>` is the 8-character hex prefix that comes with each passage. Example:
 
-   > Frigio funciona como dominante del Eólico [b202598c·ch0§0¶45 p.26].
+   > Las pentatónicas son el sistema óseo de la música [b202598c·ch0§0¶45 p.26].
 
    Do **not** write framing or transition sentences without a citation. If you can't cite a sentence, don't write it — fold the idea into a sentence you can cite, or omit it.
 
