@@ -166,3 +166,31 @@ def test_wheelmode_properties():
     assert bound.family == "hepta"
     assert bound.quality == "major"
     assert bound.clock_hour == 12
+
+
+def test_scale_for_mode_matches_mode_for_at_default_tonic():
+    # Wheel("A").scale_for_mode("Jónico") must agree with the equivalent
+    # mode_for(note).scale_notes() call — this method didn't change the
+    # math, only promoted a previously-private helper from realize.py to
+    # a public Wheel primitive every degree-based caller can share.
+    assert Wheel("A").scale_for_mode("Jónico") == Wheel("A").mode_for("C").scale_notes()
+
+
+def test_scale_for_mode_rotates_with_tonic():
+    # Same mode, different tonic -> a genuinely different scale, not just
+    # a relabeling — the whole point of Cardinal Invariant #2.
+    at_a = Wheel("A").scale_for_mode("Dórico")
+    at_fsharp = Wheel("F#").scale_for_mode("Dórico")
+    assert at_a != at_fsharp
+    assert len(at_a) == len(at_fsharp) == 7
+
+
+def test_scale_for_mode_resolves_penta_modes():
+    assert Wheel("A").scale_for_mode("PentaIII") == Wheel("A").penta("III")
+
+
+def test_scale_for_mode_degree_one_is_always_the_tonic_for_eolico():
+    # Degree I of Eólico is the tonic itself, at every tonic — the same
+    # invariant the wheel already guarantees for its own rotation.
+    for tonic in ("A", "D#", "G"):
+        assert Wheel(tonic).scale_for_mode("Eólico")[0] == tonic

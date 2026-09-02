@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from typing import Final, Self
 
 from fractalmusic.dodecamundo import world
+from fractalmusic.formulas import consonance
 from fractalmusic.wheel import clock_hour_for
 
 # The Golden Ratio — the load-bearing logistics of the fractal geometry
@@ -95,8 +96,13 @@ def chord_polygon_2d(notes: tuple[str, ...], *, tonic: str = "A") -> Polygon2D:
     return Polygon2D(vertices=tuple(vertices))
 
 
-# Seventh chord interval patterns (root, third, fifth, seventh) as semitones from root.
-_JAZZ_INTERVAL_MAP: Final[dict[str, tuple[int, int, int, int]]] = {
+# Interval patterns (semitones from root) for every chord quality the wheel
+# can draw — triads first (3 notes), then jazz seventh chords (4 notes).
+_CHORD_INTERVAL_MAP: Final[dict[str, tuple[int, ...]]] = {
+    "major": (0, 4, 7),
+    "minor": (0, 3, 7),
+    "augmented": (0, 4, 8),  # forms a perfect equilateral triangle on the wheel!
+    "diminished": (0, 3, 6),
     "maj7": (0, 4, 7, 11),  # Major 7th
     "min7": (0, 3, 7, 10),  # Minor 7th
     "dom7": (0, 4, 7, 10),  # Dominant 7th
@@ -104,53 +110,92 @@ _JAZZ_INTERVAL_MAP: Final[dict[str, tuple[int, int, int, int]]] = {
     "dim7": (0, 3, 6, 9),  # Fully-diminished 7th (forms a perfect square!)
 }
 
+_CHORD_SYMBOL_SUFFIX: Final[dict[str, str]] = {
+    "major": "",
+    "minor": "m",
+    "augmented": "aug",
+    "diminished": "dim",
+    "maj7": "maj7",
+    "min7": "min7",
+    "dom7": "7",
+    "m7b5": "ø7",
+    "dim7": "dim7",
+}
+
+CHORD_QUALITIES: Final[tuple[str, ...]] = tuple(_CHORD_INTERVAL_MAP)
+
 
 @dataclass(frozen=True)
-class JazzChord:
-    """A 4-note jazz seventh chord mapped onto 2D and 3D geometries."""
+class Chord:
+    """A triad or jazz seventh chord mapped onto 2D and 3D geometries."""
 
     root: str
-    quality: str  # "maj7" | "min7" | "dom7" | "m7b5" | "dim7"
-    notes: tuple[str, str, str, str]
+    quality: str  # one of CHORD_QUALITIES
+    notes: tuple[str, ...]
 
     @property
     def symbol(self) -> str:
-        """Chord symbol (e.g., 'Cmaj7', 'Amin7', 'G7')."""
-        suffix = {"maj7": "maj7", "min7": "min7", "dom7": "7", "m7b5": "ø7", "dim7": "dim7"}[
-            self.quality
-        ]
-        return f"{self.root}{suffix}"
+        """Chord symbol (e.g., 'Caug', 'Am', 'Cmaj7', 'G7')."""
+        return f"{self.root}{_CHORD_SYMBOL_SUFFIX[self.quality]}"
 
     @property
-    def glyphs(self) -> tuple[str, str, str, str]:
+    def glyphs(self) -> tuple[str, ...]:
         """Symbols for each note-world in the chord."""
-        n1, n2, n3, n4 = self.notes
-        return (world(n1).glyph, world(n2).glyph, world(n3).glyph, world(n4).glyph)
+        return tuple(world(n).glyph for n in self.notes)
 
     def polygon_2d(self, *, tonic: str = "A") -> Polygon2D:
-        """The 2D polygon representing this jazz chord on the Gátople wheel."""
+        """The 2D polygon representing this chord on the Gátople wheel."""
         return chord_polygon_2d(self.notes, tonic=tonic)
 
     def coordinates_3d(self) -> tuple[tuple[float, float, float], ...]:
         """The 3D coordinates representing the chord's face centers on the dodecahedron."""
         return tuple(note_3d_coordinates(n) for n in self.notes)
 
+    def edge_consonance(self) -> tuple[float, ...]:
+        """The book's own Pythagorean-ratio consonance for each polygon edge.
+
+        One value per edge, in vertex order (wrapping around), so it pairs
+        directly with `polygon_2d().vertices` — the classical quality label
+        (aug/dim/maj7/...) says what the chord is *called*; this says how
+        tense each of its actual intervals is, from the Sistema Fractal's
+        own etno-matemática (formulas.consonance), not borrowed jazz theory.
+        """
+        k = len(self.notes)
+        return tuple(consonance(self.notes[i], self.notes[(i + 1) % k]) for i in range(k))
+
+    @classmethod
+    def from_degree(cls, *, tonic: str, mode: str, degree: int, quality: str) -> Self:
+        """Build a Chord from a scale degree, not a bare note.
+
+        This is the entry point every caller outside this module should use.
+        A note letter has no fixed identity in this system — degree III of
+        Dórico under tonic F# is a different note than degree III of Dórico
+        under tonic A. Resolving through Wheel.scale_for_mode() is what
+        keeps that true here too (Cardinal Invariant #2).
+        """
+        from fractalmusic.wheel import Wheel
+
+        scale = Wheel(tonic=tonic).scale_for_mode(mode)
+        if not 1 <= degree <= len(scale):
+            raise ValueError(f"degree {degree} out of range 1..{len(scale)} for mode {mode!r}")
+        root = scale[degree - 1]
+        return cls.build(root, quality)
+
     @classmethod
     def build(cls, root: str, quality: str) -> Self:
-        """Deterministic constructor to build a JazzChord from its root and quality."""
-        if quality not in _JAZZ_INTERVAL_MAP:
-            raise ValueError(f"unknown jazz chord quality: {quality!r}")
-        intervals = _JAZZ_INTERVAL_MAP[quality]
+        """Lower-level constructor from an already-resolved root note.
+
+        Prefer from_degree() at any call site that has a tonic/mode/degree
+        to work with — this exists for callers (tests, from_degree itself)
+        that already have a concrete note in hand.
+        """
+        if quality not in _CHORD_INTERVAL_MAP:
+            raise ValueError(f"unknown chord quality: {quality!r}")
+        intervals = _CHORD_INTERVAL_MAP[quality]
 
         # Build chord notes by walking semitones from root
         from fractalmusic.wheel import CHROMATIC_ORDER, _note_index
 
         base = _note_index(root)
-        s1, s2, s3, s4 = intervals
-        notes = (
-            CHROMATIC_ORDER[(base + s1) % 12],
-            CHROMATIC_ORDER[(base + s2) % 12],
-            CHROMATIC_ORDER[(base + s3) % 12],
-            CHROMATIC_ORDER[(base + s4) % 12],
-        )
+        notes = tuple(CHROMATIC_ORDER[(base + s) % 12] for s in intervals)
         return cls(root=root, quality=quality, notes=notes)

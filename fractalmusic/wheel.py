@@ -20,6 +20,7 @@ from typing import Final
 from fractalmusic.modes import (
     ALL_MODES,
     CHROMATIC_ORDER,
+    MODE_BY_NOTE,
     PENTA_ROOTS,
     Mode,
     _clock_hour,
@@ -173,6 +174,23 @@ class Wheel:
             raise ValueError(f"unknown penta roman: {roman!r}") from error
         note = self.note_at_position(position)
         return WheelMode(note=note, role=ROLES[position]).scale_notes()
+
+    def scale_for_mode(self, mode: str) -> tuple[str, ...]:
+        """The scale notes for `mode` under this rotation.
+
+        This is the wheel's own degree→note resolver — the one primitive
+        that turns a scale degree (1-indexed into this tuple) into an
+        actual note. Everything that lets a caller pick "degree III of
+        Dórico" instead of a bare note letter should go through this, not
+        re-derive it (Cardinal Invariant: function lives on the wheel, not
+        on the note).
+        """
+        if mode.startswith("Penta"):
+            return self.penta(mode.removeprefix("Penta"))
+        canonical_note = next(n for n, m in MODE_BY_NOTE.items() if m.mode_name == mode)
+        position_at_default = _note_index(canonical_note)
+        note_under_role = self.note_at_position(position_at_default)
+        return self.mode_for(note_under_role).scale_notes()
 
 
 def spin(tonic: str) -> Wheel:

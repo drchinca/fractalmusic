@@ -4,6 +4,7 @@ import {
   type JSX,
   type KeyboardEvent as ReactKeyboardEvent,
   type PointerEvent as ReactPointerEvent,
+  type ReactNode,
 } from "react";
 
 import { SEG_DEG } from "../constants";
@@ -19,6 +20,10 @@ interface WheelProps {
   readonly tonicOffset: number;
   readonly onSetTonic: (note: string) => void;
   readonly onStep: (delta: number) => void;
+  // Rendered inside the same <svg>, after the wheel itself — shares this
+  // element's exact coordinate space (viewBox="-260 -260 520 520", origin
+  // at center) so an overlay never needs its own transform to line up.
+  readonly children?: ReactNode;
 }
 
 interface DragState {
@@ -47,6 +52,7 @@ export function Wheel({
   tonicOffset,
   onSetTonic,
   onStep,
+  children,
 }: WheelProps): JSX.Element {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [drag, setDrag] = useState<DragState | null>(null);
@@ -146,6 +152,7 @@ export function Wheel({
         onNoteClick={onSetTonic}
       />
       <CyclopsEye />
+      {children}
     </svg>
   );
 }

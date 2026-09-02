@@ -5,11 +5,9 @@ from typing import Final
 
 from fractalmusic.generate.types import (
     NOTE_NAMES,
-    PENTA_MODES,
     Event,
     Pattern,
 )
-from fractalmusic.modes import MODE_BY_NOTE
 from fractalmusic.wheel import ROLES, Wheel, _note_index
 
 A4_FREQ_HZ: Final[float] = 440.0
@@ -42,21 +40,6 @@ def freq_for(note: str, octave: int) -> float:
     return _freq_hz(note=note, octave=octave)
 
 
-def _scale_for_mode(wheel: Wheel, mode: str) -> tuple[str, ...]:
-    """Scale notes for `mode` rooted at the wheel's tonic.
-
-    For heptatonic modes the tonic itself sits at the matching role; for penta
-    modes we look up the canonical penta root and read the scale from there.
-    """
-    if mode in PENTA_MODES:
-        roman = mode.removeprefix("Penta")  # "PentaIII" → "III"
-        return wheel.penta(roman)
-    canonical_note = next(n for n, m in MODE_BY_NOTE.items() if m.mode_name == mode)
-    position_at_default = _note_index(canonical_note)
-    note_under_role = wheel.note_at_position(position_at_default)
-    return wheel.mode_for(note_under_role).scale_notes()
-
-
 def realize(pattern: Pattern, *, seed: int = 0, bpm: int = DEFAULT_BPM) -> tuple[Event, ...]:
     """Realize a Pattern into pre-baked Events.
 
@@ -67,7 +50,7 @@ def realize(pattern: Pattern, *, seed: int = 0, bpm: int = DEFAULT_BPM) -> tuple
     # Deterministic musical variation; not used for security.
     rng = random.Random(seed)  # nosec B311
     wheel = Wheel(tonic=pattern.tonic)
-    scale = _scale_for_mode(wheel=wheel, mode=pattern.mode)
+    scale = wheel.scale_for_mode(pattern.mode)
     seconds_per_beat = 60.0 / bpm
 
     events: list[Event] = []
