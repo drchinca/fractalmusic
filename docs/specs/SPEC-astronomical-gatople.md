@@ -1,6 +1,15 @@
+---
+title: astronomical-gatople — solar/diurnal mapping of the wheel
+status: Symbolic layer (not a verified physical claim)
+author: drchinca
+created: 2026-09-01
+---
+
 # Specification: Astronomical and Diurnal Mapping of the Gátople Wheel
 
-This specification outlines the profound astronomical, diurnal, and solar alignments of the **Gátople wheel clock face**. In *El Sistema Fractal*, the 12 hours of the wheel do not merely represent a Circle of Fourths progression; they correspond perfectly to the sun's diurnal cycle (times of day and solar positions) on an astronomical dial.
+> **Framing note (2026-09-01 audit).** This document describes a *symbolic/pedagogical* mapping this system's authors place onto the wheel — the 12-hour dial evenly divided into a 24-hour solar day — not a measured astronomical fact about the Gátople itself. No citation in the indexed fractal corpus (`f39cb7c5`, `b202598c`) was found asserting this solar correspondence (checked via `meridian-library search`); it is presented here as this project's own interpretive layer, in the same spirit as `docs/specs/WHITE-PAPER-fractal-music.md` §10, which this document should be read alongside. The mapping itself is internally consistent (each clock-hour step = 2 real hours, verified below) and is not in tension with anything — it just isn't a claim about the sun that requires outside evidence.
+
+This specification outlines the diurnal/solar mapping laid onto the **Gátople wheel clock face**. In *El Sistema Fractal*, the 12 hours of the wheel do not merely represent a Circle of Fourths progression; they are also read, symbolically, against the sun's diurnal cycle (times of day and solar positions) on an astronomical dial.
 
 ---
 
@@ -18,13 +27,13 @@ The Gátople wheel is aligned like an astronomical astrolabe where the four card
                                         │
       EASTERN HORIZON                   │                   WESTERN HORIZON
      [6:00 AM - Sunrise] ───────────────┼───────────────► [6:00 PM - Sunset]
-        A [Eólico] ⚪                   │                   ⚫ D# [Penta 2]
+        A [Eólico] ⚪                   │                   ⚫ D# [PentaII]
          [Two-Dots]                     │                      [Star]
             ⋮                           │                         ★
                                         │
                                         │
                                         ▼
-                                  F# [Penta 3] ⚫
+                                  F# [PentaIII] ⚫
                                      [Star]
                                         ★
                                 NADIR / MIDNIGHT
@@ -34,8 +43,8 @@ The Gátople wheel is aligned like an astronomical astrolabe where the four card
 ### The Cardinal Diurnal Anchors:
 *   **🌅 9 o'clock — Note $A$ (Eólico, Glyph `⋮` [Two-Dots])**: Represents the **Eastern Horizon / 6:00 AM (Sunrise)**. It is the matriarchal horizon anchor of the entire system.
 *   **☀️ 12 o'clock — Note $C$ (Jónico, Glyph `□` [Square])**: Represents the **Zenith / 12:00 PM (Noon)**. This is the "square-up" zenith node of maximum cosmic light.
-*   **🌇 3 o'clock — Note $D\#$ (Penta 2, Glyph `★` [Star])**: Represents the **Western Horizon / 6:00 PM (Sunset)**.
-*   **🌙 6 o'clock — Note $F\#$ (Penta 3, Glyph `★` [Star])**: Represents the **Nadir / 12:00 AM (Midnight)**. This is the "fully south node", representing the absolute depths of darkness and rest.
+*   **🌇 3 o'clock — Note $D\#$ (PentaII, Glyph `★` [Star])**: Represents the **Western Horizon / 6:00 PM (Sunset)**.
+*   **🌙 6 o'clock — Note $F\#$ (PentaIII, Glyph `★` [Star])**: Represents the **Nadir / 12:00 AM (Midnight)**. This is the "fully south node", representing the absolute depths of darkness and rest.
 
 ---
 
@@ -86,7 +95,7 @@ This draws a **perfectly regular equilateral triangle** on the wheel, placing it
 ```
 
 ### Diminished Seventh (The Chromatic Square)
-A diminished 7th chord (e.g., Adim7: A–C–D#–F#) divides the 12 chromatic semitones into perfectly symmetric 3-semitone sectors `(0, 3, 6, 9)`. 
+A diminished 7th chord (e.g., Adim7: A–C–D#–F#) divides the 12 chromatic semitones into perfectly symmetric 3-semitone sectors `(0, 3, 6, 9)`.
 
 On the Gátople wheel (the Circle of Fourths), this connects the four cardinal points:
 *   A sits at 9 o'clock (6:00 AM)

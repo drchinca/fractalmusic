@@ -52,6 +52,7 @@ class GatoplePayload(TypedDict):
     roles: list[RoleEntry]
     penta_roots: list[PentaRootEntry]
 
+
 CARTA_NAMES: tuple[str, ...] = (
     "Dos Puntos",
     "Estrella V",

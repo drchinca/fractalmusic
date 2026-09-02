@@ -18,6 +18,8 @@ from fractalmusic.generate import (
     to_strudel_payload,
     to_web_payload,
 )
+from fractalmusic.generate.loop import _adapt_length
+from fractalmusic.generate.realize import _midi_number
 from fractalmusic.wheel import Wheel
 
 PROV = Provenance(book_hash="b202598c", book_title="El Sistema Fractal")
@@ -52,6 +54,49 @@ def test_generation_request_validates_inputs():
         GenerationRequest(tonic="A", mode="Klingon", length_events=8)
     with pytest.raises(ValueError):
         GenerationRequest(tonic="A", mode="Eólico", length_events=2)
+    with pytest.raises(ValueError, match="flavor"):
+        GenerationRequest(tonic="A", mode="Eólico", length_events=8, flavor="jazz-hands")
+
+
+def test_pattern_rejects_unknown_tonic():
+    with pytest.raises(ValueError, match="tonic"):
+        Pattern(
+            name="bad",
+            tonic="H",
+            mode="Eólico",
+            degrees=(1, 2, 3, 4),
+            rhythm=(1.0, 1.0, 1.0, 1.0),
+            provenance=PROV,
+        )
+
+
+def test_pattern_rejects_unknown_mode():
+    with pytest.raises(ValueError, match="mode"):
+        Pattern(
+            name="bad",
+            tonic="A",
+            mode="Klingon",
+            degrees=(1, 2, 3, 4),
+            rhythm=(1.0, 1.0, 1.0, 1.0),
+            provenance=PROV,
+        )
+
+
+def test_pattern_rejects_empty_degrees():
+    with pytest.raises(ValueError, match="non-empty"):
+        Pattern(name="bad", tonic="A", mode="Eólico", degrees=(), rhythm=(), provenance=PROV)
+
+
+def test_pattern_rejects_mismatched_rhythm_length():
+    with pytest.raises(ValueError, match="rhythm length"):
+        Pattern(
+            name="bad",
+            tonic="A",
+            mode="Eólico",
+            degrees=(1, 2, 3, 4),
+            rhythm=(1.0, 1.0),
+            provenance=PROV,
+        )
 
 
 def test_pattern_rejects_out_of_range_degrees_for_penta():
@@ -59,7 +104,7 @@ def test_pattern_rejects_out_of_range_degrees_for_penta():
         Pattern(
             name="bad",
             tonic="A",
-            mode="Penta 1",
+            mode="PentaI",
             degrees=(1, 2, 6),
             rhythm=(1.0, 1.0, 1.0),
             provenance=PROV,
@@ -112,7 +157,7 @@ def test_realize_attaches_role_hour_and_carta_glyph():
 def test_realize_penta_uses_penta_scale():
     pattern = _pattern(
         tonic="A",
-        mode="Penta 1",
+        mode="PentaI",
         degrees=(1, 2, 3, 4, 5, 1),
     )
     events = realize(pattern)
@@ -131,9 +176,13 @@ def test_score_full_in_mode_yields_high_membership():
 
 
 def test_score_band_brackets():
+    # Was previously a tautology: `band` can only ever return one of these
+    # three strings, so membership in the full set can never fail. Pin the
+    # actual threshold behavior instead.
     pattern = _pattern()
     s = score(events=realize(pattern), pattern=pattern)
-    assert s.band in {"strong", "tentative", "exploratory"}
+    assert s.total >= 0.85  # this pattern's total (0.9266) is "strong"
+    assert s.band == "strong"
 
 
 # --- Web payload + MIDI ------------------------------------------------------
@@ -237,6 +286,27 @@ def test_to_strudel_code_sanitizes_metadata_comments():
     assert "// warning: rhythm_quantized_to_event_sequence" in code
 
 
+def test_to_strudel_code_rejects_empty_events():
+    pattern = _pattern()
+    with pytest.raises(ValueError, match="at least one Event"):
+        to_strudel_code(pattern=pattern, events=(), score=score(events=(), pattern=pattern))
+
+
+def test_to_strudel_code_includes_page_comment_when_provenance_has_one():
+    pattern = Pattern(
+        name="test",
+        tonic="A",
+        mode="Eólico",
+        degrees=(1, 2, 3, 4),
+        rhythm=(1.0, 1.0, 1.0, 1.0),
+        provenance=Provenance(book_hash="b202598c", book_title="El Sistema Fractal", page=26),
+    )
+    events = realize(pattern)
+    s = score(events=events, pattern=pattern)
+    code = to_strudel_code(pattern=pattern, events=events, score=s)
+    assert "// page: 26" in code
+
+
 def test_to_midi_writes_a_file(tmp_path: Path):
     pattern = _pattern()
     events = realize(pattern)
@@ -257,11 +327,128 @@ def test_research_loop_produces_in_mode_result(tmp_path: Path):
 
 
 def test_research_loop_persists_winners(tmp_path: Path):
+    # Was previously conditional (`if score >= 0.75: assert ...`), so it
+    # passed trivially whenever the score happened to fall short — neither
+    # branch of the persistence gate was ever deliberately forced. This
+    # request+StubExpert combination deterministically scores 0.9189.
     request = GenerationRequest(tonic="A", mode="Eólico", length_events=8)
     corpus = JsonCorpus(root=tmp_path / "patterns")
     result = research_loop(request=request, expert=StubExpert(), corpus=corpus)
-    if result.score.total >= 0.75:
-        assert any((tmp_path / "patterns").iterdir())
+    assert result.score.total >= 0.75
+    assert any((tmp_path / "patterns").iterdir())
+
+
+class _FlatLowScoreExpert:
+    """Deliberately bad candidate: same degree repeated, ragged rhythm."""
+
+    def query(self, request: GenerationRequest) -> Pattern:
+        return Pattern(
+            name="flat",
+            tonic=request.tonic,
+            mode=request.mode,
+            degrees=(1, 1, 1, 1),
+            rhythm=(1.0, 0.5, 1.0, 0.5),
+            provenance=Provenance(book_hash="b202598c", book_title="El Sistema Fractal"),
+        )
+
+
+def test_research_loop_does_not_persist_below_threshold_scores(tmp_path: Path):
+    request = GenerationRequest(tonic="A", mode="Eólico", length_events=4)
+    corpus = JsonCorpus(root=tmp_path / "patterns")
+    result = research_loop(request=request, expert=_FlatLowScoreExpert(), corpus=corpus)
+    assert result.score.total == 0.65
+    assert list((tmp_path / "patterns").iterdir()) == []
+
+
+class _ExactThresholdExpert:
+    """Every candidate scores exactly SCORE_THRESHOLD (0.75) — the boundary."""
+
+    def query(self, request: GenerationRequest) -> Pattern:
+        n = request.length_events
+        return Pattern(
+            name="boundary",
+            tonic=request.tonic,
+            mode=request.mode,
+            degrees=(1,) * n,
+            rhythm=(1.0,) * n,
+            provenance=Provenance(book_hash="b202598c", book_title="El Sistema Fractal"),
+        )
+
+
+def test_research_loop_persists_at_exact_threshold_boundary(tmp_path: Path):
+    # SCORE_THRESHOLD is a >= gate, not >: a pattern scoring exactly 0.75
+    # must still persist. Neither existing test lands exactly on 0.75.
+    request = GenerationRequest(tonic="A", mode="Eólico", length_events=8)
+    corpus = JsonCorpus(root=tmp_path / "patterns")
+    result = research_loop(request=request, expert=_ExactThresholdExpert(), corpus=corpus)
+    assert result.score.total == 0.75
+    assert any((tmp_path / "patterns").iterdir())
+
+
+class _VaryingQualityExpert:
+    """Returns a mix of candidates so best-of-N has something to select."""
+
+    def __init__(self) -> None:
+        self._calls = 0
+
+    def query(self, request: GenerationRequest) -> Pattern:
+        self._calls += 1
+        prov = Provenance(book_hash="b202598c", book_title="El Sistema Fractal")
+        if self._calls == 3:
+            # the one genuinely good candidate, buried in the middle.
+            return Pattern(
+                name="rich",
+                tonic=request.tonic,
+                mode=request.mode,
+                degrees=(1, 2, 3, 4, 5, 4, 3, 1),
+                rhythm=(1.0,) * 8,
+                provenance=prov,
+            )
+        return Pattern(
+            name="flat",
+            tonic=request.tonic,
+            mode=request.mode,
+            degrees=(1,) * 8,
+            rhythm=(1.0,) * 8,
+            provenance=prov,
+        )
+
+
+def test_research_loop_selects_the_highest_scoring_candidate(tmp_path: Path):
+    # Every existing StubExpert/_FlatLowScoreExpert-based test returns the
+    # SAME pattern on all 5 candidate calls, so best-of-N never actually had
+    # anything to choose between — min-selection and max-selection are
+    # indistinguishable when every candidate is identical. This forces real
+    # variance: candidate 3 of 5 is the only high scorer.
+    request = GenerationRequest(tonic="A", mode="Eólico", length_events=8)
+    corpus = JsonCorpus(root=tmp_path / "patterns")
+    result = research_loop(request=request, expert=_VaryingQualityExpert(), corpus=corpus)
+    assert result.pattern.name == "rich"
+    assert result.score.total == 0.9266
+
+
+def test_adapt_length_is_a_noop_when_length_already_matches():
+    pattern = _pattern(degrees=(1, 2, 3, 4), rhythm=(1.0, 1.0, 1.0, 1.0))
+    assert _adapt_length(pattern, 4) is pattern
+
+
+def test_adapt_length_stretches_by_cycling_degrees_and_rhythm():
+    pattern = _pattern(degrees=(1, 2, 3, 4), rhythm=(1.0, 1.0, 1.0, 1.0))
+    stretched = _adapt_length(pattern, 8)
+    assert stretched.degrees == (1, 2, 3, 4, 1, 2, 3, 4)
+    assert stretched.rhythm == (1.0,) * 8
+
+
+def test_midi_number_rejects_unknown_note():
+    with pytest.raises(ValueError, match="unknown note"):
+        _midi_number(note="H", octave=4)
+
+
+def test_adapt_length_truncates_to_the_requested_length():
+    pattern = _pattern(degrees=(1, 2, 3, 4, 5, 6), rhythm=(1.0, 2.0, 1.0, 1.0, 1.0, 1.0))
+    truncated = _adapt_length(pattern, 4)
+    assert truncated.degrees == (1, 2, 3, 4)
+    assert truncated.rhythm == (1.0, 2.0, 1.0, 1.0)
 
 
 def test_corpus_round_trip(tmp_path: Path):

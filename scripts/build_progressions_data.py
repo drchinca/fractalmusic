@@ -72,7 +72,7 @@ class StepInput(TypedDict):
 
 
 def _parse_improvise_in(text: str) -> tuple[str, str]:
-    """Split 'A Eólico' / 'D# Penta 2' / 'C# Penta 1' into (note, mode_name)."""
+    """Split 'A Eólico' / 'D# PentaII' / 'C# PentaI' into (note, mode_name)."""
     head, _, tail = text.partition(" ")
     return head, tail
 

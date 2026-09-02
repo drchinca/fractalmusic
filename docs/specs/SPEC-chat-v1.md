@@ -1,9 +1,11 @@
 ---
 title: chat-v1 — pregunta a los libros
-status: Draft
+status: Implemented
 author: drchinca
 created: 2026-06-19
 ---
+
+> **2026-09-01 audit:** verified against the shipped code — `chat_bff/src/chat_bff/routes/chat.py` implements `POST /api/chat`; `chat_bff/tests/eval/calibration_results.md` is a real, non-fabricated calibration run backing the I-3 threshold (0.79) and F1/precision/recall figures below.
 
 # SPEC-chat-v1 — pregunta a los libros
 

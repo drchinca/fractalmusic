@@ -76,7 +76,7 @@ def show_combinations() -> str:
         ("C major triad", ["C", "E", "G"]),
         ("Cero Pitágoras (A)", cero_pitagoras("A")),
         ("A blues-ish", ["A", "C", "D", "D#", "E", "G"]),
-        ("Penta 1 (C#)", list(penta("C#", mode="I").notes)),
+        ("PentaI (C#)", list(penta("C#", mode="I").notes)),
     ]
     for name, notes in samples:
         lines.append(f"{name:<22} {' '.join(f'{n:<2}' for n in notes):<22} {spell(notes)}")

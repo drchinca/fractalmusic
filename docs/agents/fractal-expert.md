@@ -46,16 +46,17 @@ Result
 
 ### A. CLI (zero wiring)
 
+**2026-09-01 correction:** `meridian-research` has no `--book` flag (verified against `uv run meridian-research --help`; it only supports `--shelf`, which is too coarse here — the two fractal books sit on *different* shelves, `Metodo-Fractal` and `Music-Theory-and-Songbooks`, and the latter shelf holds other, unrelated books). The prior version of this example used `--book` and would fail with `unrecognized arguments`. For book-hash-scoped retrieval, use `meridian-library search` directly instead — it does support `--book HASH_OR_TITLE` (repeatable):
+
 ```bash
-cd iccha_context_multi_agent/meridian_research
-uv run meridian-research "explain the dodecamundo and how it relates to the gatople" \
-  --source library \
-  --library-index ~/.meridian/library \
+cd iccha_context_multi_agent/meridian_library
+uv run meridian-library search "explain the dodecamundo and how it relates to the gatople" \
+  --index-dir ~/.meridian/library \
   --book f39cb7c5 --book b202598c \
-  --hybrid
+  --hybrid --k 5 --full
 ```
 
-This is the fastest path. Use it for ad-hoc lookups and to validate the corpus before wiring anything heavier.
+This is the fastest path for ad-hoc lookups and citation verification (this is the exact tool used to verify every fractal-corpus citation in `docs/specs/WHITE-PAPER-fractal-music.md`). Reach for the full `meridian-research` essay pipeline in §B below only when you actually need a synthesized, multi-source answer rather than raw cited chunks.
 
 ### B. CEMAF agent in code
 

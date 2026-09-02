@@ -26,10 +26,7 @@ def test_parses_ascii_fallback_form() -> None:
 
 
 def test_multiple_sentences_each_get_their_citations() -> None:
-    text = (
-        "First claim [f39cb7c5·ch0§0¶3 p.4]. "
-        "Second claim [b202598c·ch0§0¶17 p.11]."
-    )
+    text = "First claim [f39cb7c5·ch0§0¶3 p.4]. Second claim [b202598c·ch0§0¶17 p.11]."
     claims = parse_answer(text)
     assert len(claims) == 2
     assert claims[0].citations[0].book_hash == "f39cb7c5"

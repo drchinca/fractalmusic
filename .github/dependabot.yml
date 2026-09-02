@@ -1,0 +1,51 @@
+version: 2
+updates:
+  # fractalmusic core — uv/pip
+  - package-ecosystem: "pip"
+    directory: "/"
+    target-branch: "develop"
+    schedule:
+      interval: "weekly"
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
+
+  # web/ — npm. This is exactly the ecosystem that had 4 unpatched high-
+  # severity transitive vulnerabilities (brace-expansion, browserslist,
+  # nanoid, postcss) sitting undetected until this was manually audited
+  # 2026-09-01 — the whole point of wiring this up.
+  - package-ecosystem: "npm"
+    directory: "/web"
+    target-branch: "develop"
+    schedule:
+      interval: "weekly"
+    groups:
+      npm-dependencies:
+        patterns:
+          - "*"
+
+  # Keep the CI workflow's own action pins (actions/checkout, setup-node,
+  # setup-uv) current — including the SHA-pinned astral-sh/setup-uv, which
+  # Dependabot resolves and updates by SHA, not just by tag.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "develop"
+    schedule:
+      interval: "weekly"
+
+# chat_bff/ is intentionally NOT covered here, for the same reason it's
+# excluded from ci.yml: its pyproject.toml depends on cemaf and
+# meridian_library via local filesystem paths that aren't a git repository
+# Dependabot (or anything else) could resolve. Its *other* real
+# dependencies (fastapi, anthropic, numpy, etc.) go unmonitored until that
+# structural gap is fixed — see ci.yml's comment for the options.
+#
+# target-branch: develop above only affects scheduled *version* updates.
+# GitHub's Dependabot *security* updates (triggered by vulnerability
+# alerts, e.g. CVE-driven single-package PRs) always target the repo's
+# default branch (master here) — this is a platform limitation, not
+# configurable from this file. Because of that, "automated security
+# fixes" is deliberately left OFF for this repo (vulnerability alerts stay
+# on); CVEs found this way get triaged and fixed by hand on a feature
+# branch into develop, same as any other change here.

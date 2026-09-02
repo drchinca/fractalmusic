@@ -1,6 +1,6 @@
 """Reverb: convolution with an IR file if available, else a Schroeder-style
-algorithmic hall built from numpy primitives. Both return a stereo pair
-(or mono if input is mono)."""
+algorithmic hall built from numpy primitives. Always mono in, mono out —
+stereo loaded IRs are averaged down to mono before convolving."""
 
 from pathlib import Path
 

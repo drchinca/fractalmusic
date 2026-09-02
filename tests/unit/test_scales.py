@@ -1,9 +1,12 @@
 """Unit tests — pentatonic-first scales and the 60 microstructures."""
 
 import pytest
+from fractalmusic.dodecamundo import world
 from fractalmusic.scales import (
     ORIGIN_NOTE,
     PENTA_MODES,
+    FractalScale,
+    _steps_of,
     microstructures,
     mode_scale,
     penta,
@@ -62,3 +65,19 @@ def test_unknown_penta_mode_raises():
 def test_scale_glyphs_property():
     # A-Eólico scale glyphs follow the mode glyph order A B C D E F G.
     assert mode_scale("A").glyphs == ("⋮", "△", "□", "+", "♀", "↑", "↓")
+
+
+def test_steps_of_wraps_last_note_back_to_first():
+    # A -> B is 2 semitones, B -> G# is 9, and the *wraparound* G# -> A is the
+    # only semitone in the triplet. Isolates that _steps_of includes the
+    # last-to-first step, not just the internal consecutive pairs — every
+    # book-canonical scale happens to have a non-wrap semitone too, so this
+    # needs a synthetic worlds tuple to pin the wraparound specifically.
+    worlds = (world("A"), world("B"), world("G#"))
+    assert _steps_of(worlds) == [2, 9, 1]
+
+
+def test_has_semitone_true_only_from_the_wraparound_step():
+    worlds = (world("A"), world("B"), world("G#"))
+    scale = FractalScale(name="synthetic", root="A", family="hepta", worlds=worlds)
+    assert scale.has_semitone is True

@@ -1,6 +1,5 @@
 """Validator tests. The similarity fn is injected; no patch() anywhere."""
 
-
 from chat_bff.citations.parser import parse_answer
 from chat_bff.citations.validator import (
     ChunkLookup,
@@ -45,8 +44,7 @@ async def test_no_citations_at_all() -> None:
 
 async def test_uncited_claim_among_cited_ones() -> None:
     claims = parse_answer(
-        "Frigio is dominant of Eólico [b202598c·ch0§0¶17 p.11]. "
-        "And another point with no cite."
+        "Frigio is dominant of Eólico [b202598c·ch0§0¶17 p.11]. And another point with no cite."
     )
     out = await validate_answer(
         claims=claims,
@@ -59,9 +57,7 @@ async def test_uncited_claim_among_cited_ones() -> None:
 
 async def test_membership_failure_on_fabricated_chunk() -> None:
     """The exact §4 'hash-fabrication' scenario from the spec."""
-    claims = parse_answer(
-        "Frigio is dominant of Eólico [f39cb7c5·ch99§9¶999 p.999]."
-    )
+    claims = parse_answer("Frigio is dominant of Eólico [f39cb7c5·ch99§9¶999 p.999].")
     out = await validate_answer(
         claims=claims,
         retrieved=_RETRIEVED,
@@ -73,9 +69,7 @@ async def test_membership_failure_on_fabricated_chunk() -> None:
 
 
 async def test_low_fidelity_rejects() -> None:
-    claims = parse_answer(
-        "Frigio is dominant of Eólico [b202598c·ch0§0¶17 p.11]."
-    )
+    claims = parse_answer("Frigio is dominant of Eólico [b202598c·ch0§0¶17 p.11].")
     out = await validate_answer(
         claims=claims,
         retrieved=_RETRIEVED,
@@ -107,9 +101,7 @@ async def test_repetition_gaming_caught_by_fidelity() -> None:
 
 
 async def test_happy_path_returns_ok_with_verified_citations() -> None:
-    claims = parse_answer(
-        "El Dodecamundo es doce mundos [b202598c·ch0§0¶27 p.16]."
-    )
+    claims = parse_answer("El Dodecamundo es doce mundos [b202598c·ch0§0¶27 p.16].")
     out = await validate_answer(
         claims=claims,
         retrieved=_RETRIEVED,

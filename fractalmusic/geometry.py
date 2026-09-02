@@ -21,18 +21,18 @@ PHI: Final[float] = (1.0 + math.sqrt(5.0)) / 2.0  # ≈ 1.6180339887
 # The 12 vertices of a regular icosahedron (dual of the regular dodecahedron).
 # Each vertex is a 3D coordinate (x, y, z) that maps deterministically to one of the 12 worlds.
 _ICOSAHEDRON_VERTICES: Final[tuple[tuple[float, float, float], ...]] = (
-    (0.0, 1.0, PHI),      # v0 -> A
-    (0.0, -1.0, PHI),     # v1 -> A#
-    (0.0, 1.0, -PHI),     # v2 -> B
-    (0.0, -1.0, -PHI),    # v3 -> C
-    (1.0, PHI, 0.0),      # v4 -> C#
-    (-1.0, PHI, 0.0),     # v5 -> D
-    (1.0, -PHI, 0.0),     # v6 -> D#
-    (-1.0, -PHI, 0.0),    # v7 -> E
-    (PHI, 0.0, 1.0),      # v8 -> F
-    (-PHI, 0.0, 1.0),     # v9 -> F#
-    (PHI, 0.0, -1.0),     # v10 -> G
-    (-PHI, 0.0, -1.0),    # v11 -> G#
+    (0.0, 1.0, PHI),  # v0 -> A
+    (0.0, -1.0, PHI),  # v1 -> A#
+    (0.0, 1.0, -PHI),  # v2 -> B
+    (0.0, -1.0, -PHI),  # v3 -> C
+    (1.0, PHI, 0.0),  # v4 -> C#
+    (-1.0, PHI, 0.0),  # v5 -> D
+    (1.0, -PHI, 0.0),  # v6 -> D#
+    (-1.0, -PHI, 0.0),  # v7 -> E
+    (PHI, 0.0, 1.0),  # v8 -> F
+    (-PHI, 0.0, 1.0),  # v9 -> F#
+    (PHI, 0.0, -1.0),  # v10 -> G
+    (-PHI, 0.0, -1.0),  # v11 -> G#
 )
 
 
@@ -101,7 +101,7 @@ _JAZZ_INTERVAL_MAP: Final[dict[str, tuple[int, int, int, int]]] = {
     "min7": (0, 3, 7, 10),  # Minor 7th
     "dom7": (0, 4, 7, 10),  # Dominant 7th
     "m7b5": (0, 3, 6, 10),  # Half-diminished 7th
-    "dim7": (0, 3, 6, 9),   # Fully-diminished 7th (forms a perfect square!)
+    "dim7": (0, 3, 6, 9),  # Fully-diminished 7th (forms a perfect square!)
 }
 
 
@@ -116,13 +116,16 @@ class JazzChord:
     @property
     def symbol(self) -> str:
         """Chord symbol (e.g., 'Cmaj7', 'Amin7', 'G7')."""
-        suffix = {"maj7": "maj7", "min7": "min7", "dom7": "7", "m7b5": "ø7", "dim7": "dim7"}[self.quality]
+        suffix = {"maj7": "maj7", "min7": "min7", "dom7": "7", "m7b5": "ø7", "dim7": "dim7"}[
+            self.quality
+        ]
         return f"{self.root}{suffix}"
 
     @property
     def glyphs(self) -> tuple[str, str, str, str]:
         """Symbols for each note-world in the chord."""
-        return tuple(world(n).glyph for n in self.notes)
+        n1, n2, n3, n4 = self.notes
+        return (world(n1).glyph, world(n2).glyph, world(n3).glyph, world(n4).glyph)
 
     def polygon_2d(self, *, tonic: str = "A") -> Polygon2D:
         """The 2D polygon representing this jazz chord on the Gátople wheel."""
@@ -141,6 +144,13 @@ class JazzChord:
 
         # Build chord notes by walking semitones from root
         from fractalmusic.wheel import CHROMATIC_ORDER, _note_index
+
         base = _note_index(root)
-        notes = tuple(CHROMATIC_ORDER[(base + semitones) % 12] for semitones in intervals)
+        s1, s2, s3, s4 = intervals
+        notes = (
+            CHROMATIC_ORDER[(base + s1) % 12],
+            CHROMATIC_ORDER[(base + s2) % 12],
+            CHROMATIC_ORDER[(base + s3) % 12],
+            CHROMATIC_ORDER[(base + s4) % 12],
+        )
         return cls(root=root, quality=quality, notes=notes)

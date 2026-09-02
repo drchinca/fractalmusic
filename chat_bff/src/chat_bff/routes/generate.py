@@ -73,7 +73,7 @@ log = structlog.get_logger("chat_bff.generate")
 
 def get_services(request: Request) -> ChatServices:
     services = getattr(request.app.state, "services", None)
-    if services is None:
+    if not isinstance(services, ChatServices):
         raise RuntimeError("ChatServices not attached to app.state — wire create_app correctly.")
     return services
 
@@ -100,11 +100,11 @@ _MODE_ORDER: tuple[str, ...] = (
     "Frigio",
     "Lidio",
     "Mixolidio",
-    "Penta 1",
-    "Penta 2",
-    "Penta 3",
-    "Penta 4",
-    "Penta 5",
+    "PentaI",
+    "PentaII",
+    "PentaIII",
+    "PentaIV",
+    "PentaV",
 )
 _FLAVOR_ORDER: tuple[Flavor, ...] = ("free", "penta-walk", "carta-progression")
 
@@ -205,9 +205,7 @@ def _fallback_book_guidance(
     result: GenerationResult,
 ) -> list[StrudelBookGuidancePayload]:
     provenance = result.pattern.provenance
-    quote = provenance.quote or (
-        f"{result.pattern.tonic} {result.pattern.mode} desde la rueda fractal."
-    )
+    quote = provenance.quote or (f"{result.pattern.tonic} {result.pattern.mode} desde la rueda fractal.")
     return [
         {
             "book_hash": short_hash(provenance.book_hash),
@@ -293,9 +291,7 @@ async def _book_guidance_for_strudel(
         reverse=True,
     )
     selected = tuple(
-        chunk
-        for _, chunk in ranked
-        if _guidance_relevance_score(chunk, body) >= _MIN_THEORY_SCORE
+        chunk for _, chunk in ranked if _guidance_relevance_score(chunk, body) >= _MIN_THEORY_SCORE
     )[:_STRUDEL_GUIDANCE_K]
     if not selected:
         return _fallback_book_guidance(body=body, result=result)

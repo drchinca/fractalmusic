@@ -74,17 +74,17 @@ Cada mundo lleva el glifo de su modo (cap. 8, "Música de Colores"):
 | Nota | Modo | Glifo | Calidad | Hora | Color |
 |------|------|:-----:|---------|:----:|-------|
 | A | Eólico | `⋮` Dos Puntos | menor | 9 | rojo |
-| A♯ | Penta 5 | `★ V` Estrella V | menor | 2 | azul profundo |
+| A♯ | PentaV | `★ V` Estrella V | menor | 2 | azul profundo |
 | B | Locrio | `△` Triángulo | disminuido | 7 | verde |
 | C | Jónico | `■` Casita | mayor | 12 | rojo (techo) |
-| C♯ | Penta 1 | `★ I` Estrella I | menor | 5 | azul agua + naranja |
+| C♯ | PentaI | `★ I` Estrella I | menor | 5 | azul agua + naranja |
 | D | Dórico | `+` Más / Cruz | menor | 10 | verde |
-| D♯ | Penta 2 | `★ II` Estrella II | menor | 3 | azul + sol naranja |
+| D♯ | PentaII | `★ II` Estrella II | menor | 3 | azul + sol naranja |
 | E | Frigio | `♀` Llave (koppa) | menor | 8 | rojo |
 | F | Lidio | `↑` Flecha arriba | mayor | 1 | azul cielo |
-| F♯ | Penta 3 | `★ III` Estrella III | mayor | 6 | rojo (casa de Gátople) |
+| F♯ | PentaIII | `★ III` Estrella III | mayor | 6 | rojo (casa de Gátople) |
 | G | Mixolidio | `↓` Flecha abajo | mayor | 11 | verde |
-| G♯ | Penta 4 | `★ IV` Estrella IV | menor | 4 | azul + reflejos naranja |
+| G♯ | PentaIV | `★ IV` Estrella IV | menor | 4 | azul + reflejos naranja |
 
 > Los nombres y colores de la tabla son los canónicos de las 12 cartas pintadas
 > a mano por Patricio Torres (digitalizadas 2026-06). Las notas listadas son
@@ -155,17 +155,17 @@ heptatónicas (el 5 viene antes que el 7). Son el "sistema óseo" de la música:
 ### Las 12 cartas, por nombre
 
 - **Dos Puntos** (`⋮`) — carta 1, A, Eólico. Los dos puntos de la división.
-- **Estrella V** (`★ V`) — carta 2, A♯/B♭, Penta 5.
+- **Estrella V** (`★ V`) — carta 2, A♯/B♭, PentaV.
 - **Triángulo** (`△`) — carta 3, B, Locrio. La primera figura geométrica natural.
 - **Casita** (`■`) — carta 4, C, Jónico. Casa con techo rojo y puerta amarilla.
-- **Estrella I** (`★ I`) — carta 5, C♯/D♭, Penta 1.
+- **Estrella I** (`★ I`) — carta 5, C♯/D♭, PentaI.
 - **Más** (`+`) — carta 6, D, Dórico. La cruz, primer Cero Pitágoras.
-- **Estrella II** (`★ II`) — carta 7, D♯/E♭, Penta 2.
+- **Estrella II** (`★ II`) — carta 7, D♯/E♭, PentaII.
 - **Llave** (`♀`) — carta 8, E, Frigio. La koppa (ϙ) que cierra el círculo.
 - **Flecha arriba** (`↑`) — carta 9, F, Lidio.
-- **Estrella III** (`★ III`) — carta 10, F♯/G♭, Penta 3. La casa de Gátople.
+- **Estrella III** (`★ III`) — carta 10, F♯/G♭, PentaIII. La casa de Gátople.
 - **Flecha abajo** (`↓`) — carta 11, G, Mixolidio. Compresión hacia el dominante.
-- **Estrella IV** (`★ IV`) — carta 12, G♯/A♭, Penta 4.
+- **Estrella IV** (`★ IV`) — carta 12, G♯/A♭, PentaIV.
 
 ---
 

@@ -49,8 +49,7 @@ def _scale_for_mode(wheel: Wheel, mode: str) -> tuple[str, ...]:
     modes we look up the canonical penta root and read the scale from there.
     """
     if mode in PENTA_MODES:
-        penta_index = int(mode.split()[1])  # "Penta 3" → 3
-        roman = ["I", "II", "III", "IV", "V"][penta_index - 1]
+        roman = mode.removeprefix("Penta")  # "PentaIII" → "III"
         return wheel.penta(roman)
     canonical_note = next(n for n, m in MODE_BY_NOTE.items() if m.mode_name == mode)
     position_at_default = _note_index(canonical_note)
@@ -83,6 +82,8 @@ def realize(pattern: Pattern, *, seed: int = 0, bpm: int = DEFAULT_BPM) -> tuple
         role = ROLES[position]
         events.append(
             Event(
+                # Validated against NOTE_NAMES above; mypy can't narrow str -> Literal
+                # from a frozenset membership check.
                 note=note,  # type: ignore[arg-type]
                 octave=octave,
                 beat=beat_cursor,

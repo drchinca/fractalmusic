@@ -23,11 +23,11 @@ ORIGIN_NOTE: Final[str] = "A"  # La menor / Eólico — the matriarchal origin
 # The note spellings below are the canonical black-key roots; passing any other
 # root to penta() transposes the same step pattern.
 PENTA_MODES: Final[dict[str, tuple[int, ...]]] = {
-    "I": (2, 3, 2, 2, 3),  # Penta 1, from C#: C# D# F# G# A#
-    "II": (3, 2, 2, 3, 2),  # Penta 2, from D#: D# F# G# A# C#
-    "III": (2, 2, 3, 2, 3),  # Penta 3, from F#: F# G# A# C# D#
-    "IV": (2, 3, 2, 3, 2),  # Penta 4, from G#: G# A# C# D# F#
-    "V": (3, 2, 3, 2, 2),  # Penta 5, from A#: A# C# D# F# G#
+    "I": (2, 3, 2, 2, 3),  # PentaI, from C#: C# D# F# G# A#
+    "II": (3, 2, 2, 3, 2),  # PentaII, from D#: D# F# G# A# C#
+    "III": (2, 2, 3, 2, 3),  # PentaIII, from F#: F# G# A# C# D#
+    "IV": (2, 3, 2, 3, 2),  # PentaIV, from G#: G# A# C# D# F#
+    "V": (3, 2, 3, 2, 2),  # PentaV, from A#: A# C# D# F# G#
 }
 
 
@@ -158,20 +158,6 @@ def mode_scale(note: str) -> FractalScale:
     )
 
 
-# Triad qualities for the 7 diatonic positions of A natural minor — the book's
-# default rotation. Index 0 = root mode (Eólico), then up the cycle of fourths.
-# Confirmed against image 9 of the user's notebook: i ii° III iv v VI VII.
-_TRIAD_QUALITIES: Final[dict[str, str]] = {
-    "Eólico": "minor",
-    "Locrio": "diminished",
-    "Jónico": "major",
-    "Dórico": "minor",
-    "Frigio": "minor",
-    "Lidio": "major",
-    "Mixolidio": "major",
-}
-
-
 @dataclass(frozen=True)
 class Triad:
     """A 1-3-5 triad picked from a heptatonic mode's scale."""
@@ -214,5 +200,5 @@ def triad_for(note: str) -> Triad:
         root=note,
         notes=triad_notes,
         glyphs=triad_glyphs,
-        quality=_TRIAD_QUALITIES[mode.mode_name],
+        quality=mode.quality,
     )

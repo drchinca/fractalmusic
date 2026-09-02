@@ -40,7 +40,7 @@ def test_a_sits_at_top_of_clock():
 def test_clock_hours_from_book():
     assert clock_hour("A") == 9  # Eólico, the stable horizon
     assert clock_hour("C") == 12  # Jónico, verticality
-    assert clock_hour("F#") == 6  # Penta 3, casa de Gátople
+    assert clock_hour("F#") == 6  # PentaIII, casa de Gátople
 
 
 def test_cero_pitagoras_is_five_black_keys_seed():

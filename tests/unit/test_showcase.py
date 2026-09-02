@@ -13,7 +13,7 @@ from fractalmusic.showcase import (
 
 def test_dodecamundo_lists_all_modes():
     out = show_dodecamundo()
-    for name in ("Eólico", "Jónico", "Penta 3"):
+    for name in ("Eólico", "Jónico", "PentaIII"):
         assert name in out
 
 

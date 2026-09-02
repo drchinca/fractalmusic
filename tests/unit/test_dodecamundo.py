@@ -53,7 +53,7 @@ def test_world_by_glyph_natural():
 
 
 def test_world_by_glyph_star_needs_roman():
-    assert world_by_glyph("★", roman="III").note == "F#"  # Penta 3
+    assert world_by_glyph("★", roman="III").note == "F#"  # PentaIII
 
 
 def test_world_by_glyph_unknown_raises():

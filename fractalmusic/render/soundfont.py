@@ -5,6 +5,7 @@ from pathlib import Path
 
 import numpy as np
 
+from fractalmusic.generate.realize import _midi_number
 from fractalmusic.generate.types import Event
 
 
@@ -17,6 +18,26 @@ def soundfont_available(sf2_path: Path) -> bool:
     except ImportError:
         return False
     return True
+
+
+def _total_samples(events: tuple[Event, ...], *, sr: int, bpm: int) -> int:
+    """Sample count needed to hold every event plus one second of tail."""
+    sec_per_beat = 60.0 / bpm
+    return int(max((e.beat + e.duration) * sec_per_beat for e in events) * sr + sr)
+
+
+def _note_schedule(events: tuple[Event, ...], *, sr: int, bpm: int) -> list[tuple[int, str, int]]:
+    """Build a sample-ordered (sample_index, "on"|"off", midi_note) schedule."""
+    sec_per_beat = 60.0 / bpm
+    schedule: list[tuple[int, str, int]] = []
+    for e in events:
+        midi_num = _midi_number(note=e.note, octave=e.octave)
+        on_sample = int(e.beat * sec_per_beat * sr)
+        off_sample = int((e.beat + e.duration) * sec_per_beat * sr)
+        schedule.append((on_sample, "on", midi_num))
+        schedule.append((off_sample, "off", midi_num))
+    schedule.sort(key=lambda x: x[0])
+    return schedule
 
 
 def render_with_soundfont(
@@ -34,22 +55,11 @@ def render_with_soundfont(
     sfid = fs.sfload(str(sf2_path))
     fs.program_select(0, sfid, 0, program)
 
-    sec_per_beat = 60.0 / bpm
-    total_samples = int(max((e.beat + e.duration) * sec_per_beat for e in events) * sr + sr)
+    total_samples = _total_samples(events, sr=sr, bpm=bpm)
     buf = np.zeros(total_samples, dtype=np.float32)
     cursor = 0
 
-    schedule: list[tuple[int, str, int]] = []
-    # action: ("on" or "off", midi_note)
-    for e in events:
-        midi_num = _note_octave_to_midi(e.note, e.octave)
-        on_sample = int(e.beat * sec_per_beat * sr)
-        off_sample = int((e.beat + e.duration) * sec_per_beat * sr)
-        schedule.append((on_sample, "on", midi_num))
-        schedule.append((off_sample, "off", midi_num))
-    schedule.sort(key=lambda x: x[0])
-
-    for sample_idx, action, note in schedule:
+    for sample_idx, action, note in _note_schedule(events, sr=sr, bpm=bpm):
         delta = sample_idx - cursor
         if delta > 0:
             block = fs.get_samples(delta)  # float32 stereo, length = 2*delta
@@ -79,24 +89,3 @@ def render_with_soundfont(
 
     fs.delete()
     return buf
-
-
-_PITCH_CLASS: dict[str, int] = {
-    "C": 0,
-    "C#": 1,
-    "D": 2,
-    "D#": 3,
-    "E": 4,
-    "F": 5,
-    "F#": 6,
-    "G": 7,
-    "G#": 8,
-    "A": 9,
-    "A#": 10,
-    "B": 11,
-}
-
-
-def _note_octave_to_midi(note: str, octave: int) -> int:
-    """A4 = 69. C-1 = 0."""
-    return 12 * (octave + 1) + _PITCH_CLASS[note]

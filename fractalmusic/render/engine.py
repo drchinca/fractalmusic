@@ -31,6 +31,21 @@ class RenderConfig:
     ir_path: Path | None = None
 
 
+def _stage_gain(mix: np.ndarray) -> np.ndarray:
+    """Soft-clip any genuine over-1.0 peak, then normalize to 0.95 headroom.
+
+    Pulled out of render_wav so this math is directly testable without
+    needing a real reverb-processed mix to naturally exceed 1.0.
+    """
+    raw_peak = float(np.max(np.abs(mix)))
+    if raw_peak > 1.0:
+        mix = np.tanh(mix).astype(np.float32)
+    final_peak = float(np.max(np.abs(mix)))
+    if final_peak > 0:
+        mix = (mix / final_peak) * 0.95
+    return mix
+
+
 def render_wav(
     events: tuple[Event, ...],
     *,
@@ -124,15 +139,8 @@ def render_wav(
     # 4. Reverb
     mix = apply_reverb(mix, sr=cfg.sample_rate, wet_gain=cfg.reverb_wet, ir_path=cfg.ir_path)
 
-    # 5. Gain stage:
-    #    a) tanh as a soft-clip safety net for genuine over-1.0 peaks only.
-    #    b) normalize the post-clip peak to 0.95 to leave a touch of headroom.
-    raw_peak = float(np.max(np.abs(mix)))
-    if raw_peak > 1.0:
-        mix = np.tanh(mix).astype(np.float32)
-    final_peak = float(np.max(np.abs(mix)))
-    if final_peak > 0:
-        mix = (mix / final_peak) * 0.95
+    # 5. Gain stage: soft-clip genuine over-1.0 peaks, then normalize to 0.95.
+    mix = _stage_gain(mix)
 
     sf.write(str(out_path), mix, cfg.sample_rate, subtype="PCM_16")
     return out_path

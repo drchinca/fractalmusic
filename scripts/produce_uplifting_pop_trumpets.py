@@ -92,7 +92,7 @@ def note_to_midi(note: str) -> int:
 
 
 def note_to_freq(note: str) -> float:
-    return 440.0 * (2.0 ** ((note_to_midi(note) - 69) / 12.0))
+    return float(440.0 * (2.0 ** ((note_to_midi(note) - 69) / 12.0)))
 
 
 def add_stereo(buf: np.ndarray, mono: np.ndarray, start_s: float, gain: float, pan: float) -> None:
@@ -109,7 +109,9 @@ def add_stereo(buf: np.ndarray, mono: np.ndarray, start_s: float, gain: float, p
     buf[start:end, 1] += chunk * right
 
 
-def env_adsr(length: int, attack_s: float, decay_s: float, sustain: float, release_s: float) -> np.ndarray:
+def env_adsr(
+    length: int, attack_s: float, decay_s: float, sustain: float, release_s: float
+) -> np.ndarray:
     attack = max(1, int(attack_s * SR))
     decay = max(1, int(decay_s * SR))
     release = max(1, int(release_s * SR))
@@ -130,7 +132,9 @@ def env_adsr(length: int, attack_s: float, decay_s: float, sustain: float, relea
     return env[:length]
 
 
-def schedule_note(track: str, note: str, start_s: float, duration_s: float, velocity: int, channel: int) -> None:
+def schedule_note(
+    track: str, note: str, start_s: float, duration_s: float, velocity: int, channel: int
+) -> None:
     midi_notes.append(
         MidiNote(
             track=track,
@@ -184,7 +188,9 @@ def chord_for_bar(bar: int) -> str:
     return PROGRESSION[bar % len(PROGRESSION)]
 
 
-def pulse_note(freq_hz: float, duration_s: float, *, kind: str, velocity: float = 1.0) -> np.ndarray:
+def pulse_note(
+    freq_hz: float, duration_s: float, *, kind: str, velocity: float = 1.0
+) -> np.ndarray:
     length = max(1, int((duration_s + 0.04) * SR))
     t = np.arange(length, dtype=np.float32) / SR
     if kind == "piano":
@@ -312,12 +318,22 @@ def render_bass(buf: np.ndarray) -> None:
     for bar in range(4, BARS):
         chord = chord_for_bar(bar)
         gain = section_gain(bar)
-        pattern = (0.0, 1.0, 2.0, 2.5, 3.0) if section_for_bar(bar) in {"chorus", "final_chorus"} else (0.0, 2.0, 3.0)
+        pattern = (
+            (0.0, 1.0, 2.0, 2.5, 3.0)
+            if section_for_bar(bar) in {"chorus", "final_chorus"}
+            else (0.0, 2.0, 3.0)
+        )
         for beat in pattern:
             note = roots[chord] if beat in (0.0, 2.0, 3.0) else fifths[chord]
             dur = 0.45 if beat in (2.5, 3.0) else 0.72
             start = bar_time(bar, beat)
-            add_stereo(buf, pulse_note(note_to_freq(note), dur, kind="bass", velocity=0.9), start, 0.19 * gain, 0.5)
+            add_stereo(
+                buf,
+                pulse_note(note_to_freq(note), dur, kind="bass", velocity=0.9),
+                start,
+                0.19 * gain,
+                0.5,
+            )
             schedule_note("Bass", note, start, dur, int(58 + gain * 25), 1)
 
 
@@ -374,7 +390,13 @@ def add_trumpet_phrase(
                 "C6": "E6",
             }.get(note)
             if harmony_note is not None:
-                add_stereo(buf, trumpet_note(harmony_note, dur, brightness=0.92), start + 0.012, gain * 0.56, 0.78)
+                add_stereo(
+                    buf,
+                    trumpet_note(harmony_note, dur, brightness=0.92),
+                    start + 0.012,
+                    gain * 0.56,
+                    0.78,
+                )
                 schedule_note("Trumpet Harmony", harmony_note, start + 0.012, dur, 78, 4)
 
 
@@ -388,7 +410,9 @@ def render_trumpets(buf: np.ndarray) -> None:
             add_trumpet_phrase(buf, bar, phrase, gain=0.09, harmony=False)
         elif section in {"chorus", "final_chorus"}:
             phrase = HOOK_A if bar % 2 == 0 else HOOK_B
-            add_trumpet_phrase(buf, bar, phrase, gain=0.14 if section == "chorus" else 0.16, harmony=True)
+            add_trumpet_phrase(
+                buf, bar, phrase, gain=0.14 if section == "chorus" else 0.16, harmony=True
+            )
         elif section == "bridge" and bar in (42, 46):
             add_trumpet_phrase(buf, bar, HOOK_B, gain=0.075, harmony=False)
 
@@ -420,7 +444,9 @@ def render_drums(buf: np.ndarray) -> None:
         while beat < 4.0:
             start = bar_time(bar, beat)
             open_hat = section in {"chorus", "final_chorus"} and abs(beat - 3.5) < 0.001
-            add_stereo(buf, hat(open_hat=open_hat), start, (0.032 if not open_hat else 0.055) * gain, 0.72)
+            add_stereo(
+                buf, hat(open_hat=open_hat), start, (0.032 if not open_hat else 0.055) * gain, 0.72
+            )
             drum_hits.append((start, 46 if open_hat else 42, 36 if not open_hat else 48, 0.04))
             beat += hat_step
         if section in {"prechorus", "final_chorus"} and bar % 4 == 3:
@@ -506,8 +532,16 @@ def write_midi(path: Path) -> None:
     for start_s, note, velocity, dur_s in drum_hits:
         start_tick = int((start_s / BEAT_S) * ticks_per_beat)
         end_tick = int(((start_s + dur_s) / BEAT_S) * ticks_per_beat)
-        drum_events.append((start_tick, 0, mido.Message("note_on", channel=9, note=note, velocity=velocity, time=0)))
-        drum_events.append((end_tick, 1, mido.Message("note_off", channel=9, note=note, velocity=0, time=0)))
+        drum_events.append(
+            (
+                start_tick,
+                0,
+                mido.Message("note_on", channel=9, note=note, velocity=velocity, time=0),
+            )
+        )
+        drum_events.append(
+            (end_tick, 1, mido.Message("note_off", channel=9, note=note, velocity=0, time=0))
+        )
     drum_events.sort(key=lambda x: (x[0], x[1]))
     cursor = 0
     for tick, _order, msg in drum_events:
@@ -567,7 +601,11 @@ def main() -> None:
         "drum_hits": len(drum_hits),
     }
     meta_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
-    print(json.dumps({**metadata, "absolute_wav": str(wav_path), "absolute_midi": str(midi_path)}, indent=2))
+    print(
+        json.dumps(
+            {**metadata, "absolute_wav": str(wav_path), "absolute_midi": str(midi_path)}, indent=2
+        )
+    )
 
 
 if __name__ == "__main__":

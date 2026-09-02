@@ -119,7 +119,7 @@ fractalmusic has a Python core (the system) and a web companion (a teaching surf
 - Library: `import fractalmusic as fm; fm.Wheel("A").mode_for("D")`
 - CLI: `fractalmusic` (showcase), `fractalmusic-gallery` (12 SVGs)
 - Web: `cd web && npm run dev`
-- Expert agent: `meridian-research "..." --source library --library-index ~/.meridian/library --book f39cb7c5 --book b202598c --hybrid`
+- Expert agent: `meridian-library search "..." --index-dir ~/.meridian/library --book f39cb7c5 --book b202598c --hybrid --full` (verified 2026-09-01; `meridian-research` has no `--book` flag — see `docs/agents/fractal-expert.md`)
 
 ## Module Map
 
@@ -127,15 +127,15 @@ fractalmusic has a Python core (the system) and a web companion (a teaching surf
 
 | Module | Purpose | Key Symbols |
 |---|---|---|
-| `symbols` | 12 role glyphs in canonical order | `GLYPHS`, `glyph_at_hour` |
-| `colors` | Book-canonical role colors | `ROLE_COLORS`, hex constants |
+| `symbols` | 12 role glyphs in canonical order | `EOLICO`, `LOCRIO`, `JONICO`, `DORICO`, `FRIGIO`, `LIDIO`, `MIXOLIDIO`, `BLACK_STAR` (verified 2026-09-01; a prior version of this row cited `GLYPHS`/`glyph_at_hour`, neither of which exists in `symbols.py`) |
+| `colors` | Book-canonical role colors | `WHEEL_HEX`, `CARTA_HEX`, `GLYPH_FG` (verified 2026-09-01; a prior version of this row cited `ROLE_COLORS`, which does not exist in `colors.py`) |
 | `modes` | Mode dataclass, all 12 modes, clock-hour mapping | `Mode`, `ALL_MODES`, `CHROMATIC_ORDER`, `PENTA_ROOTS`, `_clock_hour` |
 | `dodecamundo` | 12 NoteWorlds — penta + heptatonic | `DODECAMUNDO`, `NoteWorld`, `world`, `heptatonic_worlds`, `pentatonic_worlds` |
 | `scales` | Pentatonic-first scale construction | scale-from-mode helpers |
 | `cartas` | 12-card deck (canonical order) | `carta`, `deck`, `piano_stickers`, `spell` |
 | `formulas` | Etno-matemática constants & ratios | `PHI`, `chessboard_grains`, `consonance` |
-| `wheel` | The spinning Gátople | `Wheel(tonic).mode_for(note)`, role-at-hour, note-at-role |
-| `gatople` | Clock-face data builder for renderers | `build_clock(...)` |
+| `wheel` | The spinning Gátople | `Wheel(tonic).mode_for(note)`, `.note_at_position(p)`, `.penta(roman)`, `clock_hour_for(note, tonic=...)` (verified 2026-09-01; a prior version of this row said "role-at-hour, note-at-role," names that don't exist as such) |
+| `gatople` | Clock-face data builder for renderers | `position`, `interval_angle`, `clock_hour`, `polygon`, `cero_pitagoras`, `rotate` (verified 2026-09-01; a prior version of this row cited `build_clock(...)`, which does not exist in `gatople.py`) |
 | `svg` | Pure-Python SVG of wheel/cards/scales | render functions |
 | `gallery` | CLI: render all 12 wheels to disk | `main` |
 | `showcase` | CLI: print system summary | `main` |
@@ -169,11 +169,11 @@ Vite + React 19 + TypeScript app. Static JSON consumed by components:
 
 | Feature | Integration Test |
 |---|---|
-| Wheel rotation matches book | `Wheel("F").mode_for("D")` → "Frigio" (book §Wheel example) |
-| A-tonic default holds across modules | `world("A")`, `mode_for("A")`, `carta(1)` all return the Eólico/⋮/red triple |
+| Wheel rotation matches book | `Wheel("F").mode_for("C")` → "Frigio" (verified 2026-09-01 by direct execution; a prior version of this row said `mode_for("D")`, which actually returns "PentaIII" — that example was never backed by a real test or a found book citation, and has been corrected) |
+| A-tonic default holds across modules | `world("A")`, `mode_for("A")`, `carta(world("A"))` (carta number 1) all agree on Eólico/⋮ — verified 2026-09-01; a prior version of this row wrote `carta(1)` (raises `AttributeError`: `carta()` takes a `NoteWorld`, not an int) and claimed A's color is "red" (it's teal, `#2BA39A` per `fractalmusic/colors.py`; red belongs to G#/hour 4) |
 | Pentatonic-first | The 5 penta worlds are members of `DODECAMUNDO` with the same shape as the 7 Greek; no separate "penta path" |
-| Carta ↔ wheel parity | For each carta `n`, its `(glyph, color, mode)` matches `Wheel("A").role_at_hour(n)` |
-| SVG renderer is pure | `svg.render_wheel(...)` is deterministic — same input → byte-identical SVG |
+| Carta ↔ wheel parity | For each `NoteWorld` in `DODECAMUNDO`, its `(glyph, color, mode)` matches `Wheel("A").mode_for(world.note)` — see `tests/integration/test_cross_module.py::test_world_clock_hour_matches_mode` (there is no `role_at_hour` method; a prior version of this row cited one, but it was never implemented) |
+| SVG renderer is pure | `svg.gatople_wheel_svg(wheel)` is deterministic — same input → byte-identical SVG (verified 2026-09-01 by direct execution; a prior version of this row named a nonexistent `svg.render_wheel`) |
 | Web data export round-trip | `build_gatople_data.py` output → loaded in TS → renders the same wheel the Python `gallery` produces |
 
 ### UAT Scenarios

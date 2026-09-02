@@ -126,12 +126,12 @@ def render_results(
     lines.append("")
     lines.append(
         f"- Supporting pairs:    min={min(pos_scores):.3f}  "
-        f"median={pos_scores[len(pos_scores)//2]:.3f}  "
+        f"median={pos_scores[len(pos_scores) // 2]:.3f}  "
         f"max={max(pos_scores):.3f}"
     )
     lines.append(
         f"- Non-supporting:      min={min(neg_scores):.3f}  "
-        f"median={neg_scores[len(neg_scores)//2]:.3f}  "
+        f"median={neg_scores[len(neg_scores) // 2]:.3f}  "
         f"max={max(neg_scores):.3f}"
     )
     lines.append("")
@@ -169,8 +169,10 @@ async def main() -> None:
     chosen = best(sweep_metrics)
     output = render_results(scored=scored, sweep_metrics=sweep_metrics, chosen=chosen)
     RESULTS_PATH.write_text(output, encoding="utf-8")
-    print(f"\nChosen threshold: {chosen.threshold:.2f}  (F1={chosen.f1:.3f}, "
-          f"P={chosen.precision:.3f}, R={chosen.recall:.3f})")
+    print(
+        f"\nChosen threshold: {chosen.threshold:.2f}  (F1={chosen.f1:.3f}, "
+        f"P={chosen.precision:.3f}, R={chosen.recall:.3f})"
+    )
     print(f"Written to {RESULTS_PATH}")
 
 
