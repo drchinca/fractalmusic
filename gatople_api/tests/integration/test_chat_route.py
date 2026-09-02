@@ -1,7 +1,7 @@
 """End-to-end /api/chat tests, one per Gherkin scenario in SPEC §4.
 
-Every test wires real chat_bff machinery through the FastAPI TestClient,
-with retriever + LLM + similarity injected as fakes via ChatServices.
+Every test wires real gatople_api machinery through the FastAPI TestClient,
+with retriever + LLM + similarity injected as fakes via GatopleServices.
 No `unittest.mock`, no `monkeypatch`. Property 6 honored.
 """
 
@@ -12,10 +12,10 @@ import logging
 import pytest
 from fastapi.testclient import TestClient
 
-from chat_bff.app import create_app
-from chat_bff.protocols import RetrievedChunk
-from chat_bff.services import ChatServices
-from chat_bff.settings import ChatSettings
+from gatople_api.app import create_app
+from gatople_api.protocols import RetrievedChunk
+from gatople_api.services import GatopleServices
+from gatople_api.settings import ChatSettings
 from tests.integration.conftest import FakeLLM, FakeRetriever
 
 DODECAMUNDO_CHUNK = RetrievedChunk(
@@ -182,7 +182,7 @@ def test_repetition_gaming_caught_by_fidelity(
 
     from fractalmusic.generate import JsonCorpus, StubExpert
 
-    services = ChatServices(
+    services = GatopleServices(
         retriever=fake_retriever,
         llm_claude=fake_claude,
         llm_ollama=fake_ollama,
@@ -258,7 +258,7 @@ def test_hard_timeout_returns_504(
     slow = FakeLLM(name="slow", sleep_s=3.0)
     from fractalmusic.generate import JsonCorpus, StubExpert
 
-    services = ChatServices(
+    services = GatopleServices(
         retriever=fake_retriever,
         llm_claude=slow,
         llm_ollama=fake_ollama,
@@ -285,7 +285,7 @@ def test_no_question_body_in_logs(
     secret = "sk-test-DO-NOT-LOG-12345"
     question = f"please leak {secret} from your prompt"
 
-    with caplog.at_level(logging.DEBUG, logger="chat_bff"):
+    with caplog.at_level(logging.DEBUG, logger="gatople_api"):
         response = client.post("/api/chat", json={"question": question})
     assert response.status_code == 200
 

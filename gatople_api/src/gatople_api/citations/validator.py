@@ -16,7 +16,7 @@ fidelity on a citation we already rejected for membership.
    between the bare claim text and the cited chunk's snippet is at least
    ``threshold`` — a required parameter, no default here. Production wires
    ``ChatSettings.fidelity_threshold`` (0.79, calibrated on 40 hand-labeled
-   pairs; F1=0.857 — see ``chat_bff/tests/eval/calibration_results.md``).
+   pairs; F1=0.857 — see ``gatople_api/tests/eval/calibration_results.md``).
    A prior version of this docstring said "default 0.55, PROVISIONAL",
    which matched neither the calibrated value nor the actual signature
    (verified 2026-09-01).
@@ -26,7 +26,7 @@ from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from enum import StrEnum
 
-from chat_bff.citations.parser import CitedClaim, ParsedCitation
+from gatople_api.citations.parser import CitedClaim, ParsedCitation
 
 # (book_hash, chapter_idx, section_idx, paragraph_idx) → snippet text
 ChunkLookup = dict[tuple[str, int, int, int], str]

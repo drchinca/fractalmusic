@@ -23,9 +23,10 @@ repos:
       - id: debug-statements
       - id: mixed-line-ending
       - id: name-tests-test
-        # chat_bff/tests/eval/run_calibration.py is a manually-invoked script
-        # (`uv run python tests/eval/run_calibration.py`), not a pytest test.
-        exclude: ^chat_bff/tests/eval/
+        # gatople_api/tests/eval/run_calibration.py is a manually-invoked
+        # script (`uv run python tests/eval/run_calibration.py`), not a
+        # pytest test.
+        exclude: ^gatople_api/tests/eval/
         args: ["--pytest-test-first"]
       - id: detect-private-key
 
@@ -34,7 +35,9 @@ repos:
     hooks:
       - id: ruff
         args: ["--fix", "--exit-non-zero-on-fix"]
+        files: ^(fractalmusic|scripts)/
       - id: ruff-format
+        files: ^(fractalmusic|scripts)/
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v2.1.0
@@ -75,25 +78,25 @@ repos:
         always_run: true
         stages: [pre-push]
 
-      - id: chat-bff-ruff
-        name: chat_bff ruff
-        entry: bash -c 'cd chat_bff && uv run ruff check src tests'
+      - id: gatople-api-ruff
+        name: gatople_api ruff
+        entry: bash -c 'cd gatople_api && uv run ruff check src tests'
         language: system
-        files: ^chat_bff/.*\.py$
+        files: ^gatople_api/.*\.py$
         pass_filenames: false
 
-      - id: chat-bff-mypy
-        name: chat_bff mypy
-        entry: bash -c 'cd chat_bff && uv run mypy src'
+      - id: gatople-api-mypy
+        name: gatople_api mypy
+        entry: bash -c 'cd gatople_api && uv run mypy src'
         language: system
-        files: ^chat_bff/src/.*\.py$
+        files: ^gatople_api/src/.*\.py$
         pass_filenames: false
 
-      - id: chat-bff-pytest
-        name: chat_bff pytest
-        entry: bash -c 'cd chat_bff && uv run pytest'
+      - id: gatople-api-pytest
+        name: gatople_api pytest
+        entry: bash -c 'cd gatople_api && uv run pytest'
         language: system
-        files: ^chat_bff/
+        files: ^gatople_api/
         pass_filenames: false
         stages: [pre-push]
 

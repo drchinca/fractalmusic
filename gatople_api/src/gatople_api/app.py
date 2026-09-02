@@ -1,20 +1,20 @@
 """FastAPI app factory. The route layer reads ``app.state.services``,
-which is populated here from whatever ChatServices the caller provides.
+which is populated here from whatever GatopleServices the caller provides.
 Tests build their own services from fakes; production builds from real
-cemaf + meridian wiring (see chat_bff.bootstrap, deferred)."""
+cemaf + meridian wiring (see gatople_api.bootstrap, deferred)."""
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from chat_bff.routes import chat as chat_route
-from chat_bff.routes import generate as generate_route
-from chat_bff.routes import health as health_route
-from chat_bff.services import ChatServices
+from gatople_api.routes import chat as chat_route
+from gatople_api.routes import generate as generate_route
+from gatople_api.routes import health as health_route
+from gatople_api.services import GatopleServices
 
 
-def create_app(*, services: ChatServices, cors_origins: tuple[str, ...] = ()) -> FastAPI:
+def create_app(*, services: GatopleServices, cors_origins: tuple[str, ...] = ()) -> FastAPI:
     """Build a FastAPI app with the given services attached."""
-    app = FastAPI(title="chat_bff", version="0.1.0")
+    app = FastAPI(title="gatople_api", version="0.1.0")
     app.state.services = services
 
     if cors_origins:

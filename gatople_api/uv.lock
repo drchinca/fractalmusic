@@ -248,56 +248,6 @@ wheels = [
 ]
 
 [[package]]
-name = "chat-bff"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "anthropic" },
-    { name = "cemaf" },
-    { name = "fastapi" },
-    { name = "fractalmusic" },
-    { name = "httpx" },
-    { name = "meridian-library" },
-    { name = "numpy" },
-    { name = "pydantic" },
-    { name = "pydantic-settings" },
-    { name = "structlog" },
-    { name = "uvicorn" },
-]
-
-[package.optional-dependencies]
-dev = [
-    { name = "hypothesis" },
-    { name = "mypy" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-cov" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "anthropic", specifier = ">=0.40.0" },
-    { name = "cemaf", editable = "../../../iccha_context_multi_agent/cemaf" },
-    { name = "fastapi", specifier = ">=0.115.0" },
-    { name = "fractalmusic", editable = "../" },
-    { name = "httpx", specifier = ">=0.27.0" },
-    { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.115.0" },
-    { name = "meridian-library", editable = "../../../iccha_context_multi_agent/meridian_library" },
-    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.13.0" },
-    { name = "numpy", specifier = ">=2.0.0" },
-    { name = "pydantic", specifier = ">=2.9.0" },
-    { name = "pydantic-settings", specifier = ">=2.5.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.0" },
-    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.24.0" },
-    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6.0.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.8.0" },
-    { name = "structlog", specifier = ">=24.4.0" },
-    { name = "uvicorn", specifier = ">=0.30.0" },
-]
-provides-extras = ["dev"]
-
-[[package]]
 name = "click"
 version = "8.4.1"
 source = { registry = "https://pypi.org/simple" }
@@ -467,6 +417,56 @@ requires-dist = [
     { name = "soundfile", specifier = ">=0.14.0" },
 ]
 provides-extras = ["midi", "dev"]
+
+[[package]]
+name = "gatople-api"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "anthropic" },
+    { name = "cemaf" },
+    { name = "fastapi" },
+    { name = "fractalmusic" },
+    { name = "httpx" },
+    { name = "meridian-library" },
+    { name = "numpy" },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "structlog" },
+    { name = "uvicorn" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "hypothesis" },
+    { name = "mypy" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "anthropic", specifier = ">=0.40.0" },
+    { name = "cemaf", editable = "../../../iccha_context_multi_agent/cemaf" },
+    { name = "fastapi", specifier = ">=0.115.0" },
+    { name = "fractalmusic", editable = "../" },
+    { name = "httpx", specifier = ">=0.27.0" },
+    { name = "hypothesis", marker = "extra == 'dev'", specifier = ">=6.115.0" },
+    { name = "meridian-library", editable = "../../../iccha_context_multi_agent/meridian_library" },
+    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.13.0" },
+    { name = "numpy", specifier = ">=2.0.0" },
+    { name = "pydantic", specifier = ">=2.9.0" },
+    { name = "pydantic-settings", specifier = ">=2.5.0" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.0" },
+    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.24.0" },
+    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6.0.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.8.0" },
+    { name = "structlog", specifier = ">=24.4.0" },
+    { name = "uvicorn", specifier = ">=0.30.0" },
+]
+provides-extras = ["dev"]
 
 [[package]]
 name = "h11"

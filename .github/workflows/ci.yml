@@ -61,16 +61,16 @@ jobs:
       - name: Build (tsc + vite)
         run: npm run build
 
-# chat_bff/ is intentionally NOT covered here. Its pyproject.toml declares
+# gatople_api/ is intentionally NOT covered here. Its pyproject.toml declares
 # [tool.uv.sources] path dependencies on cemaf and meridian_library at
 # ../../../iccha_context_multi_agent/{cemaf,meridian_library} — a directory
 # on this developer's machine that is not a git repository (confirmed
 # 2026-09-01: no .git, not pushed anywhere). CI cannot check that out, so
-# chat_bff cannot currently be installed, linted, type-checked, or tested
+# gatople_api cannot currently be installed, linted, type-checked, or tested
 # in any environment other than this one machine. Fixing this requires one
 # of: publishing cemaf/meridian_library as installable packages (PyPI or a
 # private index), vendoring them into a real, pushed git repo CI can
-# check out as a second checkout step, or accepting chat_bff as
+# check out as a second checkout step, or accepting gatople_api as
 # local-development-only until one of those happens. Until then,
-# `make bff-test` / `make verify` remain the only way to verify chat_bff,
+# `make api-test` / `make verify` remain the only way to verify gatople_api,
 # and they only run where this session's pre-commit hooks are installed.

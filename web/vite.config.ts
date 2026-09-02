@@ -9,8 +9,8 @@ export default defineConfig({
     port: 5174,
     strictPort: true,
     proxy: {
-      // Dev: forward /api/* to the chat_bff process running on :8002.
-      // In production the BFF and the static bundle ship together so
+      // Dev: forward /api/* to the gatople_api process running on :8002.
+      // In production gatople_api and the static bundle ship together so
       // /api is same-origin and no proxy is needed.
       "/api": {
         target: "http://localhost:8002",

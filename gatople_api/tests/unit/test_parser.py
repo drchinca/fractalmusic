@@ -1,6 +1,6 @@
 """Citation parser tests — pure-string in, structured out."""
 
-from chat_bff.citations.parser import CITATION_RE, parse_answer
+from gatople_api.citations.parser import CITATION_RE, parse_answer
 
 
 def test_parses_canonical_form() -> None:

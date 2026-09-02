@@ -1,12 +1,12 @@
 """Citation parsing + validation. The load-bearing core of the BFF."""
 
-from chat_bff.citations.parser import (
+from gatople_api.citations.parser import (
     CITATION_RE,
     CitedClaim,
     ParsedCitation,
     parse_answer,
 )
-from chat_bff.citations.validator import (
+from gatople_api.citations.validator import (
     ValidationOutcome,
     ValidationVerdict,
     validate_answer,

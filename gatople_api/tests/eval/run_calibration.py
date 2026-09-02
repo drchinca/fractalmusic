@@ -7,7 +7,7 @@ writes the results to ``calibration_results.md``.
 
 Run::
 
-    cd chat_bff
+    cd gatople_api
     uv run python tests/eval/run_calibration.py
 
 Requires Ollama with ``nomic-embed-text`` pulled. Idempotent.
@@ -22,7 +22,7 @@ from pathlib import Path
 
 from meridian_library.embedders.ollama import OllamaEmbedder
 
-from chat_bff.bootstrap import make_similarity
+from gatople_api.bootstrap import make_similarity
 
 EVAL_DIR = Path(__file__).resolve().parent
 PAIRS_PATH = EVAL_DIR / "calibration_pairs.json"
