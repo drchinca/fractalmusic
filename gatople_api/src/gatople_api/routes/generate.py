@@ -123,10 +123,14 @@ _FLAVOR_ORDER: tuple[Flavor, ...] = ("free", "penta-walk", "carta-progression")
 
 class GenerateBody(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
-    tonic: Annotated[str, Field(min_length=1, max_length=2)]
-    mode: Annotated[str, Field(min_length=1, max_length=20)]
+    # tonic/mode default to the book's own A-Eólico origin — irrelevant when
+    # free_text is set, since the LLM chooses its own tonic/mode from the
+    # description instead of respecting these.
+    tonic: Annotated[str, Field(min_length=1, max_length=2)] = "A"
+    mode: Annotated[str, Field(min_length=1, max_length=20)] = "Eólico"
     length: Annotated[int, Field(ge=4, le=64)] = 16
     flavor: Literal["free", "penta-walk", "carta-progression"] = "free"
+    free_text: Annotated[str | None, Field(max_length=500)] = None
 
 
 @router.get("/api/generate/options")
@@ -145,10 +149,14 @@ def _cache_key(
     length: int,
     flavor: str,
     pattern_name: str,
+    free_text: str = "",
     sf2_name: str = "",
     ir_name: str = "",
 ) -> str:
-    raw = f"{tonic}|{mode}|{length}|{flavor}|{pattern_name}|{sf2_name}|{ir_name}".encode()
+    # free_text is folded in explicitly: two different descriptions can lead
+    # the LLM to the same tonic/mode/pattern_name, which would otherwise
+    # collide and serve a stale WAV from an unrelated description.
+    raw = f"{tonic}|{mode}|{length}|{flavor}|{pattern_name}|{free_text}|{sf2_name}|{ir_name}".encode()
     return hashlib.sha256(raw).hexdigest()[:16]
 
 
@@ -158,6 +166,7 @@ def _generation_request(body: GenerateBody) -> GenerationRequest:
         mode=body.mode,
         length_events=body.length,
         flavor=body.flavor,
+        free_text=body.free_text,
     )
 
 
@@ -325,10 +334,11 @@ def _research(body: GenerateBody, services: GatopleServices) -> GenerationResult
     except ValueError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
 
+    expert = services.llm_expert if body.free_text else services.expert
     try:
         return research_loop(
             request=request,
-            expert=services.expert,
+            expert=expert,
             corpus=services.corpus,
         )
     except (OSError, json.JSONDecodeError) as error:
@@ -352,6 +362,7 @@ def _render_web_payload(
         length=body.length,
         flavor=body.flavor,
         pattern_name=result.pattern.name,
+        free_text=body.free_text or "",
         sf2_name=settings.soundfont_path.name if settings.soundfont_path else "",
         ir_name=settings.reverb_ir_path.name if settings.reverb_ir_path else "",
     )

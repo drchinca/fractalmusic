@@ -94,6 +94,8 @@ def services(
 
     from fractalmusic.generate import JsonCorpus, StubExpert
 
+    from gatople_api.llm_expert import LLMExpert
+
     return GatopleServices(
         retriever=fake_retriever,
         llm_claude=fake_claude,
@@ -101,6 +103,7 @@ def services(
         similarity=always_high,
         settings=settings,
         expert=StubExpert(),
+        llm_expert=LLMExpert(llm=fake_claude),
         corpus=JsonCorpus(root=settings.corpus_root),
     )
 

@@ -182,6 +182,8 @@ def test_repetition_gaming_caught_by_fidelity(
 
     from fractalmusic.generate import JsonCorpus, StubExpert
 
+    from gatople_api.llm_expert import LLMExpert
+
     services = GatopleServices(
         retriever=fake_retriever,
         llm_claude=fake_claude,
@@ -189,6 +191,7 @@ def test_repetition_gaming_caught_by_fidelity(
         similarity=low_sim,
         settings=settings,
         expert=StubExpert(),
+        llm_expert=LLMExpert(llm=fake_claude),
         corpus=JsonCorpus(root=settings.corpus_root),
     )
     fake_retriever.default = (CICLICA_CHUNK,)
@@ -258,6 +261,8 @@ def test_hard_timeout_returns_504(
     slow = FakeLLM(name="slow", sleep_s=3.0)
     from fractalmusic.generate import JsonCorpus, StubExpert
 
+    from gatople_api.llm_expert import LLMExpert
+
     services = GatopleServices(
         retriever=fake_retriever,
         llm_claude=slow,
@@ -265,6 +270,7 @@ def test_hard_timeout_returns_504(
         similarity=lambda _a, _b: _coro(0.9),
         settings=settings,
         expert=StubExpert(),
+        llm_expert=LLMExpert(llm=fake_claude),
         corpus=JsonCorpus(root=settings.corpus_root),
     )
     client = TestClient(create_app(services=services))

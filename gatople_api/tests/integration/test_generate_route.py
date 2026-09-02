@@ -23,6 +23,8 @@ def test_generate_strudel_route_returns_code(
 ) -> None:
     from fractalmusic.generate import JsonCorpus, StubExpert
 
+    from gatople_api.llm_expert import LLMExpert
+
     settings = ChatSettings(
         anthropic_api_key="test-key-not-real",
         corpus_root=tmp_path / "patterns",
@@ -36,6 +38,7 @@ def test_generate_strudel_route_returns_code(
         similarity=_always_high,
         settings=settings,
         expert=StubExpert(),
+        llm_expert=LLMExpert(llm=fake_claude),
         corpus=JsonCorpus(root=settings.corpus_root),
     )
     fake_retriever.default = (
@@ -82,6 +85,8 @@ def test_generate_strudel_route_falls_back_when_book_chunks_are_weak(
 ) -> None:
     from fractalmusic.generate import JsonCorpus, StubExpert
 
+    from gatople_api.llm_expert import LLMExpert
+
     settings = ChatSettings(
         anthropic_api_key="test-key-not-real",
         corpus_root=tmp_path / "patterns",
@@ -95,6 +100,7 @@ def test_generate_strudel_route_falls_back_when_book_chunks_are_weak(
         similarity=_always_high,
         settings=settings,
         expert=StubExpert(),
+        llm_expert=LLMExpert(llm=fake_claude),
         corpus=JsonCorpus(root=settings.corpus_root),
     )
     fake_retriever.default = (

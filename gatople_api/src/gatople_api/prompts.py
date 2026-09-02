@@ -43,6 +43,11 @@ def render(template: str, *, passages: str, question: str) -> str:
     return template.replace("{passages}", passages).replace("{question}", question)
 
 
+def render_compose(template: str, *, free_text: str) -> str:
+    """Substitute compose_from_text.md's single placeholder."""
+    return template.replace("{free_text}", free_text)
+
+
 def format_passages(chunks: list[dict]) -> str:
     """Render retrieved chunks as a numbered list the LLM can read."""
     lines: list[str] = []
