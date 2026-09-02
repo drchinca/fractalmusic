@@ -16,10 +16,11 @@ import { fetchOptions } from "../composer/api";
 import { AuditTrail } from "../composer/AuditTrail";
 import { runIdFromAudioUrl } from "../composer/auditApi";
 import { isFlavor } from "../composer/types";
-import type { ComposerOptions } from "../composer/types";
+import type { ComposerOptions, Flavor } from "../composer/types";
 import { generateStrudel, type StrudelGeneration } from "./api";
 import {
   BAND_LABELS,
+  BASS_LABELS,
   bassNotes,
   buildControlledCode,
   buildStarterCode,
@@ -28,13 +29,17 @@ import {
   DRUM_BANK_OPTIONS,
   errorMessage,
   FILL_LABELS,
+  FILL_PATTERNS,
   FLAVOR_LABELS,
   fmtNumber,
   HAT_LABELS,
+  HAT_PATTERNS,
   KICK_LABELS,
+  KICK_PATTERNS,
   numberFromInput,
   PATCH_PRESETS,
   SNARE_LABELS,
+  SNARE_PATTERNS,
   SOUND_LABELS,
   SOUND_OPTIONS,
   SPEED_OPTIONS,
@@ -42,7 +47,17 @@ import {
   stepValue,
   SURFACE_SECTIONS,
 } from "./patternBuilder";
-import type { StrudelSurfaceControls, SurfaceSection } from "./patternBuilder";
+import type {
+  BassPattern,
+  DrumBank,
+  FillPattern,
+  HatPattern,
+  KickPattern,
+  SnarePattern,
+  StrudelSound,
+  StrudelSurfaceControls,
+  SurfaceSection,
+} from "./patternBuilder";
 
 type CodeMode = "controlled" | "manual";
 
