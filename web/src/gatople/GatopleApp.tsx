@@ -5,6 +5,7 @@ import { BindingsTable } from "./components/BindingsTable";
 import { ChordOverlay } from "./components/ChordOverlay";
 import { ChordPicker } from "./components/ChordPicker";
 import { Fretboard } from "./components/Fretboard";
+import { HarmonicsPanel } from "../harmonics/HarmonicsPanel";
 import { PaletteToggle } from "./components/PaletteToggle";
 import { Piano } from "./components/Piano";
 import { StepControls } from "./components/StepControls";
@@ -173,6 +174,13 @@ function GatopleStage({
           onStepForward={() => step(1)}
         />
       </section>
+
+      <HarmonicsPanel
+        roles={roles}
+        phi={payload.phi}
+        tonicNote={tonicNote}
+        displayTonicNote={displayNote(tonicNote, enharmonic)}
+      />
 
       <footer>
         <p>
