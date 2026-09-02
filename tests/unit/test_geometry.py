@@ -41,6 +41,16 @@ def test_augmented_triad_forms_equilateral_triangle_on_gatople_wheel():
     assert poly.is_regular is True
 
 
+def test_chord_polygon_2d_puts_hour_twelve_at_the_top():
+    # Same "hour 12 = straight up" convention as svg.py's _polar and
+    # gatople.py's POSITIONS. Shape-only checks (regularity, centroid) are
+    # invariant to a sign flip in the angle offset, so nothing else pins
+    # down this absolute orientation.
+    x, y = chord_polygon_2d(("C",)).vertices[0]
+    assert math.isclose(x, 0.0, abs_tol=1e-9)
+    assert math.isclose(y, -1.0)
+
+
 def test_jazz_seventh_chord_construction_and_geometry():
     # Build C Major 7th (C, E, G, B)
     chord = JazzChord.build("C", "maj7")
@@ -68,3 +78,18 @@ def test_diminished_seventh_chord_notes():
     chord = JazzChord.build("A", "dim7")
     assert chord.notes == ("A", "C", "D#", "F#")
     assert chord.symbol == "Adim7"
+
+
+def test_dominant_seventh_chord_notes():
+    # G7: major triad + minor 7th (G, B, D, F). Previously untested — only
+    # maj7 and dim7 had note-content assertions.
+    chord = JazzChord.build("G", "dom7")
+    assert chord.notes == ("G", "B", "D", "F")
+    assert chord.symbol == "G7"
+
+
+def test_half_diminished_seventh_chord_notes():
+    # A half-diminished: diminished triad + minor 7th (A, C, Eb/D#, G).
+    chord = JazzChord.build("A", "m7b5")
+    assert chord.notes == ("A", "C", "D#", "G")
+    assert chord.symbol == "Aø7"
