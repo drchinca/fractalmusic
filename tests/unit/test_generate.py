@@ -19,6 +19,7 @@ from fractalmusic.generate import (
     to_web_payload,
 )
 from fractalmusic.generate.loop import _adapt_length
+from fractalmusic.generate.realize import _midi_number
 from fractalmusic.wheel import Wheel
 
 PROV = Provenance(book_hash="b202598c", book_title="El Sistema Fractal")
@@ -53,6 +54,49 @@ def test_generation_request_validates_inputs():
         GenerationRequest(tonic="A", mode="Klingon", length_events=8)
     with pytest.raises(ValueError):
         GenerationRequest(tonic="A", mode="Eólico", length_events=2)
+    with pytest.raises(ValueError, match="flavor"):
+        GenerationRequest(tonic="A", mode="Eólico", length_events=8, flavor="jazz-hands")
+
+
+def test_pattern_rejects_unknown_tonic():
+    with pytest.raises(ValueError, match="tonic"):
+        Pattern(
+            name="bad",
+            tonic="H",
+            mode="Eólico",
+            degrees=(1, 2, 3, 4),
+            rhythm=(1.0, 1.0, 1.0, 1.0),
+            provenance=PROV,
+        )
+
+
+def test_pattern_rejects_unknown_mode():
+    with pytest.raises(ValueError, match="mode"):
+        Pattern(
+            name="bad",
+            tonic="A",
+            mode="Klingon",
+            degrees=(1, 2, 3, 4),
+            rhythm=(1.0, 1.0, 1.0, 1.0),
+            provenance=PROV,
+        )
+
+
+def test_pattern_rejects_empty_degrees():
+    with pytest.raises(ValueError, match="non-empty"):
+        Pattern(name="bad", tonic="A", mode="Eólico", degrees=(), rhythm=(), provenance=PROV)
+
+
+def test_pattern_rejects_mismatched_rhythm_length():
+    with pytest.raises(ValueError, match="rhythm length"):
+        Pattern(
+            name="bad",
+            tonic="A",
+            mode="Eólico",
+            degrees=(1, 2, 3, 4),
+            rhythm=(1.0, 1.0),
+            provenance=PROV,
+        )
 
 
 def test_pattern_rejects_out_of_range_degrees_for_penta():
@@ -393,6 +437,11 @@ def test_adapt_length_stretches_by_cycling_degrees_and_rhythm():
     stretched = _adapt_length(pattern, 8)
     assert stretched.degrees == (1, 2, 3, 4, 1, 2, 3, 4)
     assert stretched.rhythm == (1.0,) * 8
+
+
+def test_midi_number_rejects_unknown_note():
+    with pytest.raises(ValueError, match="unknown note"):
+        _midi_number(note="H", octave=4)
 
 
 def test_adapt_length_truncates_to_the_requested_length():

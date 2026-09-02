@@ -2,9 +2,11 @@
 
 import math
 
+import pytest
 from fractalmusic.geometry import (
     PHI,
     JazzChord,
+    Polygon2D,
     chord_polygon_2d,
     note_3d_coordinates,
 )
@@ -93,3 +95,20 @@ def test_half_diminished_seventh_chord_notes():
     chord = JazzChord.build("A", "m7b5")
     assert chord.notes == ("A", "C", "D#", "G")
     assert chord.symbol == "Aø7"
+
+
+def test_jazz_chord_build_rejects_unknown_quality():
+    with pytest.raises(ValueError, match="unknown jazz chord quality"):
+        JazzChord.build("C", "made-up-quality")
+
+
+def test_jazz_chord_glyphs_matches_the_notes():
+    # Previously never accessed by any test.
+    chord = JazzChord.build("C", "maj7")
+    assert chord.glyphs == ("□", "♀", "↓", "△")
+
+
+def test_polygon_with_fewer_than_three_vertices_is_never_regular():
+    assert Polygon2D(vertices=()).is_regular is False
+    assert Polygon2D(vertices=((0.0, 0.0),)).is_regular is False
+    assert Polygon2D(vertices=((0.0, 0.0), (1.0, 0.0))).is_regular is False
