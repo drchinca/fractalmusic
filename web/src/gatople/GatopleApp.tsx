@@ -2,6 +2,7 @@ import { type JSX, useState } from "react";
 
 import payloadJson from "../../public/data.json";
 import { BindingsTable } from "./components/BindingsTable";
+import { CartaViewer } from "./components/CartaViewer";
 import { ChordOverlay } from "./components/ChordOverlay";
 import { ChordPicker } from "./components/ChordPicker";
 import { Fretboard } from "./components/Fretboard";
@@ -9,6 +10,7 @@ import { PaletteToggle } from "./components/PaletteToggle";
 import { Piano } from "./components/Piano";
 import { StepControls } from "./components/StepControls";
 import { Wheel } from "./components/Wheel";
+import { WheelSpinToggle } from "./components/WheelSpinToggle";
 import { displayNote } from "./geometry";
 import { useGatople } from "./hooks/useGatople";
 import type { ChordGeometry } from "./theoryApi";
@@ -52,6 +54,7 @@ function GatopleStage({
   const { tonicOffset, palette, setTonic, step, setPalette } =
     useGatople(chromatic);
   const [chord, setChord] = useState<ChordGeometry | null>(null);
+  const [outerLocked, setOuterLocked] = useState(false);
 
   const tonicNote = chromatic[tonicOffset];
   const eolicoRole = roles.find((r) => r.position === 0);
@@ -66,10 +69,10 @@ function GatopleStage({
       <header>
         <h1>El Gátople</h1>
         <p className="subtitle">
-          El disco exterior es fijo: cada rol conserva su glifo, color y
-          posición horaria. El disco interior rota — arrastralo, o tocá
-          cualquier nota para fijarla como tónica. Todo el sistema de escalas
-          se reordena con una sola rotación.
+          La rueda entera gira junto al elegir tónica — arrastrala, o tocá
+          cualquier nota para fijarla. Todo el sistema de escalas se reordena
+          con una sola rotación. Bloqueá el anillo exterior para ver que la
+          forma de un acorde es idéntica en cualquier tonalidad.
         </p>
       </header>
 
@@ -82,6 +85,7 @@ function GatopleStage({
             tonicOffset={tonicOffset}
             onSetTonic={setTonic}
             onStep={step}
+            outerLocked={outerLocked}
           >
             {chord !== null && (
               <ChordOverlay
@@ -98,6 +102,7 @@ function GatopleStage({
             Tónica: <strong>{displayNote(tonicNote, enharmonic)}</strong>{" "}
             <span className="tonic-mode">({eolicoModeName})</span>
           </p>
+          <WheelSpinToggle outerLocked={outerLocked} onChange={setOuterLocked} />
           <StepControls
             variant="header"
             onStepBack={() => step(-1)}
@@ -107,6 +112,7 @@ function GatopleStage({
         </div>
 
         <aside className="readout">
+          <CartaViewer roles={roles} tonicNote={tonicNote} displayTonicNote={displayNote(tonicNote, enharmonic)} />
           <ChordPicker tonic={tonicNote} onChordChange={setChord} />
           {chord !== null && (
             <div className="chord-readout" aria-live="polite">

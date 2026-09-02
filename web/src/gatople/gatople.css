@@ -224,6 +224,32 @@ aside.readout h2 {
   color: #fff;
 }
 
+.wheel-spin-toggle {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 14px;
+  color: #555;
+  margin: 12px 0;
+}
+
+.wheel-spin-toggle button {
+  appearance: none;
+  border: 1px solid #1a1a1a;
+  background: #fff;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font: inherit;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.wheel-spin-toggle button.active {
+  background: #1a1a1a;
+  color: #fff;
+}
+
 .step-controls-footer {
   margin-top: 20px;
 }
@@ -286,6 +312,43 @@ footer {
 .chord-overlay-shape.is-regular ~ .chord-overlay-vertex,
 .chord-overlay.is-regular .chord-overlay-vertex {
   fill: #1b8c4a;
+}
+
+.carta-viewer {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2ddd0;
+}
+
+.carta-viewer h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #555;
+}
+
+.carta-viewer-image {
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  margin: 0 auto;
+  border-radius: 8px;
+  border: 1px solid #e2ddd0;
+}
+
+.carta-viewer-fallback {
+  margin: 0;
+  padding: 24px 0;
+  text-align: center;
+  color: #777;
+}
+
+.carta-viewer-caption {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 13px;
+  color: #777;
 }
 
 .chord-picker {
