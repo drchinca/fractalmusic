@@ -22,6 +22,7 @@ export interface Role {
   readonly wheel_color: string;
   readonly carta_color: string;
   readonly carta_image: string;
+  readonly coordinates_3d: readonly [number, number, number];
   readonly glyph_fg: string;
   readonly carta_name: string;
   readonly is_penta: boolean;
@@ -48,6 +49,7 @@ export interface Payload {
   readonly rotations: RotationTable;
   readonly enharmonic: Readonly<Record<string, string>>;
   readonly fretboard: FretboardTable;
+  readonly phi: number;
 }
 
 export type Palette = "carta" | "mono";

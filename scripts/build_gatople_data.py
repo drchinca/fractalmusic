@@ -13,6 +13,7 @@ from typing import TypedDict
 
 from fractalmusic.colors import CARTA_HEX, GLYPH_FG, WHEEL_HEX
 from fractalmusic.dodecamundo import DODECAMUNDO
+from fractalmusic.geometry import PHI, note_3d_coordinates
 from fractalmusic.modes import CHROMATIC_ORDER, PENTA_ROOTS
 from fractalmusic.svg import _GUITAR_TUNING
 from fractalmusic.wheel import ROLES, Wheel
@@ -33,6 +34,7 @@ class RoleEntry(TypedDict):
     quality: str
     clock_hour: int
     carta_image: str  # relative URL of the painted carta (e.g. ../assets/cartas/04-casita.jpg)
+    coordinates_3d: list[float]  # (x, y, z) icosahedron vertex, golden-ratio construction
     scale_steps: list[int]
     wheel_color: str
     carta_color: str
@@ -58,6 +60,7 @@ class GatoplePayload(TypedDict):
     rotations: list[list[str]]  # rotations[tonicOffset][rolePosition] -> note
     enharmonic: dict[str, str]  # sharp note -> flat spelling (black keys only)
     fretboard: list[list[str]]  # fretboard[stringIndex][fret] -> note, tonic-independent
+    phi: float  # the golden ratio, exact value roles[].coordinates_3d is built from
 
 
 CARTA_NAMES: tuple[str, ...] = (
@@ -154,6 +157,7 @@ def build_payload() -> GatoplePayload:
                 wheel_color=WHEEL_HEX[role.position],
                 carta_color=CARTA_HEX[role.position],
                 carta_image=f"cartas/{CARTA_FILES[role.position]}",
+                coordinates_3d=list(note_3d_coordinates(note)),
                 glyph_fg=glyph_fg,
                 carta_name=CARTA_NAMES[role.position],
                 is_penta=is_penta,
@@ -170,6 +174,7 @@ def build_payload() -> GatoplePayload:
         rotations=_build_rotations(),
         enharmonic=_build_enharmonic(),
         fretboard=_build_fretboard(),
+        phi=PHI,
     )
 
 

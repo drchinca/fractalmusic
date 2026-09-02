@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import "./chat/chat.css";
 import "./composer/composer.css";
 import "./gatople/gatople.css";
+import "./harmonics/harmonics.css";
 import "./shell/shell.css";
 import "./strudel/strudel.css";
 import { AppShell } from "./shell/AppShell";

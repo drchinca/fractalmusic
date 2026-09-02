@@ -36,6 +36,11 @@
       "wheel_color": "#2BA39A",
       "carta_color": "#D43A2C",
       "carta_image": "cartas/01-dos-puntos.jpg",
+      "coordinates_3d": [
+        0.0,
+        1.0,
+        1.618033988749895
+      ],
       "glyph_fg": "#D43A2C",
       "carta_name": "Dos Puntos",
       "is_penta": false,
@@ -61,6 +66,11 @@
       "wheel_color": "#F08A4A",
       "carta_color": "#1B3A8C",
       "carta_image": "cartas/02-estrella-v.jpg",
+      "coordinates_3d": [
+        0.0,
+        -1.0,
+        1.618033988749895
+      ],
       "glyph_fg": "#1B3A8C",
       "carta_name": "Estrella V",
       "is_penta": true,
@@ -88,6 +98,11 @@
       "wheel_color": "#BFD8E8",
       "carta_color": "#3FA34D",
       "carta_image": "cartas/03-triangulo.jpg",
+      "coordinates_3d": [
+        0.0,
+        1.0,
+        -1.618033988749895
+      ],
       "glyph_fg": "#3FA34D",
       "carta_name": "Triángulo",
       "is_penta": false,
@@ -115,6 +130,11 @@
       "wheel_color": "#E8E66A",
       "carta_color": "#F2E6D8",
       "carta_image": "cartas/04-casita.jpg",
+      "coordinates_3d": [
+        0.0,
+        -1.0,
+        -1.618033988749895
+      ],
       "glyph_fg": "#D43A2C",
       "carta_name": "Casita",
       "is_penta": false,
@@ -140,6 +160,11 @@
       "wheel_color": "#EFC4DA",
       "carta_color": "#3FA0C9",
       "carta_image": "cartas/05-estrella-i.jpg",
+      "coordinates_3d": [
+        1.0,
+        1.618033988749895,
+        0.0
+      ],
       "glyph_fg": "#1B3A8C",
       "carta_name": "Estrella I",
       "is_penta": true,
@@ -167,6 +192,11 @@
       "wheel_color": "#4FB387",
       "carta_color": "#3FA34D",
       "carta_image": "cartas/06-mas.jpg",
+      "coordinates_3d": [
+        -1.0,
+        1.618033988749895,
+        0.0
+      ],
       "glyph_fg": "#3FA34D",
       "carta_name": "Más",
       "is_penta": false,
@@ -192,6 +222,11 @@
       "wheel_color": "#F4B5B0",
       "carta_color": "#2E70C1",
       "carta_image": "cartas/07-estrella-ii.jpg",
+      "coordinates_3d": [
+        1.0,
+        -1.618033988749895,
+        0.0
+      ],
       "glyph_fg": "#1B3A8C",
       "carta_name": "Estrella II",
       "is_penta": true,
@@ -219,6 +254,11 @@
       "wheel_color": "#6F86B8",
       "carta_color": "#D43A2C",
       "carta_image": "cartas/08-llave.jpg",
+      "coordinates_3d": [
+        -1.0,
+        -1.618033988749895,
+        0.0
+      ],
       "glyph_fg": "#D43A2C",
       "carta_name": "Llave",
       "is_penta": false,
@@ -246,6 +286,11 @@
       "wheel_color": "#F0A85A",
       "carta_color": "#7CB6E0",
       "carta_image": "cartas/09-flecha-arriba.jpg",
+      "coordinates_3d": [
+        1.618033988749895,
+        0.0,
+        1.0
+      ],
       "glyph_fg": "#1B3A8C",
       "carta_name": "Flecha arriba",
       "is_penta": false,
@@ -271,6 +316,11 @@
       "wheel_color": "#B687C6",
       "carta_color": "#D43A2C",
       "carta_image": "cartas/10-estrella-iii.jpg",
+      "coordinates_3d": [
+        -1.618033988749895,
+        0.0,
+        1.0
+      ],
       "glyph_fg": "#D43A2C",
       "carta_name": "Estrella III",
       "is_penta": true,
@@ -298,6 +348,11 @@
       "wheel_color": "#B5D04A",
       "carta_color": "#3FA34D",
       "carta_image": "cartas/11-flecha-abajo.jpg",
+      "coordinates_3d": [
+        1.618033988749895,
+        0.0,
+        -1.0
+      ],
       "glyph_fg": "#3FA34D",
       "carta_name": "Flecha abajo",
       "is_penta": false,
@@ -323,6 +378,11 @@
       "wheel_color": "#DC4A38",
       "carta_color": "#2E70C1",
       "carta_image": "cartas/12-estrella-iv.jpg",
+      "coordinates_3d": [
+        -1.618033988749895,
+        0.0,
+        -1.0
+      ],
       "glyph_fg": "#1B3A8C",
       "carta_name": "Estrella IV",
       "is_penta": true,
@@ -619,5 +679,6 @@
       "D#",
       "E"
     ]
-  ]
+  ],
+  "phi": 1.618033988749895
 }
