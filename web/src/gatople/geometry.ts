@@ -16,6 +16,23 @@ export function clockAngle(hour: number): number {
   return (hour % 12) * SEG_DEG;
 }
 
+// The outer disc is a circle-of-fourths clock (fractalmusic.modes._clock_hour):
+// each physical hour-step is a perfect fourth (5 semitones), not a semitone.
+// So spinning the note ring to a given tonic offset (or reading a physical
+// hour-step back into a tonic offset) both go through the same conversion —
+// multiplying by -5 mod 12 is its own inverse (5 * 5 = 25 ≡ 1 mod 12), so one
+// function covers both directions.
+const HOUR_STEP_SEMITONES = 5;
+
+export function noteRingRotationHours(value: number): number {
+  const wrapped = ((value % 12) + 12) % 12;
+  return ((-HOUR_STEP_SEMITONES * wrapped) % 12 + 12) % 12;
+}
+
+export function noteRingRotationDeg(tonicOffset: number): number {
+  return noteRingRotationHours(tonicOffset) * SEG_DEG;
+}
+
 export function arcPath(
   startDeg: number,
   endDeg: number,

@@ -8,6 +8,7 @@ import {
 } from "react";
 
 import { SEG_DEG } from "../constants";
+import { noteRingRotationDeg, noteRingRotationHours } from "../geometry";
 import type { Chromatic, Role } from "../types";
 import { CyclopsEye } from "./CyclopsEye";
 import { InnerDisc } from "./InnerDisc";
@@ -61,8 +62,8 @@ export function Wheel({
   // between endDrag (clears drag) and the parent re-render with new tonicOffset.
   const [dragDelta, setDragDelta] = useState<number>(0);
 
-  const baseRotation = -tonicOffset * SEG_DEG;
-  const rotation = drag !== null ? -drag.startOffset * SEG_DEG + dragDelta : baseRotation;
+  const baseRotation = noteRingRotationDeg(tonicOffset);
+  const rotation = drag !== null ? noteRingRotationDeg(drag.startOffset) + dragDelta : baseRotation;
 
   function pointerAngleFromCenter(
     event: ReactPointerEvent<SVGSVGElement>,
@@ -101,8 +102,10 @@ export function Wheel({
     if (!drag) return;
     const angle = pointerAngleFromCenter(event, drag.centerX, drag.centerY);
     const delta = angle - drag.startAngle;
-    const semitones = Math.round(delta / SEG_DEG);
-    const newOffset = ((drag.startOffset + semitones) % 12 + 12) % 12;
+    const hourSteps = Math.round(delta / SEG_DEG);
+    const startHours = noteRingRotationHours(drag.startOffset);
+    const newHours = ((startHours + hourSteps) % 12 + 12) % 12;
+    const newOffset = noteRingRotationHours(newHours); // self-inverse: hours back to a tonic offset
     svgRef.current?.releasePointerCapture(drag.pointerId);
     setDrag(null);
     setDragDelta(0);
