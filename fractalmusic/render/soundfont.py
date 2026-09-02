@@ -20,6 +20,26 @@ def soundfont_available(sf2_path: Path) -> bool:
     return True
 
 
+def _total_samples(events: tuple[Event, ...], *, sr: int, bpm: int) -> int:
+    """Sample count needed to hold every event plus one second of tail."""
+    sec_per_beat = 60.0 / bpm
+    return int(max((e.beat + e.duration) * sec_per_beat for e in events) * sr + sr)
+
+
+def _note_schedule(events: tuple[Event, ...], *, sr: int, bpm: int) -> list[tuple[int, str, int]]:
+    """Build a sample-ordered (sample_index, "on"|"off", midi_note) schedule."""
+    sec_per_beat = 60.0 / bpm
+    schedule: list[tuple[int, str, int]] = []
+    for e in events:
+        midi_num = _midi_number(note=e.note, octave=e.octave)
+        on_sample = int(e.beat * sec_per_beat * sr)
+        off_sample = int((e.beat + e.duration) * sec_per_beat * sr)
+        schedule.append((on_sample, "on", midi_num))
+        schedule.append((off_sample, "off", midi_num))
+    schedule.sort(key=lambda x: x[0])
+    return schedule
+
+
 def render_with_soundfont(
     *,
     events: tuple[Event, ...],
@@ -35,22 +55,11 @@ def render_with_soundfont(
     sfid = fs.sfload(str(sf2_path))
     fs.program_select(0, sfid, 0, program)
 
-    sec_per_beat = 60.0 / bpm
-    total_samples = int(max((e.beat + e.duration) * sec_per_beat for e in events) * sr + sr)
+    total_samples = _total_samples(events, sr=sr, bpm=bpm)
     buf = np.zeros(total_samples, dtype=np.float32)
     cursor = 0
 
-    schedule: list[tuple[int, str, int]] = []
-    # action: ("on" or "off", midi_note)
-    for e in events:
-        midi_num = _midi_number(note=e.note, octave=e.octave)
-        on_sample = int(e.beat * sec_per_beat * sr)
-        off_sample = int((e.beat + e.duration) * sec_per_beat * sr)
-        schedule.append((on_sample, "on", midi_num))
-        schedule.append((off_sample, "off", midi_num))
-    schedule.sort(key=lambda x: x[0])
-
-    for sample_idx, action, note in schedule:
+    for sample_idx, action, note in _note_schedule(events, sr=sr, bpm=bpm):
         delta = sample_idx - cursor
         if delta > 0:
             block = fs.get_samples(delta)  # float32 stereo, length = 2*delta
