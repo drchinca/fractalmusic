@@ -82,6 +82,8 @@ def realize(pattern: Pattern, *, seed: int = 0, bpm: int = DEFAULT_BPM) -> tuple
         role = ROLES[position]
         events.append(
             Event(
+                # Validated against NOTE_NAMES above; mypy can't narrow str -> Literal
+                # from a frozenset membership check.
                 note=note,  # type: ignore[arg-type]
                 octave=octave,
                 beat=beat_cursor,
