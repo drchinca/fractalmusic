@@ -6,6 +6,7 @@ import type { Role } from "../types";
 
 interface InnerDiscProps {
   readonly roles: readonly Role[];
+  readonly enharmonic: Readonly<Record<string, string>>;
   readonly rotationDeg: number;
   readonly dragging: boolean;
   readonly onNoteClick: (note: string) => void;
@@ -13,6 +14,7 @@ interface InnerDiscProps {
 
 export function InnerDisc({
   roles,
+  enharmonic,
   rotationDeg,
   dragging,
   onNoteClick,
@@ -43,7 +45,7 @@ export function InnerDisc({
               textAnchor="middle"
               dominantBaseline="central"
             >
-              {displayNote(note)}
+              {displayNote(note, enharmonic)}
             </text>
           </g>
         );

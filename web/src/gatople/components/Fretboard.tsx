@@ -1,32 +1,31 @@
 import type { JSX } from "react";
 
-import {
-  FRET_COUNT,
-  FRET_PAD_LEFT,
-  FRET_W,
-  GUITAR_TUNING,
-  STRING_H,
-} from "../constants";
+import { FRET_PAD_LEFT, FRET_W, STRING_H } from "../constants";
 import { displayNote, roleAtNote } from "../geometry";
-import type { Chromatic, Palette, Role } from "../types";
+import type { FretboardTable, Palette, Role, RotationTable } from "../types";
 
 interface FretboardProps {
   readonly roles: readonly Role[];
-  readonly chromatic: Chromatic;
+  readonly fretboard: FretboardTable;
+  readonly rotations: RotationTable;
+  readonly enharmonic: Readonly<Record<string, string>>;
   readonly tonicOffset: number;
   readonly palette: Palette;
 }
 
 export function Fretboard({
   roles,
-  chromatic,
+  fretboard,
+  rotations,
+  enharmonic,
   tonicOffset,
   palette,
 }: FretboardProps): JSX.Element {
-  const rows = GUITAR_TUNING.length;
-  const totalW = FRET_PAD_LEFT + FRET_COUNT * FRET_W;
+  const rows = fretboard.length;
+  const fretCount = fretboard[0].length - 1;
+  const totalW = FRET_PAD_LEFT + fretCount * FRET_W;
   const totalH = rows * STRING_H + 22;
-  const strings = [...GUITAR_TUNING].reverse();
+  const strings = [...fretboard].reverse();
 
   return (
     <svg
@@ -36,7 +35,7 @@ export function Fretboard({
     >
       <rect x={0} y={0} width={totalW} height={totalH} fill="#f3e3c0" />
 
-      {Array.from({ length: FRET_COUNT + 1 }, (_, f) => {
+      {Array.from({ length: fretCount + 1 }, (_, f) => {
         const x = FRET_PAD_LEFT + f * FRET_W;
         return (
           <g key={`wire-${f}`}>
@@ -63,17 +62,14 @@ export function Fretboard({
         );
       })}
 
-      {strings.map((stringNote, s) => {
-        const baseIdx = chromatic.indexOf(stringNote);
+      {strings.map((stringNotes, s) => {
         return (
           <g key={`string-${s}`}>
-            {Array.from({ length: FRET_COUNT + 1 }, (_, f) => {
-              const chromIdx = (baseIdx + f) % 12;
-              const note = chromatic[chromIdx];
+            {stringNotes.map((note, f) => {
               const x = f === 0 ? 0 : FRET_PAD_LEFT + (f - 1) * FRET_W;
               const w = f === 0 ? FRET_PAD_LEFT : FRET_W;
               const y = s * STRING_H;
-              const role = roleAtNote(note, roles, tonicOffset, chromatic);
+              const role = roleAtNote(note, roles, tonicOffset, rotations);
               const tintFill =
                 role === null
                   ? "#ffffff"
@@ -117,7 +113,7 @@ export function Fretboard({
                     fontSize={10}
                     fill="#444"
                   >
-                    {displayNote(note)}
+                    {displayNote(note, enharmonic)}
                   </text>
                 </g>
               );

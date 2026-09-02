@@ -8,11 +8,13 @@ import {
   WHITE_INDICES,
 } from "../constants";
 import { displayNote, roleAtNote } from "../geometry";
-import type { Chromatic, Palette, Role } from "../types";
+import type { Chromatic, Palette, Role, RotationTable } from "../types";
 
 interface PianoProps {
   readonly roles: readonly Role[];
   readonly chromatic: Chromatic;
+  readonly rotations: RotationTable;
+  readonly enharmonic: Readonly<Record<string, string>>;
   readonly tonicOffset: number;
   readonly palette: Palette;
 }
@@ -28,25 +30,28 @@ function keyVisual(
   note: string,
   roles: readonly Role[],
   tonicOffset: number,
-  chromatic: Chromatic,
+  rotations: RotationTable,
+  enharmonic: Readonly<Record<string, string>>,
   palette: Palette,
 ): KeyVisual {
-  const role = roleAtNote(note, roles, tonicOffset, chromatic);
+  const role = roleAtNote(note, roles, tonicOffset, rotations);
   if (!role) {
-    return { note, tintFill: "#ffffff", glyphText: "", noteText: displayNote(note) };
+    return { note, tintFill: "#ffffff", glyphText: "", noteText: displayNote(note, enharmonic) };
   }
   const tintFill = palette === "mono" ? "#ffffff" : role.carta_color;
   return {
     note,
     tintFill,
     glyphText: role.display_glyph,
-    noteText: displayNote(note),
+    noteText: displayNote(note, enharmonic),
   };
 }
 
 export function Piano({
   roles,
   chromatic,
+  rotations,
+  enharmonic,
   tonicOffset,
   palette,
 }: PianoProps): JSX.Element {
@@ -67,7 +72,7 @@ export function Piano({
       {WHITE_INDICES.map((idx) => {
         const x = whiteCol[idx] * whiteW;
         const note = chromatic[idx];
-        const v = keyVisual(note, roles, tonicOffset, chromatic, palette);
+        const v = keyVisual(note, roles, tonicOffset, rotations, enharmonic, palette);
         return (
           <g key={`white-${idx}`} className="piano-key piano-white" data-note={note}>
             <rect
@@ -116,7 +121,7 @@ export function Piano({
       {BLACK_INDICES.map((idx) => {
         const x = whiteCol[BLACK_LOWER[idx]] * whiteW + whiteW - blackW / 2;
         const note = chromatic[idx];
-        const v = keyVisual(note, roles, tonicOffset, chromatic, palette);
+        const v = keyVisual(note, roles, tonicOffset, rotations, enharmonic, palette);
         return (
           <g key={`black-${idx}`} className="piano-key piano-black" data-note={note}>
             <rect x={x} y={0} width={blackW} height={blackH} fill="#0a0a0a" />

@@ -107,11 +107,26 @@ repos:
         files: ^web/src/.*\.(ts|tsx)$
         pass_filenames: false
 
+      - id: web-test
+        name: web unit tests (vitest)
+        entry: bash -c 'cd web && npm run test'
+        language: system
+        files: ^web/src/.*\.(ts|tsx)$
+        pass_filenames: false
+
       - id: web-build
         name: web build (tsc + vite)
         entry: bash -c 'cd web && npm run build'
         language: system
         files: ^web/
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: web-e2e
+        name: web e2e (playwright)
+        entry: bash -c 'cd web && npm run test:e2e'
+        language: system
+        files: ^web/(src|e2e|public)/
         pass_filenames: false
         stages: [pre-push]
 
