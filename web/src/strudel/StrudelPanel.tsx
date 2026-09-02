@@ -12,133 +12,54 @@ import {
 } from "react";
 import "@strudel/repl";
 
-import { fetchOptions, GenerateError } from "../composer/api";
+import { fetchOptions } from "../composer/api";
+import { AuditTrail } from "../composer/AuditTrail";
+import { runIdFromAudioUrl } from "../composer/auditApi";
 import { isFlavor } from "../composer/types";
 import type { ComposerOptions, Flavor } from "../composer/types";
 import { generateStrudel, type StrudelGeneration } from "./api";
+import {
+  BAND_LABELS,
+  BASS_LABELS,
+  bassNotes,
+  buildControlledCode,
+  buildStarterCode,
+  clamp,
+  DEFAULT_SURFACE,
+  DRUM_BANK_OPTIONS,
+  errorMessage,
+  FILL_LABELS,
+  FILL_PATTERNS,
+  FLAVOR_LABELS,
+  fmtNumber,
+  HAT_LABELS,
+  HAT_PATTERNS,
+  KICK_LABELS,
+  KICK_PATTERNS,
+  numberFromInput,
+  PATCH_PRESETS,
+  SNARE_LABELS,
+  SNARE_PATTERNS,
+  SOUND_LABELS,
+  SOUND_OPTIONS,
+  SPEED_OPTIONS,
+  STARTER_CODE,
+  stepValue,
+  SURFACE_SECTIONS,
+} from "./patternBuilder";
+import type {
+  BassPattern,
+  DrumBank,
+  FillPattern,
+  HatPattern,
+  KickPattern,
+  SnarePattern,
+  StrudelSound,
+  StrudelSurfaceControls,
+  SurfaceSection,
+} from "./patternBuilder";
 
-const STARTER_CODE = `setcps(0.75)
-
-stack(
-  note("<a2 e3 c3 g2>")
-    .sound("sawtooth")
-    .lpf(700)
-    .gain(.22),
-  note("a4 [c5 e5] <g5 e5>")
-    .sound("triangle")
-    .delay(.25)
-    .room(.35)
-    .gain(.16),
-  note("<a3 c4 e4 g4>*2")
-    .sound("sine")
-    .gain(.1)
-)`;
-
-const FLAVOR_LABELS: Record<Flavor, string> = {
-  free: "Libre",
-  "penta-walk": "Paseo pentatónico",
-  "carta-progression": "Progresión de cartas",
-};
-
-const BAND_LABELS: Record<"strong" | "tentative" | "exploratory", string> = {
-  strong: "Fiel al libro",
-  tentative: "Inspirado en el libro",
-  exploratory: "Exploración libre",
-};
-
-const SOUND_LABELS: Record<"sine" | "triangle" | "sawtooth" | "square", string> = {
-  sine: "Senoidal",
-  triangle: "Triángulo",
-  sawtooth: "Sierra",
-  square: "Cuadrada",
-};
-
-const BASS_LABELS: Record<"root" | "walk" | "octaves", string> = {
-  root: "Tónica",
-  walk: "Caminado",
-  octaves: "Octavas",
-};
-
-const KICK_LABELS: Record<"four" | "half" | "syncopated" | "euclid", string> = {
-  four: "Cuatro al piso",
-  half: "A medias",
-  syncopated: "Sincopado",
-  euclid: "Euclídeo",
-};
-
-const SNARE_LABELS: Record<"backbeat" | "clap" | "four" | "offbeat", string> = {
-  backbeat: "Contratiempo",
-  clap: "Palmas",
-  four: "Cuatro pulsos",
-  offbeat: "Fuera del pulso",
-};
-
-const HAT_LABELS: Record<"eighth" | "sixteenth" | "skip" | "open", string> = {
-  eighth: "Corcheas",
-  sixteenth: "Semicorcheas",
-  skip: "Saltado",
-  open: "Abierto",
-};
-
-const FILL_LABELS: Record<"none" | "clap-drop" | "tom-run" | "snare-roll", string> = {
-  none: "Sin remate",
-  "clap-drop": "Bajón con palma",
-  "tom-run": "Vuelta de toms",
-  "snare-roll": "Redoble de caja",
-};
-
-type StrudelSound = "sine" | "triangle" | "sawtooth" | "square";
 type CodeMode = "controlled" | "manual";
-type DrumBank = "tr808" | "tr909" | "tr707";
-type KickPattern = "four" | "half" | "syncopated" | "euclid";
-type SnarePattern = "backbeat" | "clap" | "four" | "offbeat";
-type HatPattern = "eighth" | "sixteenth" | "skip" | "open";
-type FillPattern = "none" | "clap-drop" | "tom-run" | "snare-roll";
-type BassPattern = "root" | "walk" | "octaves";
-type SurfaceSection = "melody" | "bass" | "drums";
-
-interface StrudelSurfaceControls {
-  voiceSound: StrudelSound;
-  voiceGain: number;
-  octaveShift: number;
-  speed: number;
-  voiceAttack: number;
-  voiceRelease: number;
-  voicePan: number;
-  voiceShape: number;
-  droneEnabled: boolean;
-  droneSound: StrudelSound;
-  droneOctave: number;
-  droneGain: number;
-  filterEnabled: boolean;
-  filterCutoff: number;
-  delay: number;
-  room: number;
-  bassEnabled: boolean;
-  bassPattern: BassPattern;
-  bassSound: StrudelSound;
-  bassGain: number;
-  bassCutoff: number;
-  bassPan: number;
-  bassShape: number;
-  drumsEnabled: boolean;
-  drumBank: DrumBank;
-  kickEnabled: boolean;
-  kickPattern: KickPattern;
-  kickGain: number;
-  snareEnabled: boolean;
-  snarePattern: SnarePattern;
-  snareGain: number;
-  hatsEnabled: boolean;
-  hatPattern: HatPattern;
-  hatGain: number;
-  fillPattern: FillPattern;
-  fillGain: number;
-  drumRoom: number;
-  drumDelay: number;
-  drumShape: number;
-  swing: number;
-}
 
 interface StrudelEditorElement extends HTMLElement {
   editor?: {
@@ -160,414 +81,9 @@ interface KnobProps {
   onChange: (value: number) => void;
 }
 
-const SOUND_OPTIONS: readonly StrudelSound[] = ["triangle", "sine", "sawtooth", "square"];
-const DRUM_BANK_OPTIONS: readonly DrumBank[] = ["tr909", "tr808", "tr707"];
-
-const SPEED_OPTIONS: readonly { label: string; value: number }[] = [
-  { label: "1/2", value: 0.5 },
-  { label: "1", value: 1 },
-  { label: "3/2", value: 1.5 },
-  { label: "2", value: 2 },
-];
-
-const SURFACE_SECTIONS: readonly { id: SurfaceSection; label: string }[] = [
-  { id: "melody", label: "Melodía" },
-  { id: "bass", label: "Bajo" },
-  { id: "drums", label: "Batería" },
-];
-
-const KICK_PATTERNS: Record<KickPattern, string> = {
-  four: "bd*4",
-  half: "bd ~ bd ~",
-  syncopated: "bd [~ bd] ~ bd",
-  euclid: "bd(5,8)",
-};
-
-const SNARE_PATTERNS: Record<SnarePattern, string> = {
-  backbeat: "~ sd ~ sd",
-  clap: "~ cp ~ cp",
-  four: "sd*4",
-  offbeat: "~ ~ sd [~ cp]",
-};
-
-const HAT_PATTERNS: Record<HatPattern, string> = {
-  eighth: "hh*8",
-  sixteenth: "hh*16",
-  skip: "[hh ~]*4",
-  open: "hh*6 [oh hh]",
-};
-
-const FILL_PATTERNS: Record<FillPattern, string | null> = {
-  none: null,
-  "clap-drop": "~ ~ ~ [cp sd]",
-  "tom-run": "~ ~ [lt mt] [ht cp]",
-  "snare-roll": "~ ~ sd*4 cp",
-};
-
-const DEFAULT_SURFACE: StrudelSurfaceControls = {
-  voiceSound: "triangle",
-  voiceGain: 0.22,
-  octaveShift: 0,
-  speed: 1,
-  voiceAttack: 0.01,
-  voiceRelease: 0.18,
-  voicePan: 0.5,
-  voiceShape: 0,
-  droneEnabled: true,
-  droneSound: "sine",
-  droneOctave: 2,
-  droneGain: 0.08,
-  filterEnabled: false,
-  filterCutoff: 1200,
-  delay: 0,
-  room: 0,
-  bassEnabled: true,
-  bassPattern: "root",
-  bassSound: "sawtooth",
-  bassGain: 0.14,
-  bassCutoff: 500,
-  bassPan: 0.5,
-  bassShape: 0,
-  drumsEnabled: true,
-  drumBank: "tr909",
-  kickEnabled: true,
-  kickPattern: "four",
-  kickGain: 0.75,
-  snareEnabled: true,
-  snarePattern: "backbeat",
-  snareGain: 0.38,
-  hatsEnabled: true,
-  hatPattern: "eighth",
-  hatGain: 0.18,
-  fillPattern: "none",
-  fillGain: 0.34,
-  drumRoom: 0.12,
-  drumDelay: 0,
-  drumShape: 0.05,
-  swing: 0,
-};
-
-const PATCH_PRESETS: readonly {
-  id: string;
-  label: string;
-  patch: Partial<StrudelSurfaceControls>;
-}[] = [
-  {
-    id: "fractal",
-    label: "Fractal",
-    patch: {
-      voiceSound: "triangle",
-      voiceGain: 0.22,
-      voiceAttack: 0.01,
-      voiceRelease: 0.18,
-      voiceShape: 0,
-      delay: 0,
-      room: 0.12,
-      bassEnabled: true,
-      bassPattern: "root",
-      drumsEnabled: false,
-    },
-  },
-  {
-    id: "club",
-    label: "Club",
-    patch: {
-      voiceSound: "sawtooth",
-      voiceGain: 0.25,
-      voiceAttack: 0,
-      voiceRelease: 0.12,
-      voiceShape: 0.08,
-      filterEnabled: true,
-      filterCutoff: 1400,
-      bassEnabled: true,
-      bassPattern: "walk",
-      bassGain: 0.22,
-      drumsEnabled: true,
-      kickPattern: "four",
-      snarePattern: "backbeat",
-      hatPattern: "sixteenth",
-      fillPattern: "clap-drop",
-      drumShape: 0.1,
-    },
-  },
-  {
-    id: "dub",
-    label: "Dub",
-    patch: {
-      voiceSound: "sine",
-      voiceGain: 0.18,
-      voiceAttack: 0.03,
-      voiceRelease: 0.42,
-      delay: 0.38,
-      room: 0.55,
-      bassEnabled: true,
-      bassPattern: "octaves",
-      bassGain: 0.2,
-      drumDelay: 0.18,
-      drumRoom: 0.35,
-      swing: 0.08,
-    },
-  },
-  {
-    id: "break",
-    label: "Break",
-    patch: {
-      voiceSound: "square",
-      voiceGain: 0.16,
-      speed: 1.5,
-      bassEnabled: true,
-      bassPattern: "walk",
-      drumsEnabled: true,
-      kickPattern: "syncopated",
-      snarePattern: "offbeat",
-      hatPattern: "open",
-      fillPattern: "snare-roll",
-      drumShape: 0.18,
-      swing: 0.14,
-    },
-  },
-];
-
-function errorMessage(err: unknown): string {
-  if (err instanceof GenerateError) return err.message;
-  return err instanceof Error ? err.message : String(err);
-}
-
 function loadEditorCode(editor: StrudelEditorElement, code: string): void {
   editor.setAttribute("code", code);
   editor.editor?.setCode?.(code);
-}
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
-}
-
-function stepValue(value: number, min: number, max: number, step: number): number {
-  const stepped = Math.round((clamp(value, min, max) - min) / step) * step + min;
-  return Number(clamp(stepped, min, max).toFixed(4));
-}
-
-function numberFromInput(value: string, fallback: number, min: number, max: number): number {
-  const parsed = Number(value);
-  if (!Number.isFinite(parsed)) return fallback;
-  return clamp(parsed, min, max);
-}
-
-function fmtNumber(value: number): string {
-  if (Number.isInteger(value)) return String(value);
-  return value.toFixed(3).replace(/0+$/, "").replace(/\.$/, "");
-}
-
-function commentText(value: string, limit = 120): string {
-  return value.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim().slice(0, limit);
-}
-
-function shiftedNote(note: string, octave: number, shift: number): string {
-  return `${note.toLowerCase()}${clamp(octave + shift, 0, 8)}`;
-}
-
-function bassNotes(generation: StrudelGeneration, controls: StrudelSurfaceControls): string {
-  const source = generation.generated_from;
-  if (controls.bassPattern === "root") {
-    return `${source.tonic.toLowerCase()}1*4`;
-  }
-  if (controls.bassPattern === "octaves") {
-    return `${source.tonic.toLowerCase()}1 ${source.tonic.toLowerCase()}2`;
-  }
-  return source.events
-    .slice(0, 8)
-    .map((event) => shiftedNote(event.note, Math.min(event.octave, 2), -2))
-    .join(" ");
-}
-
-function starterBassNotes(controls: StrudelSurfaceControls): string {
-  if (controls.bassPattern === "root") return "a1*4";
-  if (controls.bassPattern === "octaves") return "a1 a2";
-  return "a1 c2 d2 e2 a1 c2 d2 e2";
-}
-
-function drumLayer(pattern: string, controls: StrudelSurfaceControls, gain: number): string {
-  const lines = [
-    `  s("${pattern}")`,
-    `    .bank("${controls.drumBank}")`,
-    `    .gain(${fmtNumber(gain)})`,
-  ];
-  if (controls.drumShape > 0) {
-    lines.push(`    .shape(${fmtNumber(controls.drumShape)})`);
-  }
-  if (controls.drumRoom > 0) {
-    lines.push(`    .room(${fmtNumber(controls.drumRoom)})`);
-  }
-  if (controls.drumDelay > 0) {
-    lines.push(`    .delay(${fmtNumber(controls.drumDelay)})`);
-  }
-  if (controls.swing > 0) {
-    lines.push(`    .swingBy(${fmtNumber(controls.swing)}, 4)`);
-  }
-  return lines.join("\n");
-}
-
-function starterDrumLayers(controls: StrudelSurfaceControls): string[] {
-  const layers: string[] = [];
-  if (!controls.drumsEnabled) return layers;
-  if (controls.kickEnabled) {
-    layers.push(drumLayer(KICK_PATTERNS[controls.kickPattern], controls, controls.kickGain));
-  }
-  if (controls.snareEnabled) {
-    layers.push(drumLayer(SNARE_PATTERNS[controls.snarePattern], controls, controls.snareGain));
-  }
-  if (controls.hatsEnabled) {
-    layers.push(drumLayer(HAT_PATTERNS[controls.hatPattern], controls, controls.hatGain));
-  }
-  const fillPattern = FILL_PATTERNS[controls.fillPattern];
-  if (fillPattern !== null) {
-    layers.push(drumLayer(fillPattern, controls, controls.fillGain));
-  }
-  return layers;
-}
-
-function melodyLayer(notes: string, controls: StrudelSurfaceControls): string {
-  const lines = [
-    `  note("${notes}")`,
-    `    .sound("${controls.voiceSound}")`,
-    `    .gain(${fmtNumber(controls.voiceGain)})`,
-    `    .attack(${fmtNumber(controls.voiceAttack)})`,
-    `    .release(${fmtNumber(controls.voiceRelease)})`,
-    `    .pan(${fmtNumber(controls.voicePan)})`,
-  ];
-  if (controls.voiceShape > 0) {
-    lines.push(`    .shape(${fmtNumber(controls.voiceShape)})`);
-  }
-  if (controls.filterEnabled) {
-    lines.push(`    .lpf(${fmtNumber(controls.filterCutoff)})`);
-  }
-  if (controls.delay > 0) {
-    lines.push(`    .delay(${fmtNumber(controls.delay)})`);
-  }
-  if (controls.room > 0) {
-    lines.push(`    .room(${fmtNumber(controls.room)})`);
-  }
-  return lines.join("\n");
-}
-
-function buildStarterCode(controls: StrudelSurfaceControls): string {
-  const cycle = 16;
-  const speed = fmtNumber(controls.speed);
-  const starterNotes = [
-    shiftedNote("A", 4, controls.octaveShift),
-    shiftedNote("C", 5, controls.octaveShift),
-    shiftedNote("E", 5, controls.octaveShift),
-    shiftedNote("A", 5, controls.octaveShift),
-  ].join(" ");
-  const layers = [melodyLayer(starterNotes, controls)];
-
-  if (controls.droneEnabled) {
-    layers.push(
-      [
-        `  note("a${controls.droneOctave}")`,
-        `    .sound("${controls.droneSound}")`,
-        `    .slow(${cycle})`,
-        `    .gain(${fmtNumber(controls.droneGain)})`,
-      ].join("\n"),
-    );
-  }
-  if (controls.bassEnabled) {
-    layers.push(
-      [
-        `  note("${starterBassNotes(controls)}")`,
-        `    .sound("${controls.bassSound}")`,
-        `    .lpf(${fmtNumber(controls.bassCutoff)})`,
-        `    .gain(${fmtNumber(controls.bassGain)})`,
-        `    .pan(${fmtNumber(controls.bassPan)})`,
-        ...(controls.bassShape > 0 ? [`    .shape(${fmtNumber(controls.bassShape)})`] : []),
-      ].join("\n"),
-    );
-  }
-
-  return [
-    "// Fractal Music: preview",
-    "// key: A Eolico",
-    `// surface: voice=${controls.voiceSound} speed=${speed} octave=${controls.octaveShift} bank=${controls.drumBank}`,
-    `setcps(96 / 60 / ${cycle} * ${speed})`,
-    "",
-    "stack(",
-    [...layers, ...starterDrumLayers(controls)].join(",\n"),
-    ")",
-  ].join("\n");
-}
-
-function buildControlledCode(
-  generation: StrudelGeneration,
-  controls: StrudelSurfaceControls,
-): string {
-  const source = generation.generated_from;
-  const notes = source.events
-    .map((event) => shiftedNote(event.note, event.octave, controls.octaveShift))
-    .join(" ");
-  const cycle = fmtNumber(generation.total_beats);
-  const speed = fmtNumber(controls.speed);
-  const drone = `${source.tonic.toLowerCase()}${controls.droneOctave}`;
-
-  const layers = [melodyLayer(notes, controls)];
-  if (controls.droneEnabled) {
-    layers.push(
-      [
-        `  note("${drone}")`,
-        `    .sound("${controls.droneSound}")`,
-        `    .slow(${cycle})`,
-        `    .gain(${fmtNumber(controls.droneGain)})`,
-      ].join("\n"),
-    );
-  }
-  if (controls.bassEnabled) {
-    layers.push(
-      [
-        `  note("${bassNotes(generation, controls)}")`,
-        `    .sound("${controls.bassSound}")`,
-        `    .lpf(${fmtNumber(controls.bassCutoff)})`,
-        `    .gain(${fmtNumber(controls.bassGain)})`,
-        `    .pan(${fmtNumber(controls.bassPan)})`,
-        ...(controls.bassShape > 0 ? [`    .shape(${fmtNumber(controls.bassShape)})`] : []),
-      ].join("\n"),
-    );
-  }
-  if (controls.drumsEnabled) {
-    if (controls.kickEnabled) {
-      layers.push(drumLayer(KICK_PATTERNS[controls.kickPattern], controls, controls.kickGain));
-    }
-    if (controls.snareEnabled) {
-      layers.push(drumLayer(SNARE_PATTERNS[controls.snarePattern], controls, controls.snareGain));
-    }
-    if (controls.hatsEnabled) {
-      layers.push(drumLayer(HAT_PATTERNS[controls.hatPattern], controls, controls.hatGain));
-    }
-    const fillPattern = FILL_PATTERNS[controls.fillPattern];
-    if (fillPattern !== null) {
-      layers.push(drumLayer(fillPattern, controls, controls.fillGain));
-    }
-  }
-
-  const bookComments = generation.book_guidance.flatMap((guidance, index) => [
-    `// book ${index + 1}: ${commentText(guidance.book_hash, 16)} p.${guidance.page_start} ${commentText(guidance.book_title, 64)}`,
-    `// strudel use ${index + 1}: ${commentText(guidance.strudel_use, 180)}`,
-  ]);
-
-  return [
-    `// Fractal Music: ${generation.pattern_name}`,
-    `// key: ${source.key_label}`,
-    `// confidence: ${source.confidence.band} ${fmtNumber(source.confidence.score)}`,
-    `// roles: ${source.events.map((event) => event.role_hour).join(" ")}`,
-    `// glyphs: ${source.events.map((event) => event.carta_glyph).join(" ")}`,
-    `// surface: voice=${controls.voiceSound} speed=${speed} octave=${controls.octaveShift} bank=${controls.drumBank}`,
-    `// source: ${source.provenance.book_title}`,
-    ...(source.provenance.chapter === null ? [] : [`// chapter: ${source.provenance.chapter}`]),
-    ...bookComments,
-    `setcps(${generation.bpm} / 60 / ${cycle} * ${speed})`,
-    "",
-    "stack(",
-    layers.join(",\n"),
-    ")",
-  ].join("\n");
 }
 
 function Knob({ label, value, min, max, step, disabled = false, onChange }: KnobProps): JSX.Element {
@@ -716,6 +232,16 @@ function PatternLane({
       </div>
     </div>
   );
+}
+
+function GenerationAuditTrail({
+  generation,
+}: {
+  readonly generation: StrudelGeneration;
+}): JSX.Element | null {
+  if (generation.generated_from.audio_url === null) return null;
+  const runId = runIdFromAudioUrl(generation.generated_from.audio_url);
+  return runId === null ? null : <AuditTrail runId={runId} />;
 }
 
 export function StrudelPanel(): JSX.Element {
@@ -1502,6 +1028,8 @@ export function StrudelPanel(): JSX.Element {
                     <span>{generation.generated_from.provenance.chapter}</span>
                   )}
                 </footer>
+
+                <GenerationAuditTrail generation={generation} />
 
                 {generation.book_guidance.length > 0 && (
                   <section className="strudel-book-guidance" aria-label="Libro a Strudel">

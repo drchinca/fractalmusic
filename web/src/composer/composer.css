@@ -205,6 +205,63 @@
   font-style: italic;
 }
 
+.audit-trail {
+  border-top: 1px dashed var(--border, #d1d5db);
+  padding-top: 0.6rem;
+}
+.audit-trail-toggle {
+  appearance: none;
+  border: 1px solid var(--border, #d1d5db);
+  background: #fff;
+  border-radius: 0.4rem;
+  padding: 0.35rem 0.6rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--accent, #2563eb);
+  cursor: pointer;
+  min-height: 36px;
+}
+.audit-trail-body { margin-top: 0.6rem; }
+.audit-trail-meta, .audit-trail-error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted, #6b7280);
+}
+.audit-trail-error { color: #991b1b; }
+.audit-trail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.audit-trail-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.4rem;
+  border: 1px solid var(--border, #d1d5db);
+  color: var(--muted, #6b7280);
+}
+.audit-trail-entry.is-winner {
+  border-color: #065f46;
+  background: #d1fae5;
+  color: #065f46;
+}
+.audit-trail-badge {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(0, 0, 0, 0.06);
+}
+.audit-trail-summary { font-style: italic; }
+
 @media (max-width: 480px) {
   .composer-panel { padding: 1rem 0.75rem 2rem; }
 }
