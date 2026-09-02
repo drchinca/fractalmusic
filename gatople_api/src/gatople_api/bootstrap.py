@@ -8,10 +8,12 @@ also the only place to swap implementations later.
 from __future__ import annotations
 
 import math
+import os
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 
 from cemaf.llm.anthropic import AnthropicLLMClient
+from cemaf.llm.bedrock_cli import BedrockCliLLMClient
 from cemaf.llm.openai_compat import OpenAICompatClient
 from cemaf.llm.protocols import Message, MessageRole
 from fastapi import FastAPI
@@ -138,19 +140,33 @@ def build_services(settings: ChatSettings | None = None) -> GatopleServices:
         ),
     )
 
-    if not settings.anthropic_api_key:
-        # No Anthropic key — silently fall back to the local Ollama model
-        # so the toggle still works in offline / no-key dev. The user
-        # sees the same UI; the BFF just routes both choices to Ollama.
-        claude_llm: LLM = ollama_llm
-    else:
-        claude_llm = CemafLLMAdapter(
+    if settings.anthropic_api_key:
+        claude_llm: LLM = CemafLLMAdapter(
             name="claude",
             client=AnthropicLLMClient(
                 api_key=settings.anthropic_api_key,
                 model=settings.anthropic_model,
             ),
         )
+    elif os.environ.get("AWS_BEARER_TOKEN_BEDROCK") or os.environ.get("AWS_PROFILE"):
+        # No direct Anthropic key, but a Bedrock-capable AWS session is
+        # present in the environment (bearer token or an SSO profile) —
+        # route Claude through Bedrock instead of silently degrading to
+        # Ollama. Same LLM protocol, same CemafLLMAdapter wrapping.
+        claude_llm = CemafLLMAdapter(
+            name="claude-bedrock",
+            client=BedrockCliLLMClient(
+                model=settings.bedrock_model,
+                region=settings.bedrock_region,
+                profile=os.environ.get("AWS_PROFILE"),
+            ),
+        )
+    else:
+        # Neither a direct key nor a Bedrock session — fall back to the
+        # local Ollama model so the toggle still works in offline dev.
+        # The user sees the same UI; the BFF just routes both choices to
+        # Ollama.
+        claude_llm = ollama_llm
 
     return GatopleServices(
         retriever=retriever,

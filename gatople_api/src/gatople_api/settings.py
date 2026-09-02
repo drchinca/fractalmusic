@@ -39,9 +39,15 @@ class ChatSettings(BaseSettings):
     # Optional impulse response. If absent, an algorithmic hall is used.
     reverb_ir_path: Path | None = None
 
-    # LLM settings
+    # LLM settings. Claude backend picks in this order at bootstrap:
+    # 1. anthropic_api_key set -> direct api.anthropic.com
+    # 2. AWS_BEARER_TOKEN_BEDROCK (or an AWS_PROFILE) present in the
+    #    environment -> AWS Bedrock, via cemaf's BedrockCliLLMClient
+    # 3. neither -> falls back to the local Ollama client
     anthropic_api_key: str | None = None
     anthropic_model: str = "claude-sonnet-4-6"
+    bedrock_model: str = "global.anthropic.claude-sonnet-4-6"
+    bedrock_region: str = "us-east-1"
     ollama_base_url: str = "http://localhost:11434"
     ollama_model: str = "qwen2.5:14b"
 
