@@ -39,7 +39,7 @@ Of the three options considered (below), direct `@strudel/repl` was the only one
 **2026-09-01 audit: this ADR's decision (Option B) has shipped.** Verified directly against the code:
 
 - `fractalmusic/generate/adapters.py::to_strudel_code` / `to_strudel_payload` exist and are tested (`tests/unit/test_generate.py::test_to_strudel_code_*`).
-- `POST /api/generate/strudel` is live in `chat_bff/src/chat_bff/routes/generate.py`.
+- `POST /api/generate/strudel` is live in `gatople_api/src/gatople_api/routes/generate.py`.
 - `web/src/strudel/StrudelPanel.tsx` calls the real endpoint (`generateStrudel`) rather than only rendering the old hardcoded `STARTER_CODE`.
 - `web/src/shell/AppShell.tsx` still exposes Gatople / Componer / Strudel / chat as separate tabs — the "single Studio route" consolidation from the original plan has **not** shipped yet.
 

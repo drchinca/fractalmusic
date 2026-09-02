@@ -34,7 +34,7 @@ updates:
     schedule:
       interval: "weekly"
 
-# chat_bff/ is intentionally NOT covered here, for the same reason it's
+# gatople_api/ is intentionally NOT covered here, for the same reason it's
 # excluded from ci.yml: its pyproject.toml depends on cemaf and
 # meridian_library via local filesystem paths that aren't a git repository
 # Dependabot (or anything else) could resolve. Its *other* real
