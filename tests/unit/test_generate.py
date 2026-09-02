@@ -451,6 +451,52 @@ def test_research_loop_never_lets_a_persisted_pattern_cross_flavors(tmp_path: Pa
     assert carta_result.pattern.degrees == (1, 4, 5, 1, 1, 4, 5, 1)
 
 
+class _CountingExpert:
+    """Tracks call count; always returns the same deliberately mediocre
+    (but valid) candidate so it can be told apart from a corpus seed."""
+
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def query(self, request: GenerationRequest) -> Pattern:
+        self.calls += 1
+        return Pattern(
+            name="from-expert",
+            tonic=request.tonic,
+            mode=request.mode,
+            degrees=(1, 3, 5, 1),
+            rhythm=(1.0, 1.0, 1.0, 1.0),
+            provenance=Provenance(book_hash="llm-composed", book_title="Generado por IA"),
+        )
+
+
+def test_research_loop_with_free_text_bypasses_corpus_best_of_n(tmp_path: Path):
+    # A free-text description has no relationship to whatever patterns
+    # happen to be pre-seeded in the corpus for the same tonic/mode — DE-
+    # SCRIBE always sends the fixed defaults A/Eólico regardless of what
+    # was typed, so corpus.find() would return the SAME candidates for
+    # every description. Before this fix, best-of-N let a high-scoring
+    # seeded corpus pattern silently outscore and replace the LLM's actual
+    # composition — the user's description was discarded whenever a
+    # curated pattern happened to score higher on raw musical-rule metrics.
+    request = GenerationRequest(tonic="A", mode="Eólico", length_events=8)
+    corpus = JsonCorpus(root=tmp_path / "patterns")
+
+    # Seed the corpus with a high-scoring "A_Eólico" pattern first — this
+    # is exactly the shape research_loop's non-free-text path persists.
+    research_loop(request=request, expert=StubExpert(), corpus=corpus)
+    assert any((tmp_path / "patterns").iterdir())
+
+    described_request = GenerationRequest(
+        tonic="A", mode="Eólico", length_events=8, free_text="a slow melancholy waltz"
+    )
+    expert = _CountingExpert()
+    result = research_loop(request=described_request, expert=expert, corpus=corpus)
+
+    assert result.pattern.name == "from-expert"
+    assert expert.calls == 1
+
+
 def test_adapt_length_is_a_noop_when_length_already_matches():
     pattern = _pattern(degrees=(1, 2, 3, 4), rhythm=(1.0, 1.0, 1.0, 1.0))
     assert _adapt_length(pattern, 4) is pattern

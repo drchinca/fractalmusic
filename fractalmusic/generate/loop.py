@@ -133,7 +133,30 @@ def research_loop(
     expert: ExpertClient,
     corpus: PatternCorpus,
 ) -> GenerationResult:
-    """Best-of-N over corpus + expert candidates. Persists winners."""
+    """Best-of-N over corpus + expert candidates. Persists winners.
+
+    A free-text description skips the contest entirely: corpus patterns
+    predate the description and have no relationship to it, so letting
+    them compete would silently discard the expert's actual composition
+    whenever a curated corpus pattern scores higher on raw musical-rule
+    metrics — and re-querying a real LLM N_CANDIDATES times per request
+    just to fill the field isn't affordable or fast. The expert's single
+    interpretation is used directly.
+    """
+    if request.free_text:
+        pattern = expert.query(request)
+        events = realize(pattern, seed=0)
+        s = score_events(events=events, pattern=pattern)
+        if s.total >= SCORE_THRESHOLD:
+            corpus.append(pattern, s)
+        return GenerationResult(
+            pattern=pattern,
+            events=events,
+            score=s,
+            midi_path=None,
+            web_payload=to_web_payload(pattern=pattern, events=events, score=s),
+        )
+
     candidates: list[Pattern] = [
         _adapt_length(p, request.length_events) for p in corpus.find(request)
     ]
