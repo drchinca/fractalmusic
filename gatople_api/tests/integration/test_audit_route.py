@@ -12,6 +12,7 @@ from fractalmusic.generate import JsonCorpus, StubExpert
 
 from gatople_api.app import create_app
 from gatople_api.audit import build_audit_system
+from gatople_api.llm_expert import LLMExpert
 from gatople_api.services import GatopleServices
 from gatople_api.settings import ChatSettings
 from tests.integration.conftest import FakeLLM, FakeRetriever
@@ -29,13 +30,15 @@ def _client(tmp_path: Path) -> TestClient:
         audio_cache_url="/generated",
     )
     audit_log, audit_trail = build_audit_system()
+    fake_claude = FakeLLM(name="claude")
     services = GatopleServices(
         retriever=FakeRetriever(),
-        llm_claude=FakeLLM(name="claude"),
+        llm_claude=fake_claude,
         llm_ollama=FakeLLM(name="ollama"),
         similarity=_always_high,
         settings=settings,
         expert=StubExpert(),
+        llm_expert=LLMExpert(llm=fake_claude),
         corpus=JsonCorpus(root=settings.corpus_root),
         audit_log=audit_log,
         audit_trail=audit_trail,
@@ -95,11 +98,7 @@ def test_audit_trail_shows_corpus_winner_after_a_pattern_is_seeded(tmp_path: Pat
     assert len(summaries) == 2
     assert summaries[0]["payload"]["winner_source"] == "expert"
     assert summaries[1]["payload"]["winner_source"] == "corpus"
-    corpus_entries = [
-        e
-        for e in trail["entries"]
-        if e["type"] == "eval.result" and e["source"] == "corpus"
-    ]
+    corpus_entries = [e for e in trail["entries"] if e["type"] == "eval.result" and e["source"] == "corpus"]
     assert len(corpus_entries) == 1
     assert corpus_entries[0]["payload"]["won"] is True
 
@@ -117,13 +116,15 @@ def test_audit_unavailable_when_not_wired(tmp_path: Path) -> None:
         anthropic_api_key="test-key-not-real",
         corpus_root=tmp_path / "patterns",
     )
+    fake_claude = FakeLLM(name="claude")
     services = GatopleServices(
         retriever=FakeRetriever(),
-        llm_claude=FakeLLM(name="claude"),
+        llm_claude=fake_claude,
         llm_ollama=FakeLLM(name="ollama"),
         similarity=_always_high,
         settings=settings,
         expert=StubExpert(),
+        llm_expert=LLMExpert(llm=fake_claude),
         corpus=JsonCorpus(root=settings.corpus_root),
     )
     client = TestClient(create_app(services=services))

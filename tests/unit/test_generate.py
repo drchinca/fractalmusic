@@ -18,9 +18,9 @@ from fractalmusic.generate import (
     to_strudel_payload,
     to_web_payload,
 )
-from fractalmusic.generate.types import CandidateTrace, GenerationTrace
 from fractalmusic.generate.loop import _adapt_length
 from fractalmusic.generate.realize import _midi_number
+from fractalmusic.generate.types import CandidateTrace, GenerationTrace
 from fractalmusic.wheel import Wheel
 
 PROV = Provenance(book_hash="b202598c", book_title="El Sistema Fractal")
@@ -542,7 +542,9 @@ def test_trace_attributes_source_correctly_when_corpus_pattern_wins(tmp_path: Pa
     # Now it's a direct field.
     request = GenerationRequest(tonic="A", mode="Eólico", length_events=8)
     corpus = JsonCorpus(root=tmp_path / "patterns")
-    research_loop(request=request, expert=StubExpert(), corpus=corpus)  # seeds a strong corpus entry
+    research_loop(
+        request=request, expert=StubExpert(), corpus=corpus
+    )  # seeds a strong corpus entry
 
     result = research_loop(request=request, expert=_FlatLowScoreExpert(), corpus=corpus)
 
