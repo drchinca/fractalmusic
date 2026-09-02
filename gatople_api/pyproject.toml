@@ -41,7 +41,7 @@ packages = ["src/gatople_api"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-addopts = "-q --strict-markers"
+addopts = "-q --strict-markers -m \"not eval\""
 testpaths = ["tests"]
 markers = [
     "eval: golden-set evaluation tests (run explicitly with -m eval)",

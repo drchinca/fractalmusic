@@ -65,6 +65,18 @@ _NON_THEORY_TERMS: tuple[str, ...] = (
     "sociedad anonima",
     "ticktoc",
     "tiktok",
+    # Business Model Canvas boilerplate — caught live: a canvas section
+    # ("Key Partners Value Proposition ... Revenue Stream") passed the
+    # theory-term threshold and got surfaced as Strudel guidance despite
+    # having zero musical relevance. None of the terms above matched it.
+    "key partners",
+    "value proposition",
+    "customer segments",
+    "customer relationships",
+    "revenue stream",
+    "cost structure",
+    "inversionistas",
+    "patrocinadores",
 )
 
 router = APIRouter()
@@ -154,20 +166,21 @@ def _compact_text(value: str, *, limit: int = 520) -> str:
     return normalized[:limit]
 
 
-def _guidance_query(body: GenerateBody, result: GenerationResult) -> str:
-    flavor_focus = {
-        "free": "rueda de modos, ciclo, función modal, centro tonal, drone",
-        "penta-walk": "pentatonía, caminar grados, escala sin error, ciclo",
-        "carta-progression": "cartas, cadencia, función armónica, resolución",
+def _guidance_query(body: GenerateBody) -> str:
+    # Retrieval here is markedly sensitive to phrasing: a keyword list or a
+    # query mentioning "Strudel"/"live coding" (concepts the book never
+    # discusses) reliably returns zero chunks, even when the corpus clearly
+    # has relevant passages — confirmed live, the exact same topic phrased
+    # as a natural question anchored on "el Sistema Fractal" (the book's own
+    # name — a strong, frequent term throughout the text) consistently
+    # retrieves. Numeric role/glyph data was pure noise to the retriever
+    # and is dropped entirely, not just de-emphasized.
+    flavor_topic = {
+        "free": "la rueda de modos y el ciclo",
+        "penta-walk": "la pentatonía y el caminar entre grados",
+        "carta-progression": "las cartas y la cadencia",
     }[body.flavor]
-    roles = " ".join(str(event.role_hour) for event in result.events[:16])
-    glyphs = " ".join(event.carta_glyph for event in result.events[:16])
-    return (
-        "Cómo usar los libros fractales para live coding en Strudel: "
-        f"{body.tonic} {body.mode}, estilo {body.flavor}. "
-        f"Buscar evidencia sobre {flavor_focus}. "
-        f"Roles generados: {roles}. Cartas generadas: {glyphs}."
-    )
+    return f"¿Qué es {flavor_topic} en el Sistema Fractal?"
 
 
 def _strudel_use_for_chunk(
@@ -277,7 +290,7 @@ async def _book_guidance_for_strudel(
 ) -> list[StrudelBookGuidancePayload]:
     try:
         chunks = await services.retriever.search(
-            question=_guidance_query(body=body, result=result),
+            question=_guidance_query(body=body),
             k=max(services.settings.retrieval_k, _STRUDEL_GUIDANCE_K * 2),
         )
     except Exception as error:
