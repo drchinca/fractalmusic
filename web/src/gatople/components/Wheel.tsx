@@ -21,6 +21,11 @@ interface WheelProps {
   readonly tonicOffset: number;
   readonly onSetTonic: (note: string) => void;
   readonly onStep: (delta: number) => void;
+  // When true (the pedagogical default), the outer disc and any overlay stay
+  // fixed while only the notes rotate — this is what shows a chord's shape as
+  // identical in every key. When false, the outer disc and overlay spin
+  // together with the notes as one physical wheel.
+  readonly outerLocked: boolean;
   // Rendered inside the same <svg>, after the wheel itself — shares this
   // element's exact coordinate space (viewBox="-260 -260 520 520", origin
   // at center) so an overlay never needs its own transform to line up.
@@ -53,6 +58,7 @@ export function Wheel({
   tonicOffset,
   onSetTonic,
   onStep,
+  outerLocked,
   children,
 }: WheelProps): JSX.Element {
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -146,7 +152,9 @@ export function Wheel({
       onPointerCancel={endDrag}
       onKeyDown={handleKeyDown}
     >
-      <OuterDisc roles={roles} />
+      <g transform={outerLocked ? undefined : `rotate(${rotation})`}>
+        <OuterDisc roles={roles} rotationDeg={outerLocked ? 0 : rotation} />
+      </g>
       <InnerDisc
         roles={roles}
         enharmonic={enharmonic}
@@ -155,7 +163,7 @@ export function Wheel({
         onNoteClick={onSetTonic}
       />
       <CyclopsEye />
-      {children}
+      <g transform={outerLocked ? undefined : `rotate(${rotation})`}>{children}</g>
     </svg>
   );
 }
