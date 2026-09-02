@@ -79,3 +79,15 @@ def test_perfect_fifth_ratio():
 
 def test_octave_more_consonant_than_tritone():
     assert consonance("A", "A") > consonance("A", "D#")
+
+
+def test_consonance_unison_is_exactly_one():
+    assert consonance("A", "A") == 1.0
+
+
+def test_consonance_perfect_fifth_matches_inverse_sqrt_formula():
+    # ratio 3:2 -> 1/sqrt(3*2) = 0.4082. Ordering-only assertions can't pin
+    # this down: dropping the sqrt is a monotonic transform, so relative
+    # comparisons between intervals stay correct either way — only an exact
+    # value catches it.
+    assert consonance("A", "E") == 0.4082
