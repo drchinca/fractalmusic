@@ -131,9 +131,13 @@ def test_score_full_in_mode_yields_high_membership():
 
 
 def test_score_band_brackets():
+    # Was previously a tautology: `band` can only ever return one of these
+    # three strings, so membership in the full set can never fail. Pin the
+    # actual threshold behavior instead.
     pattern = _pattern()
     s = score(events=realize(pattern), pattern=pattern)
-    assert s.band in {"strong", "tentative", "exploratory"}
+    assert s.total >= 0.85  # this pattern's total (0.9266) is "strong"
+    assert s.band == "strong"
 
 
 # --- Web payload + MIDI ------------------------------------------------------
