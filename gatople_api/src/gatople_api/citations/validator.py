@@ -26,7 +26,7 @@ from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from enum import StrEnum
 
-from chat_bff.citations.parser import CitedClaim, ParsedCitation
+from gatople_api.citations.parser import CitedClaim, ParsedCitation
 
 # (book_hash, chapter_idx, section_idx, paragraph_idx) → snippet text
 ChunkLookup = dict[tuple[str, int, int, int], str]

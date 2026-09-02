@@ -4,10 +4,10 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from chat_bff.app import create_app
-from chat_bff.protocols import RetrievedChunk
-from chat_bff.services import ChatServices
-from chat_bff.settings import ChatSettings
+from gatople_api.app import create_app
+from gatople_api.protocols import RetrievedChunk
+from gatople_api.services import GatopleServices
+from gatople_api.settings import ChatSettings
 from tests.integration.conftest import FakeLLM, FakeRetriever
 
 
@@ -29,7 +29,7 @@ def test_generate_strudel_route_returns_code(
         audio_cache_dir=tmp_path / "generated",
         audio_cache_url="/generated",
     )
-    services = ChatServices(
+    services = GatopleServices(
         retriever=fake_retriever,
         llm_claude=fake_claude,
         llm_ollama=fake_ollama,
@@ -88,7 +88,7 @@ def test_generate_strudel_route_falls_back_when_book_chunks_are_weak(
         audio_cache_dir=tmp_path / "generated",
         audio_cache_url="/generated",
     )
-    services = ChatServices(
+    services = GatopleServices(
         retriever=fake_retriever,
         llm_claude=fake_claude,
         llm_ollama=fake_ollama,

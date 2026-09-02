@@ -93,13 +93,21 @@ fractalmusic has a Python core (the system) and a web companion (a teaching surf
 │   ↓ depends on                                               │
 │   pytheory (Tones, intervals, mode names)                    │
 └─────────────────────────────────────────────────────────────┘
-                          │
-                          ▼ consumed by
+              │                              │
+              │ build-time JSON export       │ imported at runtime
+              ▼                              ▼
+┌───────────────────────────┐   ┌─────────────────────────────┐
+│ scripts/build_*.py         │   │ gatople_api/                 │
+│ → web/public/*.json        │   │ FastAPI: theory, generation, │
+│ (static wheel/theory data) │   │ rendering, chat — all live   │
+└───────────────────────────┘   └─────────────────────────────┘
+              │                              │
+              └──────────────┬───────────────┘
+                              ▼ consumed by
 ┌─────────────────────────────────────────────────────────────┐
 │                  WEB COMPANION (web/)                        │
-│   Vite + React + TS. Reads JSON snapshots emitted by         │
-│   scripts/build_gatople_data.py and                          │
-│   scripts/build_progressions_data.py.                        │
+│   Vite + React + TS. Static JSON for the wheel (build-time); │
+│   live gatople_api calls for chat/generate/strudel.          │
 │   The web app NEVER re-derives wheel logic — it renders.     │
 └─────────────────────────────────────────────────────────────┘
                           │
@@ -119,6 +127,7 @@ fractalmusic has a Python core (the system) and a web companion (a teaching surf
 - Library: `import fractalmusic as fm; fm.Wheel("A").mode_for("D")`
 - CLI: `fractalmusic` (showcase), `fractalmusic-gallery` (12 SVGs)
 - Web: `cd web && npm run dev`
+- Engine API: `make api` (gatople_api on :8002) or `make dev` (API + web together) — see `gatople_api/README.md`
 - Expert agent: `meridian-library search "..." --index-dir ~/.meridian/library --book f39cb7c5 --book b202598c --hybrid --full` (verified 2026-09-01; `meridian-research` has no `--book` flag — see `docs/agents/fractal-expert.md`)
 
 ## Module Map
@@ -148,6 +157,15 @@ Vite + React 19 + TypeScript app. Static JSON consumed by components:
 - `web/src/` — renders the wheel, the picker, the compose tabs (in-key / book progressions)
 
 **Greenfield rule applies**: web code targets latest React. No legacy class components, no IE shims.
+
+### Engine API (`gatople_api/`)
+
+FastAPI service — the HTTP surface over the `fractalmusic` engine for
+everything the static-JSON build step can't cover: `/api/generate*` runs the
+full research-loop → realize → render pipeline, `/api/chat` answers
+questions grounded in the indexed book corpus. See `gatople_api/README.md`
+for the route table and DI architecture; live interactive docs at
+`http://127.0.0.1:8002/docs` once running.
 
 ### Tests
 
@@ -271,6 +289,7 @@ Retrieval is filtered to the two fractal book hashes by default. Cross-book reas
 | **Spin** | Rotate the inner disc to put a chosen note under `⋮` (Eólico position) |
 | **Penta-first** | Scales derived from the 5 penta skeletons; heptatonic is the same wheel, not a superset |
 | **Etno-matemática** | The PHI / chessboard / consonance ratios in `formulas.py` — book-sourced |
+| **gatople_api** | FastAPI service exposing the engine over HTTP: generation, rendering, chat |
 
 ## References
 

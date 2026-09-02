@@ -1,7 +1,7 @@
 """Validator tests. The similarity fn is injected; no patch() anywhere."""
 
-from chat_bff.citations.parser import parse_answer
-from chat_bff.citations.validator import (
+from gatople_api.citations.parser import parse_answer
+from gatople_api.citations.validator import (
     ChunkLookup,
     ValidationVerdict,
     validate_answer,

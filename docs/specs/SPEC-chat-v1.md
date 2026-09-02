@@ -105,19 +105,19 @@ CITATION_RE = re.compile(
 
 ```python
 @dataclass(frozen=True)
-class ChatServices:
+class GatopleServices:
     library:  CemafBM25VectorStore  # in-process meridian index
     catalog:  BookCatalog           # for chunk_text + page_start lookups
     llm:      LLMClient             # cemaf adapter, Anthropic or Ollama
     semantic: SemanticEvaluator     # cemaf nomic-embed cosine
     settings: ChatSettings          # Pydantic, env-loaded, frozen
 
-def get_services() -> ChatServices: ...   # FastAPI dependency, override in tests
+def get_services() -> GatopleServices: ...   # FastAPI dependency, override in tests
 ```
 
 ### 2.5 Prompt artifact
 
-Lives at `chat_bff/prompts/citation_strict.md` with frontmatter (`version`, `model`, `last-reviewed`). Loaded by a typed loader at app startup. Diff-friendly. Per `prompts-as-artifacts.md` global rule.
+Lives at `gatople_api/prompts/citation_strict.md` with frontmatter (`version`, `model`, `last-reviewed`). Loaded by a typed loader at app startup. Diff-friendly. Per `prompts-as-artifacts.md` global rule.
 
 ## 3. Invariants (max 5)
 
@@ -125,7 +125,7 @@ I-1 **Scope.** Every retrieved chunk and every citation has `book_hash ∈ {f39c
 
 I-2 **Membership.** Every verified citation matches a chunk that was retrieved *this turn*, by tuple `(book_hash, chapter_idx, section_idx, paragraph_idx)`. Hash-lookup of `book_hash` alone is not sufficient.
 
-I-3 **Snippet supports the claim.** For every verified Citation, `semantic.score(claim_sentence, citation.snippet) ≥ 0.79`. Calibrated on 40 hand-labeled pairs (F1=0.857, P=0.818, R=0.900); see `chat_bff/tests/eval/calibration_results.md`. Known failure: polar negation ("X is Y" vs "X is NOT Y") scores ≥0.79 in both directions because cosine over nomic-embed measures topicality, not propositional truth — adding an NLI judge for negation is v2.
+I-3 **Snippet supports the claim.** For every verified Citation, `semantic.score(claim_sentence, citation.snippet) ≥ 0.79`. Calibrated on 40 hand-labeled pairs (F1=0.857, P=0.818, R=0.900); see `gatople_api/tests/eval/calibration_results.md`. Known failure: polar negation ("X is Y" vs "X is NOT Y") scores ≥0.79 in both directions because cosine over nomic-embed measures topicality, not propositional truth — adding an NLI judge for negation is v2.
 
 I-4 **No PII / no secrets in logs.** Structured logger never emits raw question body, raw LLM response, or any header containing `Authorization` / `x-api-key` / `cookie`. Tested via log-capture (see §4).
 
@@ -205,4 +205,4 @@ Mobile-first UI is verified by a Playwright check at 320×568, not by Gherkin (p
 
 ---
 
-> **Calibration done.** 40 hand-labeled pairs, F1=0.857 at threshold 0.79. Full sweep + per-pair scores in `chat_bff/tests/eval/calibration_results.md`. Re-run with `cd chat_bff && uv run python tests/eval/run_calibration.py` if the embedder model changes.
+> **Calibration done.** 40 hand-labeled pairs, F1=0.857 at threshold 0.79. Full sweep + per-pair scores in `gatople_api/tests/eval/calibration_results.md`. Re-run with `cd gatople_api && uv run python tests/eval/run_calibration.py` if the embedder model changes.

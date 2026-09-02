@@ -1,5 +1,5 @@
-// Mirrors chat_bff Pydantic models. These are validated on every fetch
-// — the BFF can change shape and we'll surface it as a parse error
+// Mirrors gatople_api Pydantic models. These are validated on every fetch
+// — the API can change shape and we'll surface it as a parse error
 // rather than a confusing runtime crash deep in a component.
 
 export type LLMChoice = "claude" | "ollama";

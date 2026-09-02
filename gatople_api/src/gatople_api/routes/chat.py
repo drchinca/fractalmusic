@@ -13,26 +13,26 @@ from typing import Annotated
 import structlog
 from fastapi import APIRouter, Depends, HTTPException, Request
 
-from chat_bff import prompts
-from chat_bff.citations import parse_answer, validate_answer
-from chat_bff.citations.validator import ValidationOutcome, ValidationVerdict
-from chat_bff.models import ChatRequest, ChatResponse, Citation, LLMChoice, in_scope
-from chat_bff.protocols import LLM, RetrievedChunk
-from chat_bff.services import ChatServices
+from gatople_api import prompts
+from gatople_api.citations import parse_answer, validate_answer
+from gatople_api.citations.validator import ValidationOutcome, ValidationVerdict
+from gatople_api.models import ChatRequest, ChatResponse, Citation, LLMChoice, in_scope
+from gatople_api.protocols import LLM, RetrievedChunk
+from gatople_api.services import GatopleServices
 
 router = APIRouter()
-log = structlog.get_logger("chat_bff.chat")
+log = structlog.get_logger("gatople_api.chat")
 
 
-def get_services(request: Request) -> ChatServices:
+def get_services(request: Request) -> GatopleServices:
     """FastAPI dependency. Tests override this via app.dependency_overrides."""
     services = getattr(request.app.state, "services", None)
-    if not isinstance(services, ChatServices):
-        raise RuntimeError("ChatServices not attached to app.state — wire create_app correctly.")
+    if not isinstance(services, GatopleServices):
+        raise RuntimeError("GatopleServices not attached to app.state — wire create_app correctly.")
     return services
 
 
-def _pick_llm(services: ChatServices, choice: LLMChoice) -> LLM:
+def _pick_llm(services: GatopleServices, choice: LLMChoice) -> LLM:
     return services.llm_claude if choice == LLMChoice.CLAUDE else services.llm_ollama
 
 
@@ -113,7 +113,7 @@ _REGEN_TAIL: str = (
 @router.post("/api/chat", response_model=ChatResponse)
 async def chat(
     request: ChatRequest,
-    services: Annotated[ChatServices, Depends(get_services)],
+    services: Annotated[GatopleServices, Depends(get_services)],
 ) -> ChatResponse:
     started = time.monotonic()
 

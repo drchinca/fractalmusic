@@ -1,5 +1,5 @@
 {
-  "_about": "40 hand-labeled (claim, snippet) pairs for setting the chat_bff fidelity threshold (Spec I-3). 20 supporting + 20 non-supporting. Snippets are real text from chunks in ~/.meridian/library; claims are hand-written by drchinca to mirror what an LLM would write when grounded (positive) or when stretching/hallucinating (negative).",
+  "_about": "40 hand-labeled (claim, snippet) pairs for setting the gatople_api fidelity threshold (Spec I-3). 20 supporting + 20 non-supporting. Snippets are real text from chunks in ~/.meridian/library; claims are hand-written by drchinca to mirror what an LLM would write when grounded (positive) or when stretching/hallucinating (negative).",
   "pairs": [
     {
       "claim": "El Dodecamundo es un conjunto de doce mundos sonoros donde ninguno es igual a otro, cada uno con su peso musical singular.",

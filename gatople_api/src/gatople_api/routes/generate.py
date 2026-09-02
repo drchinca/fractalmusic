@@ -27,9 +27,9 @@ from fractalmusic.generate.types import FLAVORS, MODE_NAMES, NOTE_NAMES
 from fractalmusic.render import RenderConfig, render_wav
 from pydantic import BaseModel, ConfigDict, Field
 
-from chat_bff.models import in_scope, short_hash
-from chat_bff.protocols import RetrievedChunk
-from chat_bff.services import ChatServices
+from gatople_api.models import in_scope, short_hash
+from gatople_api.protocols import RetrievedChunk
+from gatople_api.services import GatopleServices
 
 _DRONE_OCTAVE: int = 3
 _STRUDEL_GUIDANCE_K: int = 3
@@ -68,13 +68,13 @@ _NON_THEORY_TERMS: tuple[str, ...] = (
 )
 
 router = APIRouter()
-log = structlog.get_logger("chat_bff.generate")
+log = structlog.get_logger("gatople_api.generate")
 
 
-def get_services(request: Request) -> ChatServices:
+def get_services(request: Request) -> GatopleServices:
     services = getattr(request.app.state, "services", None)
-    if not isinstance(services, ChatServices):
-        raise RuntimeError("ChatServices not attached to app.state — wire create_app correctly.")
+    if not isinstance(services, GatopleServices):
+        raise RuntimeError("GatopleServices not attached to app.state — wire create_app correctly.")
     return services
 
 
@@ -273,7 +273,7 @@ async def _book_guidance_for_strudel(
     *,
     body: GenerateBody,
     result: GenerationResult,
-    services: ChatServices,
+    services: GatopleServices,
 ) -> list[StrudelBookGuidancePayload]:
     try:
         chunks = await services.retriever.search(
@@ -306,7 +306,7 @@ async def _book_guidance_for_strudel(
     ]
 
 
-def _research(body: GenerateBody, services: ChatServices) -> GenerationResult:
+def _research(body: GenerateBody, services: GatopleServices) -> GenerationResult:
     try:
         request = _generation_request(body)
     except ValueError as error:
@@ -327,7 +327,7 @@ def _research(body: GenerateBody, services: ChatServices) -> GenerationResult:
 
 def _render_web_payload(
     body: GenerateBody,
-    services: ChatServices,
+    services: GatopleServices,
 ) -> tuple[GenerationResult, WebPayload]:
     result = _research(body=body, services=services)
     settings = services.settings
@@ -384,7 +384,7 @@ def _render_web_payload(
 @router.post("/api/generate")
 def generate(
     body: GenerateBody,
-    services: Annotated[ChatServices, Depends(get_services)],
+    services: Annotated[GatopleServices, Depends(get_services)],
 ) -> WebPayload:
     _, payload = _render_web_payload(body=body, services=services)
     return payload
@@ -393,7 +393,7 @@ def generate(
 @router.post("/api/generate/strudel")
 async def generate_strudel(
     body: GenerateBody,
-    services: Annotated[ChatServices, Depends(get_services)],
+    services: Annotated[GatopleServices, Depends(get_services)],
 ) -> StrudelPayload:
     result, web_payload = _render_web_payload(body=body, services=services)
     book_guidance = await _book_guidance_for_strudel(

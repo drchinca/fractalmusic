@@ -1,5 +1,5 @@
 .PHONY: help install dev-install test test-quick smoke check verify format clean lint type-check pre-commit build \
-        bff bff-install bff-test web web-install web-build chat chat-stop
+        api api-install api-test web web-install web-build dev dev-stop
 
 UV_RUN := uv run --extra dev
 
@@ -13,22 +13,22 @@ help:
 	@echo "    make test-quick    Run tests without coverage"
 	@echo "    make smoke         Generate WAV + Strudel smoke artifacts"
 	@echo "    make check         Run lint, format, type, test, and security checks"
-	@echo "    make verify        Run full local merge gate: core, BFF, and web"
+	@echo "    make verify        Run full local merge gate: core, API, and web"
 	@echo "    make format        Format code with Ruff"
 	@echo "    make lint          Lint code with Ruff"
 	@echo "    make type-check    Run Mypy"
 	@echo "    make build         Build package distributions"
 	@echo "    make clean         Remove generated artifacts"
 	@echo ""
-	@echo "  Chat — backend (chat_bff/) and frontend (web/):"
-	@echo "    make chat          Start BFF (:8002) AND web dev server (:5174)"
-	@echo "    make chat-stop     Kill anything bound to :8002 / :5174"
-	@echo "    make bff           Start the chat BFF on :8002 (foreground)"
+	@echo "  Engine API (gatople_api/) and web app (web/):"
+	@echo "    make dev           Start gatople_api (:8002) AND web dev server (:5174)"
+	@echo "    make dev-stop      Kill anything bound to :8002 / :5174"
+	@echo "    make api           Start gatople_api on :8002 (foreground)"
 	@echo "    make web           Start the Vite dev server on :5174 (foreground)"
-	@echo "    make bff-install   uv-install chat_bff in editable mode"
+	@echo "    make api-install   uv-install gatople_api in editable mode"
 	@echo "    make web-install   npm install in web/"
 	@echo "    make web-build     Build the web app for production"
-	@echo "    make bff-test      Run chat_bff pytest suite"
+	@echo "    make api-test      Run gatople_api pytest suite"
 
 install:
 	uv pip install -e .
@@ -52,7 +52,7 @@ check:
 
 verify:
 	$(MAKE) check
-	$(MAKE) bff-test
+	$(MAKE) api-test
 	cd web && npm run lint
 	cd web && npm run build
 
@@ -85,21 +85,21 @@ clean:
 	find . -type d -name __pycache__ -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
 
-# ----- chat-v1 dev commands -----
+# ----- gatople_api + web dev commands -----
 
-BFF_PORT ?= 8002
+API_PORT ?= 8002
 WEB_PORT ?= 5174
-CHAT_LOG_DIR := /tmp/fractalmusic-chat
+DEV_LOG_DIR := /tmp/fractalmusic-dev
 
-bff-install:
-	cd chat_bff && uv pip install -e ".[dev]"
+api-install:
+	cd gatople_api && uv pip install -e ".[dev]"
 
-bff-test:
-	cd chat_bff && uv run pytest
+api-test:
+	cd gatople_api && uv run pytest
 
-bff:
-	cd chat_bff && uv run uvicorn 'chat_bff.bootstrap:app_factory' --factory \
-	    --host 127.0.0.1 --port $(BFF_PORT) --reload
+api:
+	cd gatople_api && uv run uvicorn 'gatople_api.bootstrap:app_factory' --factory \
+	    --host 127.0.0.1 --port $(API_PORT) --reload
 
 web-install:
 	cd web && npm install
@@ -110,24 +110,24 @@ web-build:
 web:
 	cd web && npm run dev -- --port $(WEB_PORT) --strictPort
 
-# Start both BFF and web in the background, tail their logs together.
-# The handler kills both on Ctrl-C. Logs persist at $(CHAT_LOG_DIR)/*.log.
-chat:
-	@mkdir -p $(CHAT_LOG_DIR)
-	@echo "→ chat_bff   :$(BFF_PORT)   logs: $(CHAT_LOG_DIR)/bff.log"
-	@echo "→ web (vite) :$(WEB_PORT)  logs: $(CHAT_LOG_DIR)/web.log"
+# Start both the engine API and web in the background, tail their logs together.
+# The handler kills both on Ctrl-C. Logs persist at $(DEV_LOG_DIR)/*.log.
+dev:
+	@mkdir -p $(DEV_LOG_DIR)
+	@echo "→ gatople_api :$(API_PORT)   logs: $(DEV_LOG_DIR)/api.log"
+	@echo "→ web (vite)  :$(WEB_PORT)  logs: $(DEV_LOG_DIR)/web.log"
 	@echo "→ open http://localhost:$(WEB_PORT)/#chat"
 	@echo "→ Ctrl-C stops both."
 	@trap 'echo; echo "stopping..."; kill 0' INT TERM EXIT; \
-	(cd chat_bff && uv run uvicorn 'chat_bff.bootstrap:app_factory' --factory \
-	    --host 127.0.0.1 --port $(BFF_PORT) --reload \
-	    > $(CHAT_LOG_DIR)/bff.log 2>&1) & \
+	(cd gatople_api && uv run uvicorn 'gatople_api.bootstrap:app_factory' --factory \
+	    --host 127.0.0.1 --port $(API_PORT) --reload \
+	    > $(DEV_LOG_DIR)/api.log 2>&1) & \
 	(cd web && npm run dev -- --port $(WEB_PORT) --strictPort \
-	    > $(CHAT_LOG_DIR)/web.log 2>&1) & \
-	tail -f $(CHAT_LOG_DIR)/bff.log $(CHAT_LOG_DIR)/web.log
+	    > $(DEV_LOG_DIR)/web.log 2>&1) & \
+	tail -f $(DEV_LOG_DIR)/api.log $(DEV_LOG_DIR)/web.log
 
-chat-stop:
-	@echo "killing anything bound to :$(BFF_PORT) and :$(WEB_PORT)..."
-	@-lsof -ti :$(BFF_PORT) | xargs -r kill -9 2>/dev/null || true
+dev-stop:
+	@echo "killing anything bound to :$(API_PORT) and :$(WEB_PORT)..."
+	@-lsof -ti :$(API_PORT) | xargs -r kill -9 2>/dev/null || true
 	@-lsof -ti :$(WEB_PORT) | xargs -r kill -9 2>/dev/null || true
 	@echo "done."

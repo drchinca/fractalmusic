@@ -1,7 +1,7 @@
-"""Production wiring. Builds a real ChatServices from cemaf + meridian.
+"""Production wiring. Builds a real GatopleServices from cemaf + meridian.
 
 This is the only module that touches concrete adapters. The rest of the
-package depends only on the protocols in chat_bff.protocols, so this is
+package depends only on the protocols in gatople_api.protocols, so this is
 also the only place to swap implementations later.
 """
 
@@ -23,17 +23,17 @@ from meridian_library.index.book_catalog import SQLiteBookCatalog
 from meridian_library.index.hybrid import LibraryHybridIndex
 from meridian_library.index.vector_store import LibraryVectorStore
 
-from chat_bff.models import in_scope, short_hash
-from chat_bff.protocols import LLM, RetrievedChunk
-from chat_bff.services import ChatServices
-from chat_bff.settings import ChatSettings
+from gatople_api.models import in_scope, short_hash
+from gatople_api.protocols import LLM, RetrievedChunk
+from gatople_api.services import GatopleServices
+from gatople_api.settings import ChatSettings
 
 # ---------- LLM adapters: cemaf protocol → our flat .complete() ----------
 
 
 @dataclass(frozen=True, slots=True)
 class CemafLLMAdapter:
-    """Wraps any cemaf LLMClient and exposes the chat_bff.protocols.LLM
+    """Wraps any cemaf LLMClient and exposes the gatople_api.protocols.LLM
     shape (one user message in, one assistant string out)."""
 
     name: str
@@ -56,7 +56,7 @@ class CemafLLMAdapter:
 
 @dataclass
 class MeridianRetriever:
-    """Adapts the meridian LibraryHybridIndex to chat_bff's Retriever.
+    """Adapts the meridian LibraryHybridIndex to gatople_api's Retriever.
 
     Scope filter is applied here so the route only ever sees in-corpus chunks.
     """
@@ -115,8 +115,8 @@ def make_similarity(embedder: EmbeddingClient) -> Callable[[str, str], Awaitable
 # ---------- Composition root ----------
 
 
-def build_services(settings: ChatSettings | None = None) -> ChatServices:
-    """Wire production ChatServices. Run once at app startup."""
+def build_services(settings: ChatSettings | None = None) -> GatopleServices:
+    """Wire production GatopleServices. Run once at app startup."""
     settings = settings or ChatSettings()
 
     bm25 = LibraryBM25Store(index_dir=settings.index_dir)
@@ -152,7 +152,7 @@ def build_services(settings: ChatSettings | None = None) -> ChatServices:
             ),
         )
 
-    return ChatServices(
+    return GatopleServices(
         retriever=retriever,
         llm_claude=claude_llm,
         llm_ollama=ollama_llm,
@@ -163,12 +163,12 @@ def build_services(settings: ChatSettings | None = None) -> ChatServices:
     )
 
 
-# ---------- ASGI entry point for `uvicorn chat_bff.bootstrap:app_factory --factory` ----------
+# ---------- ASGI entry point for `uvicorn gatople_api.bootstrap:app_factory --factory` ----------
 
 
 def app_factory() -> FastAPI:
-    """Build a FastAPI app for `uvicorn chat_bff.bootstrap:app_factory --factory`."""
-    from chat_bff.app import create_app
+    """Build a FastAPI app for `uvicorn gatople_api.bootstrap:app_factory --factory`."""
+    from gatople_api.app import create_app
 
     return create_app(
         services=build_services(),

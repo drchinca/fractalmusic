@@ -1,6 +1,6 @@
 """Test doubles + fixtures. No mocks, no monkeypatch — every fake is a
 real class implementing the production protocol, swapped at the
-ChatServices boundary."""
+GatopleServices boundary."""
 
 from __future__ import annotations
 
@@ -10,10 +10,10 @@ from dataclasses import dataclass, field
 import pytest
 from fastapi.testclient import TestClient
 
-from chat_bff.app import create_app
-from chat_bff.protocols import RetrievedChunk
-from chat_bff.services import ChatServices
-from chat_bff.settings import ChatSettings
+from gatople_api.app import create_app
+from gatople_api.protocols import RetrievedChunk
+from gatople_api.services import GatopleServices
+from gatople_api.settings import ChatSettings
 
 
 @dataclass
@@ -88,13 +88,13 @@ def services(
     fake_claude: FakeLLM,
     fake_ollama: FakeLLM,
     settings: ChatSettings,
-) -> ChatServices:
+) -> GatopleServices:
     async def always_high(_claim: str, _snippet: str) -> float:
         return 0.9
 
     from fractalmusic.generate import JsonCorpus, StubExpert
 
-    return ChatServices(
+    return GatopleServices(
         retriever=fake_retriever,
         llm_claude=fake_claude,
         llm_ollama=fake_ollama,
@@ -106,6 +106,6 @@ def services(
 
 
 @pytest.fixture
-def client(services: ChatServices) -> TestClient:
+def client(services: GatopleServices) -> TestClient:
     app = create_app(services=services)
     return TestClient(app)

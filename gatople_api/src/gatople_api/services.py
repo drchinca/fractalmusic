@@ -5,12 +5,12 @@ from dataclasses import dataclass
 
 from fractalmusic.generate import ExpertClient, PatternCorpus
 
-from chat_bff.protocols import LLM, Retriever
-from chat_bff.settings import ChatSettings
+from gatople_api.protocols import LLM, Retriever
+from gatople_api.settings import ChatSettings
 
 
 @dataclass(frozen=True, slots=True)
-class ChatServices:
+class GatopleServices:
     retriever: Retriever
     llm_claude: LLM
     llm_ollama: LLM
