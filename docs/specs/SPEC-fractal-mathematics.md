@@ -15,7 +15,7 @@ This specification defines the rigorous mathematical, algebraic, and group-theor
 
 ## 1. The Chromatic Coordinate Space ($\mathbb{Z}_{12}$)
 
-The Gátople ecosystem is modeled as the Ring of Integers Modulo 12, denoted as $\mathbb{Z}_{12} = \{0, 1, 2, \dots, 11\}$. 
+The Gátople ecosystem is modeled as the Ring of Integers Modulo 12, denoted as $\mathbb{Z}_{12} = \{0, 1, 2, \dots, 11\}$.
 
 In alignment with Patricio Torres's *matriarchal anchor*, the origin ($0$) is set to **La (A)** rather than the western convention of C:
 

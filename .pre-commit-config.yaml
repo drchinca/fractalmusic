@@ -1,3 +1,8 @@
+# landing/ is a separately-deployed site with its own checksummed
+# MANIFEST_SHA256.txt — out of this repo's own build pipeline, so no hook
+# (including generic whitespace fixers) should touch it.
+exclude: ^landing/
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
@@ -7,6 +12,9 @@ repos:
       - id: check-yaml
       - id: check-toml
       - id: check-json
+        # web/tsconfig*.json are JSONC (allow comments) — valid TypeScript,
+        # not valid strict JSON.
+        exclude: tsconfig.*\.json$
       - id: check-added-large-files
         args: ["--maxkb=1000"]
       - id: check-case-conflict
@@ -15,43 +23,89 @@ repos:
       - id: debug-statements
       - id: mixed-line-ending
       - id: name-tests-test
+        # chat_bff/tests/eval/run_calibration.py is a manually-invoked script
+        # (`uv run python tests/eval/run_calibration.py`), not a pytest test.
+        exclude: ^chat_bff/tests/eval/
         args: ["--pytest-test-first"]
+      - id: detect-private-key
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.4
+    rev: v0.15.20
     hooks:
       - id: ruff
         args: ["--fix", "--exit-non-zero-on-fix"]
       - id: ruff-format
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.13.0
+    rev: v2.1.0
     hooks:
       - id: mypy
+        # Scoped to match [tool.mypy] files = ["fractalmusic", "scripts"] in
+        # pyproject.toml — pre-commit passes changed filenames directly to the
+        # hook, which bypasses that `files` setting and would otherwise check
+        # tests/ too (never annotated to satisfy disallow_untyped_defs).
+        files: ^(fractalmusic|scripts)/
         args: ["--config-file=pyproject.toml"]
 
   - repo: https://github.com/pycqa/bandit
-    rev: 1.8.0
+    rev: 1.9.4
     hooks:
       - id: bandit
         args: ["-c", "pyproject.toml", "-r", "fractalmusic"]
         additional_dependencies: ["bandit[toml]"]
 
   - repo: https://github.com/abravalheri/validate-pyproject
-    rev: v0.20.2
+    rev: v0.25
     hooks:
       - id: validate-pyproject
-        files: pyproject.toml
-        additional_dependencies: ["validate-pyproject-schema-store[all]"]
+        files: pyproject\.toml$
+        additional_dependencies: ["validate-pyproject-schema-store[all]", "packaging>=24.2"]
 
   - repo: local
     hooks:
       - id: pytest-check
-        name: pytest-check
+        name: pytest-check (fractalmusic core)
         entry: pytest
         language: system
         pass_filenames: false
         always_run: true
+        stages: [pre-push]
+
+      - id: chat-bff-ruff
+        name: chat_bff ruff
+        entry: bash -c 'cd chat_bff && uv run ruff check src tests'
+        language: system
+        files: ^chat_bff/.*\.py$
+        pass_filenames: false
+
+      - id: chat-bff-mypy
+        name: chat_bff mypy
+        entry: bash -c 'cd chat_bff && uv run mypy src'
+        language: system
+        files: ^chat_bff/src/.*\.py$
+        pass_filenames: false
+
+      - id: chat-bff-pytest
+        name: chat_bff pytest
+        entry: bash -c 'cd chat_bff && uv run pytest'
+        language: system
+        files: ^chat_bff/
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: web-eslint
+        name: web eslint
+        entry: bash -c 'cd web && npm run lint'
+        language: system
+        files: ^web/src/.*\.(ts|tsx)$
+        pass_filenames: false
+
+      - id: web-build
+        name: web build (tsc + vite)
+        entry: bash -c 'cd web && npm run build'
+        language: system
+        files: ^web/
+        pass_filenames: false
         stages: [pre-push]
 
       - id: no-commit-to-main

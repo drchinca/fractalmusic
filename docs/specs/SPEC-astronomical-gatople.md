@@ -95,7 +95,7 @@ This draws a **perfectly regular equilateral triangle** on the wheel, placing it
 ```
 
 ### Diminished Seventh (The Chromatic Square)
-A diminished 7th chord (e.g., Adim7: A–C–D#–F#) divides the 12 chromatic semitones into perfectly symmetric 3-semitone sectors `(0, 3, 6, 9)`. 
+A diminished 7th chord (e.g., Adim7: A–C–D#–F#) divides the 12 chromatic semitones into perfectly symmetric 3-semitone sectors `(0, 3, 6, 9)`.
 
 On the Gátople wheel (the Circle of Fourths), this connects the four cardinal points:
 *   A sits at 9 o'clock (6:00 AM)

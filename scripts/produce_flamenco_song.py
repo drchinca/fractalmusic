@@ -88,7 +88,7 @@ def note_to_midi(note: str) -> int:
 
 
 def note_to_freq(note: str) -> float:
-    return 440.0 * (2.0 ** ((note_to_midi(note) - 69) / 12.0))
+    return float(440.0 * (2.0 ** ((note_to_midi(note) - 69) / 12.0)))
 
 
 def add_stereo(buf: np.ndarray, mono: np.ndarray, start_s: float, gain: float, pan: float) -> None:
@@ -126,7 +126,7 @@ def plucked_note(
     t = np.arange(length, dtype=np.float32) / SR
     partials = np.zeros(length, dtype=np.float32)
     for harmonic in range(1, 9):
-        gain = (brightness ** harmonic) / harmonic
+        gain = (brightness**harmonic) / harmonic
         partial_decay = np.exp(-t * decay * (0.45 + harmonic * 0.12))
         phase = RNG.uniform(0, math.tau)
         partials += gain * np.sin(math.tau * freq * harmonic * t + phase) * partial_decay
@@ -539,7 +539,11 @@ def main() -> None:
     }
     meta_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 
-    print(json.dumps({**metadata, "absolute_wav": str(wav_path), "absolute_midi": str(midi_path)}, indent=2))
+    print(
+        json.dumps(
+            {**metadata, "absolute_wav": str(wav_path), "absolute_midi": str(midi_path)}, indent=2
+        )
+    )
 
 
 if __name__ == "__main__":
