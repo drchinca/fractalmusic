@@ -40,8 +40,7 @@ def test_valid_json_produces_a_valid_pattern() -> None:
     with honest (never book-faked) provenance."""
     llm = FakeLLM()
     llm.set_responses(
-        '{"tonic": "D", "mode": "Jónico", '
-        '"degrees": [1, 3, 5, 1], "rhythm": [1.0, 1.0, 1.0, 1.0]}'
+        '{"tonic": "D", "mode": "Jónico", "degrees": [1, 3, 5, 1], "rhythm": [1.0, 1.0, 1.0, 1.0]}'
     )
     expert = LLMExpert(llm=llm)
 
