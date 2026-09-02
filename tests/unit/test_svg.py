@@ -1,9 +1,14 @@
 """Unit tests — SVG renderers and the gallery writer."""
 
+import math
+
 import pytest
 from fractalmusic.gallery import _stack, write_gallery
 from fractalmusic.scales import mode_scale, penta
 from fractalmusic.svg import (
+    _arc_path,
+    _contrast,
+    _polar,
     deck_grid,
     fretboard_stickers_svg,
     gatople_wheel_svg,
@@ -63,6 +68,48 @@ def test_gallery_writes_all_artifacts(tmp_path):
         "fretboard-stickers.svg",
     }
     assert all(p.read_text().startswith("<svg") for p in paths)
+
+
+def test_contrast_picks_dark_text_on_light_fill():
+    assert _contrast("#FFFFFF") == "#111"
+
+
+def test_contrast_picks_light_text_on_dark_fill():
+    assert _contrast("#000000") == "#fff"
+
+
+def test_polar_zero_degrees_points_straight_up():
+    # deg=0 is the hour-12 direction; SVG y grows downward, so "up" is -y.
+    x, y = _polar(0, 100)
+    assert math.isclose(x, 0.0, abs_tol=1e-9)
+    assert math.isclose(y, -100.0)
+
+
+def test_polar_ninety_degrees_points_right():
+    x, y = _polar(90, 100)
+    assert math.isclose(x, 100.0)
+    assert math.isclose(y, 0.0, abs_tol=1e-9)
+
+
+def test_arc_path_uses_small_arc_flag_under_180_degrees():
+    path = _arc_path(0, 30, 100, 50)
+    assert "A 100 100 0 0 1" in path
+    assert "A 50 50 0 0 0" in path
+
+
+def test_arc_path_uses_large_arc_flag_over_180_degrees():
+    path = _arc_path(0, 200, 100, 50)
+    assert "A 100 100 0 1 1" in path
+    assert "A 50 50 0 1 0" in path
+
+
+def test_arc_path_uses_small_arc_flag_at_exactly_180_degrees():
+    # Boundary case: a span of exactly 180° is not "over 180", so it must
+    # still take the small-arc flag — this is what distinguishes `> 180`
+    # from `>= 180` in the flag condition.
+    path = _arc_path(0, 180, 100, 50)
+    assert "A 100 100 0 0 1" in path
+    assert "A 50 50 0 0 0" in path
 
 
 def test_gatople_wheel_svg_renders_deterministic_geometry():
