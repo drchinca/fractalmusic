@@ -31,10 +31,11 @@ def _pattern(
     mode: str = "Eólico",
     degrees: tuple[int, ...] = (1, 2, 3, 4, 5, 4, 3, 1),
     rhythm: tuple[float, ...] | None = None,
+    name: str = "free:A-Eólico",
 ) -> Pattern:
     rhythm = rhythm or tuple(1.0 for _ in degrees)
     return Pattern(
-        name="test",
+        name=name,
         tonic=tonic,
         mode=mode,
         degrees=degrees,
@@ -231,7 +232,7 @@ def test_to_strudel_payload_wraps_existing_web_payload():
     assert payload["schema_version"] == 1
     assert payload["generated_from"] is web_payload
     assert payload["pattern_name"] == pattern.name
-    assert payload["code"].startswith("// Fractal Music: test")
+    assert payload["code"].startswith(f"// Fractal Music: {pattern.name}")
     assert payload["book_guidance"] == []
     assert payload["warnings"] == []
 
@@ -425,6 +426,29 @@ def test_research_loop_selects_the_highest_scoring_candidate(tmp_path: Path):
     result = research_loop(request=request, expert=_VaryingQualityExpert(), corpus=corpus)
     assert result.pattern.name == "rich"
     assert result.score.total == 0.9266
+
+
+def test_research_loop_never_lets_a_persisted_pattern_cross_flavors(tmp_path: Path):
+    # Caught live on :5174: JsonCorpus.find()/append() keyed only on
+    # tonic/mode, never flavor, so a pattern persisted under one flavor
+    # could win best-of-N for a request made under a completely different
+    # flavor — the FE's Estilo selector silently did nothing once any
+    # pattern for that tonic/mode had ever been persisted. Confirmed via
+    # the live API: a "penta-walk" and a "carta-progression" request both
+    # came back with pattern_name "free:A-Eólico" — the persisted "free"
+    # winner, not a pattern reflecting the flavor actually requested.
+    corpus = JsonCorpus(root=tmp_path / "patterns")
+    free_request = GenerationRequest(tonic="A", mode="Eólico", length_events=8, flavor="free")
+    free_result = research_loop(request=free_request, expert=StubExpert(), corpus=corpus)
+    assert free_result.score.total >= 0.75
+    assert any((tmp_path / "patterns").iterdir())
+
+    carta_request = GenerationRequest(
+        tonic="A", mode="Eólico", length_events=8, flavor="carta-progression"
+    )
+    carta_result = research_loop(request=carta_request, expert=StubExpert(), corpus=corpus)
+    assert carta_result.pattern.name.startswith("carta-progression:")
+    assert carta_result.pattern.degrees == (1, 4, 5, 1, 1, 4, 5, 1)
 
 
 def test_adapt_length_is_a_noop_when_length_already_matches():

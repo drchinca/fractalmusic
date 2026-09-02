@@ -77,10 +77,18 @@ class JsonCorpus:
         self._root.mkdir(parents=True, exist_ok=True)
 
     def _key_for_pattern(self, pattern: Pattern) -> str:
-        return f"{pattern.tonic}_{pattern.mode}".replace(" ", "")
+        # pattern.name embeds its flavor as the prefix before the first ":"
+        # (StubExpert: "free:A-Eólico"; LLMExpert: "describe:A-Eólico") —
+        # reused here so two flavors sharing a tonic/mode never land in the
+        # same corpus bucket. Without this, a pattern persisted under one
+        # flavor could silently win best-of-N for a request made under a
+        # completely different flavor, since find() only ever matched on
+        # tonic/mode — the flavor the caller actually asked for was ignored.
+        flavor_prefix = pattern.name.split(":", 1)[0]
+        return f"{pattern.tonic}_{pattern.mode}_{flavor_prefix}".replace(" ", "")
 
     def _key_for_request(self, request: GenerationRequest) -> str:
-        return f"{request.tonic}_{request.mode}".replace(" ", "")
+        return f"{request.tonic}_{request.mode}_{request.flavor}".replace(" ", "")
 
     def find(self, request: GenerationRequest) -> list[Pattern]:
         prefix = self._key_for_request(request)
