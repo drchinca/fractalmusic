@@ -25,6 +25,7 @@ from meridian_library.index.book_catalog import SQLiteBookCatalog
 from meridian_library.index.hybrid import LibraryHybridIndex
 from meridian_library.index.vector_store import LibraryVectorStore
 
+from gatople_api.llm_expert import LLMExpert
 from gatople_api.models import in_scope, short_hash
 from gatople_api.protocols import LLM, RetrievedChunk
 from gatople_api.services import GatopleServices
@@ -175,6 +176,7 @@ def build_services(settings: ChatSettings | None = None) -> GatopleServices:
         similarity=make_similarity(embedder),
         settings=settings,
         expert=StubExpert(),
+        llm_expert=LLMExpert(llm=claude_llm),
         corpus=JsonCorpus(root=settings.corpus_root),
     )
 

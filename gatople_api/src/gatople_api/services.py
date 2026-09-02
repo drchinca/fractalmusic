@@ -17,4 +17,5 @@ class GatopleServices:
     similarity: Callable[[str, str], Awaitable[float]]
     settings: ChatSettings
     expert: ExpertClient
+    llm_expert: ExpertClient
     corpus: PatternCorpus

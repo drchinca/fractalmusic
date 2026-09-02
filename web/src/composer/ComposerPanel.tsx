@@ -1,6 +1,7 @@
 import { type JSX, useCallback, useEffect, useRef, useState } from "react";
 
 import { fetchOptions, generateMusic, GenerateError } from "./api";
+import { GeneratedResult } from "./GeneratedResult";
 import { isFlavor } from "./types";
 import type { ComposerOptions, Flavor, GeneratedPayload } from "./types";
 
@@ -8,12 +9,6 @@ const FLAVOR_LABELS: Record<Flavor, string> = {
   free: "Libre",
   "penta-walk": "Paseo pentatónico",
   "carta-progression": "Progresión de cartas",
-};
-
-const BAND_LABELS: Record<GeneratedPayload["confidence"]["band"], string> = {
-  strong: "Fiel al libro",
-  tentative: "Inspirado en el libro",
-  exploratory: "Exploración libre",
 };
 
 function errorMessage(err: unknown): string {
@@ -200,70 +195,7 @@ export function ComposerPanel(): JSX.Element {
       )}
 
       {payload !== null && (
-        <article className="composer-result" aria-live="polite">
-          <header className="composer-result-head">
-            <h2>{payload.key_label}</h2>
-            <span className={`composer-band composer-band-${payload.confidence.band}`}>
-              {BAND_LABELS[payload.confidence.band]}
-            </span>
-          </header>
-
-          {payload.audio_url !== null && (
-            <audio
-              ref={audioRef}
-              controls
-              className="composer-audio"
-              src={payload.audio_url}
-              preload="auto"
-            >
-              Tu navegador no soporta el reproductor de audio.
-            </audio>
-          )}
-
-          <div className="composer-meta-row">
-            <span className="composer-meta">
-              {payload.events.length} notas · ♩ = {payload.bpm}
-            </span>
-            {payload.audio_url !== null && (
-              <a
-                className="composer-download"
-                href={payload.audio_url}
-                download={`fractalmusic-${payload.tonic}-${payload.mode}.wav`}
-              >
-                ↓ Descargar WAV
-              </a>
-            )}
-          </div>
-
-          <div className="composer-strip" role="list">
-            {payload.events.map((ev, i) => (
-              <span
-                key={i}
-                role="listitem"
-                className={`composer-note ${
-                  activeRoleHour === ev.role_hour ? "is-active" : ""
-                }`}
-                title={`${ev.note}${ev.octave} · posición ${ev.role_hour} en la rueda · ${ev.carta_glyph}`}
-              >
-                <span className="composer-note-glyph">{ev.carta_glyph}</span>
-                <span className="composer-note-name">
-                  {ev.note}
-                  <sub>{ev.octave}</sub>
-                </span>
-              </span>
-            ))}
-          </div>
-
-          <footer className="composer-prov">
-            <span>{payload.provenance.book_title}</span>
-            {payload.provenance.chapter !== null && (
-              <span> · {payload.provenance.chapter}</span>
-            )}
-            {payload.provenance.quote !== null && (
-              <blockquote>{payload.provenance.quote}</blockquote>
-            )}
-          </footer>
-        </article>
+        <GeneratedResult payload={payload} audioRef={audioRef} activeRoleHour={activeRoleHour} />
       )}
     </section>
   );
