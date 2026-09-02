@@ -43,9 +43,7 @@ def test_happy_path_one_citation(
     client: TestClient, fake_retriever: FakeRetriever, fake_claude: FakeLLM
 ) -> None:
     fake_retriever.default = (DODECAMUNDO_CHUNK,)
-    fake_claude.set_responses(
-        "El Dodecamundo es doce mundos [b202598c·ch0§0¶27 p.16]."
-    )
+    fake_claude.set_responses("El Dodecamundo es doce mundos [b202598c·ch0§0¶27 p.16].")
     response = client.post(
         "/api/chat",
         json={"question": "¿qué es el Dodecamundo?", "llm": "claude"},
