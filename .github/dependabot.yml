@@ -3,6 +3,7 @@ updates:
   # fractalmusic core — uv/pip
   - package-ecosystem: "pip"
     directory: "/"
+    target-branch: "develop"
     schedule:
       interval: "weekly"
     groups:
@@ -16,6 +17,7 @@ updates:
   # 2026-09-01 — the whole point of wiring this up.
   - package-ecosystem: "npm"
     directory: "/web"
+    target-branch: "develop"
     schedule:
       interval: "weekly"
     groups:
@@ -28,6 +30,7 @@ updates:
   # Dependabot resolves and updates by SHA, not just by tag.
   - package-ecosystem: "github-actions"
     directory: "/"
+    target-branch: "develop"
     schedule:
       interval: "weekly"
 
@@ -37,3 +40,12 @@ updates:
 # Dependabot (or anything else) could resolve. Its *other* real
 # dependencies (fastapi, anthropic, numpy, etc.) go unmonitored until that
 # structural gap is fixed — see ci.yml's comment for the options.
+#
+# target-branch: develop above only affects scheduled *version* updates.
+# GitHub's Dependabot *security* updates (triggered by vulnerability
+# alerts, e.g. CVE-driven single-package PRs) always target the repo's
+# default branch (master here) — this is a platform limitation, not
+# configurable from this file. Because of that, "automated security
+# fixes" is deliberately left OFF for this repo (vulnerability alerts stay
+# on); CVEs found this way get triaged and fixed by hand on a feature
+# branch into develop, same as any other change here.
